@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:talking/configs/colors/colors.dart';
 
-abstract class AppTheme {
-  static final _defaultHeadlineStyle = GoogleFonts.montserratAlternates();
+part 'light/text_theme.dart';
 
+abstract class AppTheme {
   static ThemeData get light {
     return ThemeData.light().copyWith(
       primaryColor: TColors.primary,
@@ -16,13 +16,7 @@ abstract class AppTheme {
       iconTheme: const IconThemeData(
         color: TColors.primary,
       ),
-      textTheme: TextTheme(
-        headlineMedium: _defaultHeadlineStyle.copyWith(
-          fontSize: 28,
-          fontWeight: FontWeight.w600,
-          color: TColors.onPrimary,
-        ),
-      ),
+      textTheme: _TextThemeHelper.lightTextTheme,
     );
   }
 }

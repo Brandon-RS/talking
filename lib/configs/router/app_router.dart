@@ -35,6 +35,10 @@ class AppRouter {
         path: '/register',
         builder: (context, state) => const RegisterScreen(),
       ),
+      GoRoute(
+        path: '/terms-and-conditions',
+        builder: (context, state) => const TermsAndConditionsScreen(),
+      ),
     ],
   );
 }
