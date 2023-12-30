@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/login.widgets.dart';
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -7,7 +9,11 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: SafeArea(
-        child: Text('LoginScreen'),
+        child: Column(
+          children: [
+            Logo(),
+          ],
+        ),
       ),
     );
   }
