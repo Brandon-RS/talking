@@ -8,6 +8,20 @@ class AppRouter {
       GoRoute(
         path: '/',
         builder: (context, state) => const HomeScreen(),
+        routes: [
+          GoRoute(
+            path: 'users',
+            builder: (context, state) => const UsersScreen(),
+          ),
+          GoRoute(
+            path: 'chat',
+            builder: (context, state) => const ChatScreen(),
+          ),
+          GoRoute(
+            path: 'profile',
+            builder: (context, state) => const ChatScreen(),
+          ),
+        ],
       ),
       GoRoute(
         path: '/splash',
@@ -16,6 +30,10 @@ class AppRouter {
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: '/register',
+        builder: (context, state) => const RegisterScreen(),
       ),
     ],
   );
