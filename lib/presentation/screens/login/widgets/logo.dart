@@ -9,7 +9,7 @@ class Logo extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 30),
+          SizedBox(height: MediaQuery.paddingOf(context).top + 30),
           // TODO(BRANDOM): Replace it with a cute logo
           const Icon(Icons.person_pin, size: 140),
           const SizedBox(height: 22),

@@ -8,10 +8,11 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.sizeOf(context).height,
+          child: const Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Logo(),
