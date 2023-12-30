@@ -3,16 +3,12 @@ import 'package:talking/presentation/screens/screens.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/users',
     routes: [
       GoRoute(
         path: '/',
         builder: (context, state) => const HomeScreen(),
         routes: [
-          GoRoute(
-            path: 'users',
-            builder: (context, state) => const UsersScreen(),
-          ),
           GoRoute(
             path: 'chat',
             builder: (context, state) => const ChatScreen(),
@@ -22,6 +18,10 @@ class AppRouter {
             builder: (context, state) => const ChatScreen(),
           ),
         ],
+      ),
+      GoRoute(
+        path: '/users',
+        builder: (context, state) => const UsersScreen(),
       ),
       GoRoute(
         path: '/splash',

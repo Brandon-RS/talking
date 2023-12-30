@@ -11,6 +11,16 @@ abstract class AppTheme {
     return ThemeData.light().copyWith(
       primaryColor: LightColors.primary,
       scaffoldBackgroundColor: LightColors.scaffoldBackgroundColor,
+      appBarTheme: AppBarTheme(
+        backgroundColor: LightColors.scaffoldBackgroundColor,
+        iconTheme: const IconThemeData(
+          color: LightColors.primary,
+        ),
+        titleTextStyle: _TextThemeHelper.lightTextTheme.headlineSmall?.copyWith(
+          color: LightColors.primary,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       colorScheme: const ColorScheme.light(
         primary: LightColors.primary,
         onPrimary: LightColors.onPrimary,
