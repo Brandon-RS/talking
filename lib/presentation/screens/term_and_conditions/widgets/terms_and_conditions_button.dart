@@ -6,14 +6,17 @@ class TermsAndConditionsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      child: Text(
-        'Terms and conditions of use',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              decoration: TextDecoration.underline,
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: TextButton(
+        child: Text(
+          'Terms and conditions of use',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                decoration: TextDecoration.underline,
+              ),
+        ),
+        onPressed: () => context.push('/terms-and-conditions'),
       ),
-      onPressed: () => context.push('/terms-and-conditions'),
     );
   }
 }

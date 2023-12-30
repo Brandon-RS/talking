@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/login.widgets.dart';
+
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
@@ -8,27 +10,44 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Column(
-        children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Email',
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+      child: Form(
+        child: Column(
+          children: [
+            RoundedTextField(
+              icon: Icons.email_outlined,
+              hintText: 'Email',
+              keyboardType: TextInputType.emailAddress,
+              controller: _emailController,
             ),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Password',
+            const SizedBox(height: 22),
+            RoundedTextField(
+              icon: Icons.lock_outline,
+              hintText: 'Password',
+              obscureText: true,
+              controller: _passwordController,
             ),
-          ),
-          const SizedBox(height: 22),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Login'),
-          ),
-        ],
+            const SizedBox(height: 40),
+            RoundedButton(
+              text: 'Login',
+              expandable: true,
+              onPressed: () {},
+            ),
+          ],
+        ),
       ),
     );
   }

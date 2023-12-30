@@ -1,14 +1,19 @@
-part of '../app_theme.dart';
+part of 'app_theme.dart';
 
 abstract class _TextThemeHelper {
   static final _defaultHeadlineStyle = GoogleFonts.montserratAlternates(
-    color: TColors.onPrimary,
+    color: LightColors.onPrimary,
     fontWeight: FontWeight.normal,
   );
 
   static final _defaultBodyStyle = GoogleFonts.roboto(
-    color: TColors.onPrimary,
+    color: LightColors.onPrimary,
     fontWeight: FontWeight.normal,
+  );
+
+  static final _defaultLabelStyle = GoogleFonts.openSans(
+    color: TColors.white,
+    fontWeight: FontWeight.w600,
   );
 
   static TextTheme get lightTextTheme {
@@ -33,6 +38,9 @@ abstract class _TextThemeHelper {
       ),
       bodySmall: _defaultBodyStyle.copyWith(
         fontSize: 12,
+      ),
+      labelLarge: _defaultLabelStyle.copyWith(
+        fontSize: 15,
       ),
     );
   }

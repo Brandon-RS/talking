@@ -10,14 +10,16 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Logo(),
-            LoginForm(),
-            SizedBox(height: 25),
-            Labels(),
-            TermsAndConditionsButton(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Logo(),
+              LoginForm(),
+              Labels(),
+              TermsAndConditionsButton(),
+            ],
+          ),
         ),
       ),
     );
