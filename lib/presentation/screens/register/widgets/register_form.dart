@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:talking/presentation/screens/login/widgets/login.widgets.dart';
 
-import '../widgets/login.widgets.dart';
-
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class RegisterForm extends StatefulWidget {
+  const RegisterForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _RegisterFormState extends State<RegisterForm> {
+  late final TextEditingController _nameController;
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
 
   @override
   void initState() {
     super.initState();
+    _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -34,6 +36,12 @@ class _LoginFormState extends State<LoginForm> {
       child: Form(
         child: Column(
           children: [
+            RoundedTextField(
+              icon: Icons.perm_identity_outlined,
+              hintText: 'Name',
+              controller: _nameController,
+            ),
+            const SizedBox(height: 22),
             RoundedTextField(
               icon: Icons.email_outlined,
               hintText: 'Email',
@@ -49,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             const SizedBox(height: 40),
             RoundedButton(
-              text: 'Login',
+              text: 'Register',
               expandable: true,
               onPressed: () {},
             ),

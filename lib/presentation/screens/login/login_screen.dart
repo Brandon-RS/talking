@@ -17,7 +17,11 @@ class LoginScreen extends StatelessWidget {
             children: [
               Logo(),
               LoginForm(),
-              Labels(),
+              Labels(
+                text: 'Don\'t have an account?',
+                buttonText: 'Create an account',
+                route: '/register',
+              ),
               TermsAndConditionsButton(),
             ],
           ),
