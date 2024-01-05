@@ -3,7 +3,7 @@ import 'package:talking/presentation/screens/screens.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/users',
+    initialLocation: '/login',
     routes: [
       GoRoute(
         path: '/',

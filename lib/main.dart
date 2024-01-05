@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:talking/configs/router/app_router.dart';
-import 'package:talking/configs/theme/app_theme.dart';
+import 'package:provider/provider.dart';
+
+import 'configs/router/app_router.dart';
+import 'configs/theme/app_theme.dart';
+import 'presentation/providers/auth/auth.provider.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,10 +14,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Talking',
-      routerConfig: AppRouter.router,
-      theme: AppTheme.light,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: MaterialApp.router(
+        title: 'Talking',
+        routerConfig: AppRouter.router,
+        theme: AppTheme.light,
+      ),
     );
   }
 }
