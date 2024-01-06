@@ -31,7 +31,7 @@ class AuthProvider with ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
-      final loginResponse = LoginResponseModel.fromJson(response.data);
+      final loginResponse = LoginModel.fromJson(response.data);
       user = loginResponse.user;
     } else {
       throw Exception('Error on login');

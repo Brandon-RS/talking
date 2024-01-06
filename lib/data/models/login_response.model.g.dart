@@ -6,12 +6,11 @@ part of 'login_response.model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-LoginResponseModel _$LoginResponseModelFromJson(Map<String, dynamic> json) =>
-    $checkedCreate(
-      'LoginResponseModel',
+LoginModel _$LoginModelFromJson(Map<String, dynamic> json) => $checkedCreate(
+      'LoginModel',
       json,
       ($checkedConvert) {
-        final val = LoginResponseModel(
+        final val = LoginModel(
           token: $checkedConvert('token', (v) => v as String?),
           user: $checkedConvert(
               'user',
@@ -23,7 +22,7 @@ LoginResponseModel _$LoginResponseModelFromJson(Map<String, dynamic> json) =>
       },
     );
 
-Map<String, dynamic> _$LoginResponseModelToJson(LoginResponseModel instance) {
+Map<String, dynamic> _$LoginModelToJson(LoginModel instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {

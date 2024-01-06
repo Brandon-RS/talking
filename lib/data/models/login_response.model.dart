@@ -10,19 +10,19 @@ part 'login_response.model.g.dart';
   fieldRename: FieldRename.snake,
   includeIfNull: false,
 )
-class LoginResponseModel {
-  const LoginResponseModel({
+class LoginModel {
+  const LoginModel({
     this.token,
     this.user,
   });
 
-  factory LoginResponseModel.fromJson(Map<String, dynamic> json) => _$LoginResponseModelFromJson(json);
+  factory LoginModel.fromJson(Map<String, dynamic> json) => _$LoginModelFromJson(json);
 
   final String? token;
   final UserModel? user;
 
-  Map<String, dynamic> toJson() => _$LoginResponseModelToJson(this);
+  Map<String, dynamic> toJson() => _$LoginModelToJson(this);
 
   @override
-  String toString() => 'LoginResponseModel(token: $token, user: $user)';
+  String toString() => 'LoginModel(token: $token, user: $user)';
 }
