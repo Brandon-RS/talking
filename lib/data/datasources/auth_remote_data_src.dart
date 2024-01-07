@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../global/environment.dart';
+import '../../core/global/environment.dart';
 import '../models/login_response.model.dart';
 
 abstract class AuthRemoteDataSrc {

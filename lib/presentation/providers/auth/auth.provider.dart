@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:talking/data/models/login_response.model.dart';
 import 'package:talking/data/models/user_model.dart';
 
-import '../../../global/environment.dart';
+import '../../../core/global/environment.dart';
 
 // ! This is a provider example to test the local backend
 // TODO(BRANDOM): Pending to migrate to riverpod or block
