@@ -26,7 +26,7 @@ class LoginUseCase implements Usecase<Login, (String, String)> {
       );
     } catch (e) {
       return const Left(
-        ServerFailure(
+        AppFailure(
           'Error while trying to login. Please, try again later.',
         ),
       );

@@ -13,26 +13,22 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [message, statusCode];
 }
 
+class AppFailure extends Failure {
+  const AppFailure(super.message, {super.statusCode});
+}
+
 class ApiFailure extends Failure {
   const ApiFailure(super.message, {super.statusCode});
 }
 
-class ServerFailure extends Failure {
-  const ServerFailure(super.message, {super.statusCode});
+class NetworkFailure extends Failure {
+  const NetworkFailure(super.message, {super.statusCode});
 }
 
-class UnexpectedFailure extends Failure {
-  const UnexpectedFailure(super.message, {super.statusCode});
+class UnknownFailure extends Failure {
+  const UnknownFailure(super.message, {super.statusCode});
 }
 
 class InvalidInputFailure extends Failure {
   const InvalidInputFailure(super.message, {super.statusCode});
-}
-
-class NoInternetFailure extends Failure {
-  const NoInternetFailure(super.message, {super.statusCode});
-}
-
-class NoPermissionFailure extends Failure {
-  const NoPermissionFailure(super.message, {super.statusCode});
 }

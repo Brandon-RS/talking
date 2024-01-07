@@ -1,9 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 
-import '../../../../core/errors/failure.dart';
+import '../../../../core/errors/dio_error_handler.dart';
 import '../../../../core/utils/typedefs.dart';
 import '../../domain/repos/auth_repo.dart';
 import '../datasources/auth_remote_data_src.dart';
@@ -25,15 +24,8 @@ class AuthRepoImpl implements AuthRepo {
     } catch (e, s) {
       _logger.severe('Error on login', e, s);
 
-      if (e is DioException && e.response?.statusCode == 401) {
-        return const Left(
-          ApiFailure('Invalid credentials', statusCode: 401),
-        );
-      }
-
-      // TODO(BRANDOM): Make this better, handle server errors in a shared instance
-      return const Left(
-        ServerFailure('Error on login', statusCode: 500),
+      return Left(
+        ErrorHandler.handle(e, defaultMessage: 'Error on login'),
       );
     }
   }

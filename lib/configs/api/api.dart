@@ -2,5 +2,5 @@
 abstract class Api {
   static const String baseURL = 'https://talkingserver-production.up.railway.app/api';
 
-  static const String auth = '$baseURL/auth';
+  static const String auth = '/auth';
 }
