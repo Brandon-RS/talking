@@ -1,14 +1,15 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/typedefs.dart';
-import '../../data/repos/auth_repo_impl.dart';
 import '../entities/login_entity.dart';
 import '../repos/auth_repo.dart';
 
+@injectable
 class LoginUseCase implements Usecase<Login, (String, String)> {
-  LoginUseCase({AuthRepo? repo}) : _repo = repo ?? AuthRepoImpl();
+  LoginUseCase(this._repo);
 
   final AuthRepo _repo;
 

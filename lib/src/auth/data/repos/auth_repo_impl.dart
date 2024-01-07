@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 
 import '../../../../core/errors/failure.dart';
@@ -8,9 +9,9 @@ import '../../domain/repos/auth_repo.dart';
 import '../datasources/auth_remote_data_src.dart';
 import '../models/login_model.dart';
 
+@Injectable(as: AuthRepo)
 class AuthRepoImpl implements AuthRepo {
-  /// By default, the [src] is an instance of [AuthRemoteDataSrcImpl]
-  AuthRepoImpl({AuthRemoteDataSrc? src}) : _src = src ?? AuthRemoteDataSrcImpl();
+  AuthRepoImpl(this._src);
 
   final AuthRemoteDataSrc _src;
   // TODO(BRANDOM): Implement the logger as a shared instance

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'configs/di/injector.dart';
 import 'configs/router/app_router.dart';
 import 'configs/theme/app_theme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  configureDependencies();
+
   runApp(
     const ProviderScope(
       child: MainApp(),

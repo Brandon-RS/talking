@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../configs/di/injector.dart';
 import '../../domain/usecases/login_usecase.dart';
 import 'auth_state.dart';
 
@@ -9,7 +10,7 @@ part 'auth_provider.g.dart';
 class Auth extends _$Auth {
   @override
   AuthState build() {
-    _login = LoginUseCase();
+    _login = sl<LoginUseCase>();
     return const AuthInitial();
   }
 

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 
-import '../../../../core/global/environment.dart';
+import '../../../../configs/api/api.dart';
 import '../models/login_model.dart';
 
 abstract class AuthRemoteDataSrc {
@@ -12,9 +13,11 @@ abstract class AuthRemoteDataSrc {
   });
 }
 
+@Injectable(as: AuthRemoteDataSrc)
 class AuthRemoteDataSrcImpl implements AuthRemoteDataSrc {
-  // TODO(BRANDOM): Create a dio helper (to avoid repeating the headers and other configs)
-  final Dio _dio = Dio();
+  const AuthRemoteDataSrcImpl(this._dio);
+
+  final Dio _dio;
 
   @override
   Future<LoginModel> login({
@@ -27,7 +30,7 @@ class AuthRemoteDataSrcImpl implements AuthRemoteDataSrc {
     };
 
     final response = await _dio.post(
-      Environment.auth,
+      Api.auth,
       data: authData,
       options: Options(
         headers: {
