@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../providers/auth/auth_provider.dart';
+import '../../../providers/auth/auth_state.dart';
 import '../widgets/login.widgets.dart';
 
-class LoginForm extends StatefulWidget {
+class LoginForm extends ConsumerStatefulWidget {
   const LoginForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  ConsumerState<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _LoginFormState extends ConsumerState<LoginForm> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
+  final bool _isLoading = false;
 
   @override
   void initState() {
@@ -29,6 +34,28 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = ref.watch(authProvider);
+
+    ref.listen<AuthState>(
+      authProvider,
+      (prev, next) {
+        if (next is AuthError) {
+          // TODO(BRANDOM): Create a custom snackbar widget (something like CoreUtils.showSnackBar)
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(next.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+
+        if (next is LoggedIn) {
+          context.replace('/users');
+          // TODO(BRANDOM): Clear unnecessary data of provider
+        }
+      },
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
       child: Form(
@@ -51,7 +78,17 @@ class _LoginFormState extends State<LoginForm> {
             RoundedButton(
               text: 'Login',
               expandable: true,
-              onPressed: () {},
+              onPressed: auth is! AuthLoading
+                  ? () async {
+                      final email = _emailController.text.trim();
+                      final password = _passwordController.text.trim();
+
+                      await ref.read(authProvider.notifier).login(
+                            email: email,
+                            password: password,
+                          );
+                    }
+                  : null,
             ),
           ],
         ),
