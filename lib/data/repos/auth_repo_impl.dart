@@ -6,7 +6,7 @@ import '../../core/errors/failure.dart';
 import '../../core/utils/typedefs.dart';
 import '../../domain/repos/auth_repo.dart';
 import '../datasources/auth_remote_data_src.dart';
-import '../models/login_response.model.dart';
+import '../models/login_model.dart';
 
 class AuthRepoImpl implements AuthRepo {
   /// By default, the [src] is an instance of [AuthRemoteDataSrcImpl]

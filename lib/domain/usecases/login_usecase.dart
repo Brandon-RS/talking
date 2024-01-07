@@ -3,20 +3,26 @@ import 'package:dartz/dartz.dart';
 import '../../core/errors/failure.dart';
 import '../../core/usecases/usecase.dart';
 import '../../core/utils/typedefs.dart';
-import '../../data/models/login_response.model.dart';
+import '../../data/repos/auth_repo_impl.dart';
+import '../entities/login_entity.dart';
 import '../repos/auth_repo.dart';
 
-class LoginUseCase implements Usecase<LoginModel, (String, String)> {
-  const LoginUseCase({required AuthRepo repo}) : _repo = repo;
+class LoginUseCase implements Usecase<Login, (String, String)> {
+  LoginUseCase({AuthRepo? repo}) : _repo = repo ?? AuthRepoImpl();
 
   final AuthRepo _repo;
 
   @override
-  ResultFuture<LoginModel> call((String, String) data) async {
+  ResultFuture<Login> call((String, String) data) async {
     try {
       final (email, password) = data;
 
-      return await _repo.login(email: email, password: password);
+      final result = await _repo.login(email: email, password: password);
+
+      return result.fold(
+        (failure) => Left(failure),
+        (model) => Right(Login.formModel(model)),
+      );
     } catch (e) {
       return const Left(
         ServerFailure(

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../core/global/environment.dart';
-import '../models/login_response.model.dart';
+import '../models/login_model.dart';
 
 abstract class AuthRemoteDataSrc {
   const AuthRemoteDataSrc();

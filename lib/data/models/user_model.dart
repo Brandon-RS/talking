@@ -25,20 +25,6 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
-  UserModel copyWith({
-    bool? online,
-    String? name,
-    String? email,
-    String? uid,
-  }) {
-    return UserModel(
-      online: online ?? this.online,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      uid: uid ?? this.uid,
-    );
-  }
-
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
   @override

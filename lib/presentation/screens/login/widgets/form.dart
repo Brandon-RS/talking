@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../../providers/auth/auth.provider.dart';
 import '../widgets/login.widgets.dart';
 
 class LoginForm extends StatefulWidget {
@@ -53,12 +51,7 @@ class _LoginFormState extends State<LoginForm> {
             RoundedButton(
               text: 'Login',
               expandable: true,
-              onPressed: () {
-                Provider.of<AuthProvider>(context, listen: false).login(
-                  email: _emailController.text.trim(),
-                  password: _passwordController.text.trim(),
-                );
-              },
+              onPressed: () {},
             ),
           ],
         ),

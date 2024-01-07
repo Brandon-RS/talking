@@ -1,5 +1,5 @@
 import '../../core/utils/typedefs.dart';
-import '../../data/models/login_response.model.dart';
+import '../../data/models/login_model.dart';
 
 abstract class AuthRepo {
   const AuthRepo();
