@@ -3,10 +3,10 @@ import 'package:injectable/injectable.dart';
 import '../api/api.dart';
 
 // TODO(BRANDOM): Make this configurable (read from storage)
-const String APPLICATION_JSON = "application/json";
-const String CONTENT_TYPE = "content-type";
-const String AUTHORIZATION = "authorization";
-const String TOKEN = ""; // Set the stored token here
+const String applicationJSON = "application/json";
+const String contentType = "content-type";
+const String xToken = "x-token";
+const String jwt = ""; // Set the stored token here
 
 abstract class IConfig {
   String get baseUrl;
@@ -21,7 +21,7 @@ class AppConfig extends IConfig {
 
   @override
   Map<String, String> get headers => {
-        CONTENT_TYPE: APPLICATION_JSON,
-        AUTHORIZATION: TOKEN,
+        contentType: applicationJSON,
+        xToken: jwt,
       };
 }

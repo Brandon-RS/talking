@@ -18,6 +18,14 @@ class LoginUseCase implements Usecase<Login, (String, String)> {
     try {
       final (email, password) = data;
 
+      if (email.isEmpty || password.isEmpty) {
+        return const Left(
+          AppFailure(
+            'Email and password must not be empty.',
+          ),
+        );
+      }
+
       final result = await _repo.login(email: email, password: password);
 
       return result.fold(

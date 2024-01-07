@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 
+import '../../configs/di/injector.dart';
+import '../../configs/logger/app_logger.dart';
 import '../networking/response_codes.dart';
 import 'failure.dart';
 
@@ -15,6 +17,8 @@ class ErrorHandler implements Exception {
       final statusCode = ResponseCode.unknown.failure.statusCode;
 
       failure = UnknownFailure(defaultMessage ?? message, statusCode: statusCode);
+
+      sl<AppLogger>().e(error, failure.message);
     }
 
     return failure;
