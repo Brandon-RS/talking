@@ -3,18 +3,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'configs/di/injector.dart';
 import 'configs/router/app_router.dart';
+import 'configs/storage/storage_manager.dart';
 import 'configs/theme/app_theme.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  configureDependencies();
+  await initApp();
 
   runApp(
     const ProviderScope(
       child: MainApp(),
     ),
   );
+}
+
+Future<void> initApp() async {
+  configureDependencies();
+  await sl<StorageManager>().init();
 }
 
 class MainApp extends StatelessWidget {
