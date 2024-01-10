@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/common/dialog_utils.dart';
 import '../providers/auth_provider.dart';
 import '../providers/auth_state.dart';
 import 'rounded_button.dart';
@@ -40,12 +41,12 @@ class _LoginFormState extends ConsumerState<LoginForm> {
       authProvider,
       (prev, next) {
         if (next is AuthError) {
-          // TODO(BRANDOM): Create a custom snackbar widget (something like CoreUtils.showSnackBar)
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(next.message),
-              backgroundColor: Colors.red,
-            ),
+          DialogUtils.showAlert(
+            context,
+            title: 'Error T_T',
+            message: next.message,
+            buttonText: 'Ok',
+            onPressed: () => Navigator.of(context).pop(),
           );
         }
 
