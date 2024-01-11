@@ -7,10 +7,14 @@ import '../../src/splash/presentation/views/splash_view.dart';
 import '../../src/terms_and_conditions/presentation/views/terms_and_conditions_view.dart';
 import '../../src/user/presentation/views/register_view.dart';
 import '../../src/user/presentation/views/users_view.dart';
+import '../di/injector.dart';
+import '../storage/storage_manager.dart';
 
 class AppRouter {
+  static final _storageManager = sl<StorageManager>();
+
   static final router = GoRouter(
-    initialLocation: '/login',
+    initialLocation: _storageManager.currentToken != null ? '/users' : '/login',
     routes: [
       GoRoute(
         path: '/',

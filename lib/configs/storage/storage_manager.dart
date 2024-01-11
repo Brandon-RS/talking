@@ -44,4 +44,9 @@ class StorageManager {
   }
 
   bool containsKey(String key) => _prefs.containsKey(key);
+
+  String? get currentToken => getString(xToken);
+
+  // Keys
+  static const String xToken = 'x-token';
 }
