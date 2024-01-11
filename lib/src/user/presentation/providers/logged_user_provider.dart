@@ -25,6 +25,8 @@ class LoggedUser extends _$LoggedUser {
     required String email,
     required String password,
   }) async {
+    state = const LoggedUserLoading();
+
     final response = await _registerUserUsecase((
       name,
       email,
