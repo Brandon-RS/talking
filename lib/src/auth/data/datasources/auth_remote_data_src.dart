@@ -31,15 +31,7 @@ class AuthRemoteDataSrcImpl implements AuthRemoteDataSrc {
       'password': password,
     };
 
-    final response = await _dio.post(
-      Api.auth,
-      data: authData,
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      ),
-    );
+    final response = await _dio.post(Api.auth, data: authData);
 
     if (response.statusCode == 200) {
       return LoginModel.fromJson(response.data);
