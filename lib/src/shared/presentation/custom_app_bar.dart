@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:talking/configs/router/app_router.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -11,32 +13,37 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
-          child: Stack(
-            children: [
-              Container(
-                height: 42,
-                decoration: ShapeDecoration(
-                  shape: CircleBorder(
-                    side: BorderSide(
-                      color: Theme.of(context).colorScheme.outline,
+          child: GestureDetector(
+            onTap: () {
+              if (AppRouter.location != '/profile') context.push('/profile');
+            },
+            child: Stack(
+              children: [
+                Container(
+                  height: 42,
+                  decoration: ShapeDecoration(
+                    shape: CircleBorder(
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
                     ),
                   ),
+                  child: Image.network(
+                    // TODO(BRANDOM): Temporary image
+                    'https://avatars.githubusercontent.com/u/79495707?v=4',
+                  ),
                 ),
-                child: Image.network(
-                  // TODO(BRANDOM): Temporary image
-                  'https://avatars.githubusercontent.com/u/79495707?v=4',
+                const Positioned(
+                  right: 1,
+                  top: 1,
+                  child: CircleAvatar(
+                    radius: 5.5,
+                    // TODO(BRANDOM): Change color based on connection status
+                    backgroundColor: Colors.green,
+                  ),
                 ),
-              ),
-              const Positioned(
-                right: 1,
-                top: 1,
-                child: CircleAvatar(
-                  radius: 5.5,
-                  // TODO(BRANDOM): Change color based on connection status
-                  backgroundColor: Colors.green,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],

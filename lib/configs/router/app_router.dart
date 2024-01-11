@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../src/auth/presentation/views/login_view.dart';
 import '../../src/chat/presentation/views/chat_view.dart';
 import '../../src/home/presentation/views/home_View.dart';
+import '../../src/profile/presentation/views/profile_view.dart';
 import '../../src/splash/presentation/views/splash_view.dart';
 import '../../src/terms_and_conditions/presentation/views/terms_and_conditions_view.dart';
 import '../../src/user/presentation/views/register_view.dart';
@@ -26,7 +27,7 @@ class AppRouter {
           ),
           GoRoute(
             path: 'profile',
-            builder: (context, state) => const ChatView(),
+            builder: (context, state) => const ProfileView(),
           ),
         ],
       ),
@@ -52,4 +53,10 @@ class AppRouter {
       ),
     ],
   );
+
+  static String get location {
+    final lastMatch = router.routerDelegate.currentConfiguration.last;
+    final matchList = lastMatch is ImperativeRouteMatch ? lastMatch.matches : router.routerDelegate.currentConfiguration;
+    return matchList.uri.toString();
+  }
 }
