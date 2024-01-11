@@ -30,4 +30,16 @@ class AuthRepoImpl implements AuthRepo {
       return Left(failure);
     }
   }
+
+  @override
+  ResultFuture<bool> logout() async {
+    try {
+      final result = await _src.logout();
+      return Right(result);
+    } catch (e) {
+      return Left(
+        ErrorHandler.handle(e, defaultMessage: 'Error on logout'),
+      );
+    }
+  }
 }

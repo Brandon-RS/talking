@@ -11,6 +11,8 @@ abstract class AuthRemoteDataSrc {
     required String email,
     required String password,
   });
+
+  Future<bool> logout();
 }
 
 @Injectable(as: AuthRemoteDataSrc)
@@ -44,5 +46,12 @@ class AuthRemoteDataSrcImpl implements AuthRemoteDataSrc {
     } else {
       throw Exception('Error on login');
     }
+  }
+
+  @override
+  Future<bool> logout() async {
+    // TODO(BRANDOM): Pending backend implementation
+    await Future.delayed(const Duration(milliseconds: 600));
+    return true;
   }
 }

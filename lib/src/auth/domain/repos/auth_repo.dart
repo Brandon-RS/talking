@@ -8,4 +8,6 @@ abstract class AuthRepo {
     required String email,
     required String password,
   });
+
+  ResultFuture<bool> logout();
 }

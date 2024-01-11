@@ -27,6 +27,10 @@ class LoggedIn extends AuthState {
   final String token;
 }
 
+class LoggedOut extends AuthState {
+  const LoggedOut();
+}
+
 class AuthError extends AuthState {
   const AuthError(this.message);
 

@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../configs/di/injector.dart';
 import '../../../../configs/storage/storage_manager.dart';
 import '../../domain/usecases/login_usecase.dart';
+import '../../domain/usecases/logout_usecase.dart';
 import 'auth_state.dart';
 
 part 'auth_provider.g.dart';
@@ -11,12 +12,14 @@ part 'auth_provider.g.dart';
 class Auth extends _$Auth {
   @override
   AuthState build() {
-    _login = sl<LoginUseCase>();
+    _login = sl<LoginUsecase>();
+    _logout = sl<LogoutUsecase>();
     _storageManager = sl<StorageManager>();
     return const AuthInitial();
   }
 
-  late LoginUseCase _login;
+  late LoginUsecase _login;
+  late LogoutUsecase _logout;
   late StorageManager _storageManager;
 
   Future<void> login({required String email, required String password}) async {
@@ -38,5 +41,18 @@ class Auth extends _$Auth {
         await _storageManager.setString(StorageManager.xToken, model.token);
       },
     );
+  }
+
+  Future<void> logout() async {
+    state = const AuthLoading();
+
+    final result = await _logout();
+
+    result.fold(
+      (failure) => state = AuthError(failure.message),
+      (model) => state = const LoggedOut(),
+    );
+
+    _storageManager.clear();
   }
 }

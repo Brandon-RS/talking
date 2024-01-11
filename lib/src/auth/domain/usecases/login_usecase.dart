@@ -8,8 +8,8 @@ import '../entities/login_entity.dart';
 import '../repos/auth_repo.dart';
 
 @injectable
-class LoginUseCase implements Usecase<Login, (String, String)> {
-  LoginUseCase(this._repo);
+class LoginUsecase implements Usecase<Login, (String, String)> {
+  LoginUsecase(this._repo);
 
   final AuthRepo _repo;
 
