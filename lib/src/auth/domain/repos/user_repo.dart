@@ -3,6 +3,8 @@ import '../../../user/data/models/user_model.dart';
 
 abstract class UserRepo {
   ResultFuture<UserModel> register({
-    required UserModel user,
+    required String name,
+    required String email,
+    required String password,
   });
 }

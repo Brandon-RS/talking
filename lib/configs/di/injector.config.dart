@@ -20,8 +20,9 @@ import '../../src/auth/domain/repos/auth_repo.dart' as _i11;
 import '../../src/auth/domain/repos/user_repo.dart' as _i8;
 import '../../src/auth/domain/usecases/login_usecase.dart' as _i13;
 import '../../src/auth/domain/usecases/logout_usecase.dart' as _i14;
+import '../../src/auth/domain/usecases/register_user_usecase.dart' as _i15;
 import '../logger/app_logger.dart' as _i3;
-import '../networking/dio_provider.dart' as _i15;
+import '../networking/dio_provider.dart' as _i16;
 import '../networking/i_config.dart' as _i4;
 import '../storage/storage_manager.dart' as _i5;
 
@@ -53,7 +54,9 @@ _i1.GetIt $initGetIt(
       () => _i12.AuthRepoImpl(gh<_i10.AuthRemoteDataSrc>()));
   gh.factory<_i13.LoginUsecase>(() => _i13.LoginUsecase(gh<_i11.AuthRepo>()));
   gh.factory<_i14.LogoutUsecase>(() => _i14.LogoutUsecase(gh<_i11.AuthRepo>()));
+  gh.factory<_i15.RegisterUserUsecase>(
+      () => _i15.RegisterUserUsecase(gh<_i8.UserRepo>()));
   return getIt;
 }
 
-class _$DioProvider extends _i15.DioProvider {}
+class _$DioProvider extends _i16.DioProvider {}

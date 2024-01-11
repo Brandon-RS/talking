@@ -30,7 +30,7 @@ class LoginUsecase implements Usecase<Login, (String, String)> {
 
       return result.fold(
         (failure) => Left(failure),
-        (model) => Right(Login.formModel(model)),
+        (model) => Right(Login.fromModel(model)),
       );
     } catch (e) {
       return const Left(

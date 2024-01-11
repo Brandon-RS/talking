@@ -9,7 +9,7 @@ class Login extends Equatable {
     required this.token,
   });
 
-  factory Login.formModel(LoginModel model) {
+  factory Login.fromModel(LoginModel model) {
     return Login(
       user: User.fromModel(model.user),
       token: model.token,

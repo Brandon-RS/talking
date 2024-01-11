@@ -16,9 +16,18 @@ class UserRepoImpl implements UserRepo {
   final UserRemoteDataSrc _src;
 
   @override
-  ResultFuture<UserModel> register({required UserModel user}) async {
+  ResultFuture<UserModel> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
     try {
-      final result = await _src.register(user: user);
+      final result = await _src.register(
+        name: name,
+        email: email,
+        password: password,
+      );
+
       return Right(result.user);
     } catch (e) {
       final failure = ErrorHandler.handle(e, defaultMessage: 'Error registering user');

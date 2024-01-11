@@ -2,12 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../configs/api/api.dart';
-import '../../../user/data/models/user_model.dart';
 import '../models/login_model.dart';
 
 abstract class UserRemoteDataSrc {
   Future<LoginModel> register({
-    required UserModel user,
+    required String name,
+    required String email,
+    required String password,
   });
 }
 
@@ -19,11 +20,17 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
 
   @override
   Future<LoginModel> register({
-    required UserModel user,
+    required String name,
+    required String email,
+    required String password,
   }) async {
     final response = await _dio.post(
       Api.users,
-      data: user.toJson(),
+      data: {
+        'name': name,
+        'email': email,
+        'password': password,
+      },
     );
 
     if (response.statusCode == 200) {
