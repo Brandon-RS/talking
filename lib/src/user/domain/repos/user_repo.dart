@@ -1,8 +1,8 @@
 import '../../../../core/utils/typedefs.dart';
-import '../../data/models/user_model.dart';
+import '../../../auth/data/models/login_model.dart';
 
 abstract class UserRepo {
-  ResultFuture<UserModel> register({
+  ResultFuture<LoginModel> register({
     required String name,
     required String email,
     required String password,

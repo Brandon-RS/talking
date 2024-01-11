@@ -1,20 +1,20 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:talking/src/auth/domain/entities/login_entity.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/typedefs.dart';
-import '../entities/user_entity.dart';
 import '../repos/user_repo.dart';
 
 @injectable
-class RegisterUserUsecase implements Usecase<User, (String, String, String)> {
+class RegisterUserUsecase implements Usecase<Login, (String, String, String)> {
   const RegisterUserUsecase(this._repo);
 
   final UserRepo _repo;
 
   @override
-  ResultFuture<User> call((String, String, String) user) async {
+  ResultFuture<Login> call((String, String, String) user) async {
     try {
       final (name, email, password) = user;
 
@@ -30,7 +30,7 @@ class RegisterUserUsecase implements Usecase<User, (String, String, String)> {
 
       return result.fold(
         (failure) => Left(failure),
-        (model) => Right(User.fromModel(model)),
+        (model) => Right(Login.fromModel(model)),
       );
     } catch (e) {
       return const Left(

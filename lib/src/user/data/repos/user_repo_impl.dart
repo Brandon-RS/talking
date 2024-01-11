@@ -5,9 +5,9 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/errors/dio_error_handler.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/utils/typedefs.dart';
+import '../../../auth/data/models/login_model.dart';
 import '../../domain/repos/user_repo.dart';
 import '../datasources/user_remote_data_src.dart';
-import '../models/user_model.dart';
 
 @Injectable(as: UserRepo)
 class UserRepoImpl implements UserRepo {
@@ -16,7 +16,7 @@ class UserRepoImpl implements UserRepo {
   final UserRemoteDataSrc _src;
 
   @override
-  ResultFuture<UserModel> register({
+  ResultFuture<LoginModel> register({
     required String name,
     required String email,
     required String password,
@@ -28,7 +28,7 @@ class UserRepoImpl implements UserRepo {
         password: password,
       );
 
-      return Right(result.user);
+      return Right(result);
     } catch (e) {
       final failure = ErrorHandler.handle(e, defaultMessage: 'Error registering user');
 
