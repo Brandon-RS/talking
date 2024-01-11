@@ -5,9 +5,9 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/errors/dio_error_handler.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/utils/typedefs.dart';
-import '../../../user/data/models/user_model.dart';
 import '../../domain/repos/user_repo.dart';
 import '../datasources/user_remote_data_src.dart';
+import '../models/user_model.dart';
 
 @Injectable(as: UserRepo)
 class UserRepoImpl implements UserRepo {

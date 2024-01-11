@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../configs/api/api.dart';
-import '../models/login_model.dart';
+import '../../../auth/data/models/login_model.dart';
 
 abstract class UserRemoteDataSrc {
   Future<LoginModel> register({

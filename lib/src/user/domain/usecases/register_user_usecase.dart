@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:talking/core/errors/failure.dart';
-import 'package:talking/core/usecases/usecase.dart';
-import 'package:talking/core/utils/typedefs.dart';
-import 'package:talking/src/user/domain/entities/user_entity.dart';
 
+import '../../../../core/errors/failure.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../../../core/utils/typedefs.dart';
+import '../entities/user_entity.dart';
 import '../repos/user_repo.dart';
 
 @injectable

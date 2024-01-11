@@ -13,14 +13,14 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
 import '../../src/auth/data/datasources/auth_remote_data_src.dart' as _i10;
-import '../../src/auth/data/datasources/user_remote_data_src.dart' as _i7;
 import '../../src/auth/data/repos/auth_repo_impl.dart' as _i12;
-import '../../src/auth/data/repos/user_repo_impl.dart' as _i9;
 import '../../src/auth/domain/repos/auth_repo.dart' as _i11;
-import '../../src/auth/domain/repos/user_repo.dart' as _i8;
 import '../../src/auth/domain/usecases/login_usecase.dart' as _i13;
 import '../../src/auth/domain/usecases/logout_usecase.dart' as _i14;
-import '../../src/auth/domain/usecases/register_user_usecase.dart' as _i15;
+import '../../src/user/data/datasources/user_remote_data_src.dart' as _i7;
+import '../../src/user/data/repos/user_repo_impl.dart' as _i9;
+import '../../src/user/domain/repos/user_repo.dart' as _i8;
+import '../../src/user/domain/usecases/register_user_usecase.dart' as _i15;
 import '../logger/app_logger.dart' as _i3;
 import '../networking/dio_provider.dart' as _i16;
 import '../networking/i_config.dart' as _i4;
