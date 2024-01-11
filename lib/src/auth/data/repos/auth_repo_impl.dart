@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/dio_error_handler.dart';
+import '../../../../core/errors/failure.dart';
 import '../../../../core/utils/typedefs.dart';
 import '../../domain/repos/auth_repo.dart';
 import '../datasources/auth_remote_data_src.dart';
@@ -19,9 +20,14 @@ class AuthRepoImpl implements AuthRepo {
       final result = await _src.login(email: email, password: password);
       return Right(result);
     } catch (e) {
-      return Left(
-        ErrorHandler.handle(e, defaultMessage: 'Error on login'),
-      );
+      final failure = ErrorHandler.handle(e, defaultMessage: 'Error on login');
+
+      if (failure.statusCode != null && failure.statusCode == 400) {
+        return const Left(
+          ApiFailure('Email or password is not correct'),
+        );
+      }
+      return Left(failure);
     }
   }
 }

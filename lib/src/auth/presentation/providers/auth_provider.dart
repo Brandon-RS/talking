@@ -22,15 +22,9 @@ class Auth extends _$Auth {
     final result = await _login((email, password));
 
     result.fold(
-      (failure) {
-        final errorCode = failure.statusCode;
-        if (errorCode != null && errorCode >= 400 && errorCode < 500) {
-          state = const AuthError('Email or password is not correct');
-          return;
-        }
-
-        state = AuthError(failure.message);
-      },
+      (failure) => state = AuthError(
+        failure.message,
+      ),
       (model) => state = LoggedIn(
         user: model.user,
         token: model.token,
