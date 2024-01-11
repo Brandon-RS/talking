@@ -6,17 +6,21 @@ import '../../../user/data/models/user_model.dart';
 import '../models/login_model.dart';
 
 abstract class UserRemoteDataSrc {
-  Future<LoginModel> register(UserModel user);
+  Future<LoginModel> register({
+    required UserModel user,
+  });
 }
 
-@injectable
+@Injectable(as: UserRemoteDataSrc)
 class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
   const UserRemoteDataSrcImpl(this._dio);
 
   final Dio _dio;
 
   @override
-  Future<LoginModel> register(UserModel user) async {
+  Future<LoginModel> register({
+    required UserModel user,
+  }) async {
     final response = await _dio.post(
       Api.users,
       data: user.toJson(),
