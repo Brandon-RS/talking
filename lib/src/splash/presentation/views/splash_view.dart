@@ -5,28 +5,36 @@ import 'package:go_router/go_router.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
 
-class SplashView extends ConsumerWidget {
+class SplashView extends ConsumerStatefulWidget {
   const SplashView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SplashView> createState() => _SplashViewState();
+}
+
+class _SplashViewState extends ConsumerState<SplashView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(authProvider.notifier).renewToken();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ref.listen(authProvider, (prev, next) {
       if (next is LoggedIn) {
         // TODO(BRANDOM): Initialize the logged user provider
         context.replace('/users');
-      } else if (next is LoggedOut) {
+      } else if (next is LoggedOut || next is AuthError) {
         context.replace('/login');
       }
     });
 
-    ref.read(authProvider.notifier).renewToken();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Splash'),
-      ),
-      body: const Center(
-        child: Text('SplashScreen'),
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

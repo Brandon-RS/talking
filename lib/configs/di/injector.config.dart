@@ -17,12 +17,13 @@ import '../../src/auth/data/repos/auth_repo_impl.dart' as _i12;
 import '../../src/auth/domain/repos/auth_repo.dart' as _i11;
 import '../../src/auth/domain/usecases/login_usecase.dart' as _i13;
 import '../../src/auth/domain/usecases/logout_usecase.dart' as _i14;
+import '../../src/auth/domain/usecases/renew_token.usecase.dart' as _i16;
 import '../../src/user/data/datasources/user_remote_data_src.dart' as _i7;
 import '../../src/user/data/repos/user_repo_impl.dart' as _i9;
 import '../../src/user/domain/repos/user_repo.dart' as _i8;
 import '../../src/user/domain/usecases/register_user_usecase.dart' as _i15;
 import '../logger/app_logger.dart' as _i3;
-import '../networking/dio_provider.dart' as _i16;
+import '../networking/dio_provider.dart' as _i17;
 import '../networking/i_config.dart' as _i5;
 import '../storage/storage_manager.dart' as _i4;
 
@@ -56,7 +57,9 @@ _i1.GetIt $initGetIt(
   gh.factory<_i14.LogoutUsecase>(() => _i14.LogoutUsecase(gh<_i11.AuthRepo>()));
   gh.factory<_i15.RegisterUserUsecase>(
       () => _i15.RegisterUserUsecase(gh<_i8.UserRepo>()));
+  gh.factory<_i16.RenewTokenUsecase>(
+      () => _i16.RenewTokenUsecase(gh<_i11.AuthRepo>()));
   return getIt;
 }
 
-class _$DioProvider extends _i16.DioProvider {}
+class _$DioProvider extends _i17.DioProvider {}

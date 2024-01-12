@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -6,6 +7,7 @@ import '../../../../core/utils/typedefs.dart';
 import '../entities/login_entity.dart';
 import '../repos/auth_repo.dart';
 
+@injectable
 class RenewTokenUsecase implements UsecaseNoParams<Login> {
   RenewTokenUsecase(this._repo);
 
