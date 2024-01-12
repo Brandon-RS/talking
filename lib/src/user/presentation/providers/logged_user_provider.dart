@@ -2,12 +2,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../configs/di/injector.dart';
 import '../../../../configs/storage/storage_manager.dart';
+import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/register_user_usecase.dart';
 import 'logged_user_state.dart';
 
 part 'logged_user_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class LoggedUser extends _$LoggedUser {
   @override
   LoggedUserState build() {
@@ -19,6 +20,13 @@ class LoggedUser extends _$LoggedUser {
 
   late StorageManager _storageManager;
   late RegisterUserUsecase _registerUserUsecase;
+
+  void init({required String token, required User user}) {
+    state = LoggedUserLoaded(
+      user: user,
+      token: token,
+    );
+  }
 
   Future<void> registerUser({
     required String name,
