@@ -15,7 +15,10 @@ class AuthRepoImpl implements AuthRepo {
   final AuthRemoteDataSrc _src;
 
   @override
-  ResultFuture<LoginModel> login({required String email, required String password}) async {
+  ResultFuture<LoginModel> login({
+    required String email,
+    required String password,
+  }) async {
     try {
       final result = await _src.login(email: email, password: password);
       return Right(result);
@@ -27,6 +30,20 @@ class AuthRepoImpl implements AuthRepo {
           ApiFailure('Email or password is not correct'),
         );
       }
+      return Left(failure);
+    }
+  }
+
+  @override
+  ResultFuture<LoginModel> renewToken() async {
+    try {
+      final result = await _src.renewToken();
+      return Right(result);
+    } catch (e) {
+      final failure = ErrorHandler.handle(e, defaultMessage: 'Error renewing token');
+
+      // TODO(BRANDOM): Check is need to validate status code
+
       return Left(failure);
     }
   }

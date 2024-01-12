@@ -45,7 +45,11 @@ class StorageManager {
 
   bool containsKey(String key) => _prefs.containsKey(key);
 
+  // Helper methods
+
   String? get currentToken => getString(xToken);
+
+  Future<bool> setToken(String token) async => await setString(xToken, token);
 
   // Keys
   static const String xToken = 'x-token';

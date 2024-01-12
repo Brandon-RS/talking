@@ -6,7 +6,7 @@ import 'i_config.dart';
 
 @module
 abstract class DioProvider {
-  @singleton
+  @lazySingleton
   Dio dio(IConfig config, AppLogger logger) {
     Dio dio = Dio();
 

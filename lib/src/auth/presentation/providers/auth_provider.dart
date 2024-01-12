@@ -4,6 +4,7 @@ import '../../../../configs/di/injector.dart';
 import '../../../../configs/storage/storage_manager.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
+import '../../domain/usecases/renew_token.usecase.dart';
 import 'auth_state.dart';
 
 part 'auth_provider.g.dart';
@@ -13,12 +14,14 @@ class Auth extends _$Auth {
   @override
   AuthState build() {
     _login = sl<LoginUsecase>();
+    _renewToken = sl<RenewTokenUsecase>();
     _logout = sl<LogoutUsecase>();
     _storageManager = sl<StorageManager>();
     return const AuthInitial();
   }
 
   late LoginUsecase _login;
+  late RenewTokenUsecase _renewToken;
   late LogoutUsecase _logout;
   late StorageManager _storageManager;
 
@@ -38,9 +41,36 @@ class Auth extends _$Auth {
           token: model.token,
         );
 
-        await _storageManager.setString(StorageManager.xToken, model.token);
+        await _storageManager.setToken(model.token);
       },
     );
+  }
+
+  Future<void> renewToken() async {
+    final token = _storageManager.currentToken;
+
+    if (token != null) {
+      state = const AuthLoading();
+
+      final result = await _renewToken();
+
+      result.fold(
+        (failure) {
+          state = AuthError(failure.message);
+          _storageManager.clear();
+        },
+        (model) async {
+          state = LoggedIn(
+            user: model.user,
+            token: model.token,
+          );
+
+          await _storageManager.setToken(model.token);
+        },
+      );
+    } else {
+      state = const LoggedOut();
+    }
   }
 
   Future<void> logout() async {

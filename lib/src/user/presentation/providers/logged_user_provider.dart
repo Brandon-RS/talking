@@ -36,8 +36,7 @@ class LoggedUser extends _$LoggedUser {
     response.fold(
       (failure) => state = LoggedUserError(failure.message),
       (model) async {
-        // TODO(BRANDOM): Create a static method like setUserToken in StorageManager
-        await _storageManager.setString(StorageManager.xToken, model.token);
+        await _storageManager.setToken(model.token);
 
         state = LoggedUserLoaded(
           user: model.user,

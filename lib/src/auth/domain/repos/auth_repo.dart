@@ -9,5 +9,7 @@ abstract class AuthRepo {
     required String password,
   });
 
+  ResultFuture<LoginModel> renewToken();
+
   ResultFuture<bool> logout();
 }

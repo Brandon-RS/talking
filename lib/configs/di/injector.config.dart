@@ -23,8 +23,8 @@ import '../../src/user/domain/repos/user_repo.dart' as _i8;
 import '../../src/user/domain/usecases/register_user_usecase.dart' as _i15;
 import '../logger/app_logger.dart' as _i3;
 import '../networking/dio_provider.dart' as _i16;
-import '../networking/i_config.dart' as _i4;
-import '../storage/storage_manager.dart' as _i5;
+import '../networking/i_config.dart' as _i5;
+import '../storage/storage_manager.dart' as _i4;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 _i1.GetIt $initGetIt(
@@ -39,12 +39,12 @@ _i1.GetIt $initGetIt(
   );
   final dioProvider = _$DioProvider();
   gh.singleton<_i3.AppLogger>(_i3.AppLogger());
-  gh.factory<_i4.IConfig>(() => _i4.AppConfig());
-  gh.singleton<_i5.StorageManager>(_i5.StorageManager());
-  gh.singleton<_i6.Dio>(dioProvider.dio(
-    gh<_i4.IConfig>(),
-    gh<_i3.AppLogger>(),
-  ));
+  gh.singleton<_i4.StorageManager>(_i4.StorageManager());
+  gh.lazySingleton<_i5.IConfig>(() => _i5.AppConfig(gh<_i4.StorageManager>()));
+  gh.lazySingleton<_i6.Dio>(() => dioProvider.dio(
+        gh<_i5.IConfig>(),
+        gh<_i3.AppLogger>(),
+      ));
   gh.factory<_i7.UserRemoteDataSrc>(
       () => _i7.UserRemoteDataSrcImpl(gh<_i6.Dio>()));
   gh.factory<_i8.UserRepo>(() => _i9.UserRepoImpl(gh<_i7.UserRemoteDataSrc>()));

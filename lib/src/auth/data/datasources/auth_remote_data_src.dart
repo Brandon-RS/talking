@@ -12,6 +12,8 @@ abstract class AuthRemoteDataSrc {
     required String password,
   });
 
+  Future<LoginModel> renewToken();
+
   Future<bool> logout();
 }
 
@@ -32,6 +34,17 @@ class AuthRemoteDataSrcImpl implements AuthRemoteDataSrc {
     };
 
     final response = await _dio.post(Api.auth, data: authData);
+
+    if (response.statusCode == 200) {
+      return LoginModel.fromJson(response.data);
+    } else {
+      throw Exception('Error on login');
+    }
+  }
+
+  @override
+  Future<LoginModel> renewToken() async {
+    final response = await _dio.get(Api.renewToken);
 
     if (response.statusCode == 200) {
       return LoginModel.fromJson(response.data);
