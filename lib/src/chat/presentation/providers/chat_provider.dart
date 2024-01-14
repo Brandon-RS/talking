@@ -2,6 +2,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 import '../../../../configs/api/api.dart';
+import '../../../../configs/di/injector.dart';
+import '../../../../configs/storage/storage_manager.dart';
 import 'chat_state.dart';
 
 part 'chat_provider.g.dart';
@@ -9,14 +11,25 @@ part 'chat_provider.g.dart';
 @Riverpod(keepAlive: true)
 class Chat extends _$Chat {
   @override
-  ChatState build() => const ChatInitial();
+  ChatState build() {
+    _storageManager = sl<StorageManager>();
+    return const ChatInitial();
+  }
 
   late Socket _socket;
+  late StorageManager _storageManager;
 
   void connect() {
     _socket = io(
       Api.chat,
-      OptionBuilder().setTransports(['websocket']).enableAutoConnect().enableForceNew().build(),
+      OptionBuilder()
+          .setTransports(['websocket'])
+          .setExtraHeaders(
+            {StorageManager.xToken: _storageManager.currentToken},
+          )
+          .enableAutoConnect()
+          .enableForceNew()
+          .build(),
     );
 
     _socket.onConnect((_) {
@@ -39,5 +52,6 @@ class Chat extends _$Chat {
 
   void disconnect() {
     _socket.disconnect();
+    state = const ChatDisconnected();
   }
 }

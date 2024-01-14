@@ -36,12 +36,12 @@ class Auth extends _$Auth {
         _storageManager.clear();
       },
       (model) async {
+        await _storageManager.setToken(model.token);
+
         state = LoggedIn(
           user: model.user,
           token: model.token,
         );
-
-        await _storageManager.setToken(model.token);
       },
     );
   }
@@ -60,12 +60,12 @@ class Auth extends _$Auth {
           _storageManager.clear();
         },
         (model) async {
+          await _storageManager.setToken(model.token);
+
           state = LoggedIn(
             user: model.user,
             token: model.token,
           );
-
-          await _storageManager.setToken(model.token);
         },
       );
     } else {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
+import '../../../../configs/router/app_router.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
+import '../../../chat/presentation/providers/chat_provider.dart';
 import '../../../shared/presentation/custom_app_bar.dart';
 
 class ProfileView extends ConsumerWidget {
@@ -17,8 +18,9 @@ class ProfileView extends ConsumerWidget {
       authProvider,
       (prev, next) {
         if (next is LoggedOut) {
-          context.replace('/login');
+          AppRouter.replaceAndRemoveUntil('/login');
           ref.invalidate(authProvider);
+          ref.read(chatProvider.notifier).disconnect();
         }
       },
     );

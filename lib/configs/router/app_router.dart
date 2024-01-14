@@ -55,4 +55,12 @@ class AppRouter {
     final matchList = lastMatch is ImperativeRouteMatch ? lastMatch.matches : router.routerDelegate.currentConfiguration;
     return matchList.uri.toString();
   }
+
+  static void replaceAndRemoveUntil(String path) {
+    while (router.routerDelegate.navigatorKey.currentContext!.canPop()) {
+      router.routerDelegate.navigatorKey.currentContext!.pop();
+    }
+
+    router.replace(path);
+  }
 }
