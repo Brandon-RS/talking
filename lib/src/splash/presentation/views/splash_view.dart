@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
+import '../../../chat/presentation/providers/chat_provider.dart';
 import '../../../user/presentation/providers/logged_user_provider.dart';
 
 class SplashView extends ConsumerStatefulWidget {
@@ -32,6 +33,8 @@ class _SplashViewState extends ConsumerState<SplashView> {
               token: next.token,
               user: next.user,
             );
+
+        ref.read(chatProvider.notifier).connect();
       } else if (next is LoggedOut || next is AuthError) {
         context.replace('/login');
       }

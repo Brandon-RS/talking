@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/common/dialog_utils.dart';
 import '../../../auth/presentation/widgets/rounded_button.dart';
 import '../../../auth/presentation/widgets/rounded_text_field.dart';
+import '../../../chat/presentation/providers/chat_provider.dart';
 import '../providers/logged_user_provider.dart';
 import '../providers/logged_user_state.dart';
 
@@ -43,6 +44,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
     ref.listen(loggedUserProvider, (prev, next) {
       if (next is LoggedUserLoaded) {
         context.pushReplacement('/users');
+        ref.read(chatProvider.notifier).connect();
       }
 
       if (next is LoggedUserError) {

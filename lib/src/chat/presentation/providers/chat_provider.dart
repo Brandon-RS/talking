@@ -6,41 +6,38 @@ import 'chat_state.dart';
 
 part 'chat_provider.g.dart';
 
-enum ServerStatus {
-  online,
-  offline,
-  connecting,
-}
-
-@riverpod
+@Riverpod(keepAlive: true)
 class Chat extends _$Chat {
   @override
-  ChatState build() {
-    _init();
-    return const ChatInitial();
-  }
+  ChatState build() => const ChatInitial();
 
   late Socket _socket;
-  ServerStatus serverStatus = ServerStatus.connecting;
 
-  void _init() {
+  void connect() {
     _socket = io(
       Api.baseURL,
-      OptionBuilder().setTransports(['websocket']).enableAutoConnect().build(),
+      OptionBuilder().setTransports(['websocket']).enableAutoConnect().enableForceNew().build(),
     );
 
     _socket.onConnect((_) {
-      serverStatus = ServerStatus.online;
-      state = const ChatLoaded(messages: []);
+      state = const ChatLoaded(
+        // TODO(BRANDOM): Load messages here
+        messages: [],
+      );
     });
 
     _socket.onError(
-      (data) => state = ChatError(data.toString()),
+      (data) {
+        state = ChatError(data.toString());
+      },
     );
 
     _socket.onDisconnect((_) {
-      serverStatus = ServerStatus.offline;
       state = const ChatDisconnected();
     });
+  }
+
+  void disconnect() {
+    _socket.disconnect();
   }
 }
