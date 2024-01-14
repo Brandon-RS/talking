@@ -7,47 +7,49 @@ enum ServerStatus {
 }
 
 abstract class ChatState extends Equatable {
-  const ChatState();
+  const ChatState(this.serverStatus);
+
+  final ServerStatus serverStatus;
+
+  bool get isOnline => serverStatus == ServerStatus.online;
+
+  bool get isOffline => serverStatus == ServerStatus.offline;
+
+  bool get isConnecting => serverStatus == ServerStatus.connecting;
 
   @override
   List<Object?> get props => [];
 }
 
 class ChatInitial extends ChatState {
-  const ChatInitial();
-
-  final ServerStatus serverStatus = ServerStatus.offline;
+  const ChatInitial() : super(ServerStatus.offline);
 }
 
 class ChatLoading extends ChatState {
-  const ChatLoading();
-
-  final ServerStatus serverStatus = ServerStatus.connecting;
+  const ChatLoading() : super(ServerStatus.connecting);
 }
 
 class ChatLoaded extends ChatState {
   const ChatLoaded({
     required this.messages,
-  });
+  }) : super(ServerStatus.online);
 
   final List<String> messages;
-  final ServerStatus serverStatus = ServerStatus.online;
 
   @override
   List<Object?> get props => [messages, serverStatus];
 }
 
 class ChatDisconnected extends ChatState {
-  const ChatDisconnected();
-
-  final ServerStatus serverStatus = ServerStatus.offline;
+  const ChatDisconnected() : super(ServerStatus.offline);
 }
 
 class ChatError extends ChatState {
-  const ChatError(this.message);
+  const ChatError(
+    this.message,
+  ) : super(ServerStatus.offline);
 
   final String message;
-  final ServerStatus serverStatus = ServerStatus.offline;
 
   @override
   List<Object?> get props => [message, serverStatus];

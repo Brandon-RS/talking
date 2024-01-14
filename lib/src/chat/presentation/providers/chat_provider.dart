@@ -15,7 +15,7 @@ class Chat extends _$Chat {
 
   void connect() {
     _socket = io(
-      Api.baseURL,
+      Api.chat,
       OptionBuilder().setTransports(['websocket']).enableAutoConnect().enableForceNew().build(),
     );
 

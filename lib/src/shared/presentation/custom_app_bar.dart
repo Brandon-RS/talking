@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:talking/configs/router/app_router.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+import '../../../configs/colors/generic_colors.dart';
+import '../../chat/presentation/providers/chat_provider.dart';
+
+class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final chatState = ref.watch(chatProvider);
+
     return AppBar(
       title: const Text('Talking'),
       centerTitle: false,
@@ -33,13 +39,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     'https://avatars.githubusercontent.com/u/79495707?v=4',
                   ),
                 ),
-                const Positioned(
+                Positioned(
                   right: 1,
                   top: 1,
                   child: CircleAvatar(
                     radius: 5.5,
-                    // TODO(BRANDOM): Change color based on connection status
-                    backgroundColor: Colors.green,
+                    backgroundColor: chatState.isOnline ? TColors.green : TColors.red,
                   ),
                 ),
               ],

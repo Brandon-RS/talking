@@ -1,6 +1,8 @@
 abstract class Api {
   static const String baseURL = 'https://talkingserver-production.up.railway.app/api';
 
+  static const String chat = '$baseURL/chats';
+
   static const String auth = '/auth';
 
   static const String renewToken = '/renew-token';
