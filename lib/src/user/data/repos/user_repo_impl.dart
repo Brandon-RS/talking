@@ -8,6 +8,7 @@ import '../../../../core/utils/typedefs.dart';
 import '../../../auth/data/models/login_model.dart';
 import '../../domain/repos/user_repo.dart';
 import '../datasources/user_remote_data_src.dart';
+import '../models/user_model.dart';
 
 @Injectable(as: UserRepo)
 class UserRepoImpl implements UserRepo {
@@ -38,6 +39,19 @@ class UserRepoImpl implements UserRepo {
           ApiFailure(message ?? 'Be sure to fill all the fields'),
         );
       }
+      return Left(failure);
+    }
+  }
+
+  @override
+  ResultFuture<List<UserModel>> getUsers() async {
+    try {
+      final result = await _src.getUsers();
+
+      return Right(result);
+    } catch (e) {
+      final failure = ErrorHandler.handle(e, defaultMessage: 'Error getting users');
+
       return Left(failure);
     }
   }
