@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../configs/api/api.dart';
 import '../../../auth/data/models/login_model.dart';
+import '../models/user_model.dart';
 
 abstract class UserRemoteDataSrc {
   Future<LoginModel> register({
@@ -10,6 +11,8 @@ abstract class UserRemoteDataSrc {
     required String email,
     required String password,
   });
+
+  Future<List<UserModel>> getUsers();
 }
 
 @Injectable(as: UserRemoteDataSrc)
@@ -37,6 +40,18 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
       return LoginModel.fromJson(response.data);
     } else {
       throw Exception('Error registering user');
+    }
+  }
+
+  @override
+  Future<List<UserModel>> getUsers() async {
+    final response = await _dio.get(Api.users);
+
+    if (response.statusCode == 200) {
+      final users = response.data as List;
+      return users.map((user) => UserModel.fromJson(user)).toList();
+    } else {
+      throw Exception('Error getting users');
     }
   }
 }
