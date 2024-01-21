@@ -85,6 +85,10 @@ class Chat extends _$Chat {
     }
   }
 
+  void stopChat() {
+    _socket.off('personal-message');
+  }
+
   void disconnect() {
     _socket.disconnect();
     state = const ChatDisconnected();

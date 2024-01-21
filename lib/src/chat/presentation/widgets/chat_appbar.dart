@@ -19,7 +19,10 @@ class ChatAppBar extends ConsumerWidget implements PreferredSizeWidget {
         color: Colors.transparent,
         child: InkWell(
           customBorder: const StadiumBorder(),
-          onTap: () => context.pop(),
+          onTap: () {
+            ref.read(chatProvider.notifier).stopChat();
+            context.pop();
+          },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
