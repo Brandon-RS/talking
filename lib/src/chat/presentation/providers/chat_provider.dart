@@ -89,8 +89,13 @@ class Chat extends _$Chat {
 
   void setTargetUser(User user) {
     if (state is ChatLoaded) {
+      final localState = state as ChatLoaded;
+
+      if (user != localState.targetUser) {
+        state = localState.copyWith(targetUser: user, messages: const []);
+      }
+
       _targetUser = user;
-      state = (state as ChatLoaded).copyWith(targetUser: _targetUser);
     }
   }
 
