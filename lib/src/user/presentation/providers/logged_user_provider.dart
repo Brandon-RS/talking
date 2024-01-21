@@ -53,4 +53,8 @@ class LoggedUser extends _$LoggedUser {
       },
     );
   }
+
+  void reset() {
+    state = const LoggedUserInitial();
+  }
 }

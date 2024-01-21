@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/common/dialog_utils.dart';
 import '../../../chat/presentation/providers/chat_provider.dart';
+import '../../../user/presentation/providers/logged_user_provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/auth_state.dart';
 import 'rounded_button.dart';
@@ -52,9 +53,12 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         }
 
         if (next is LoggedIn) {
-          context.replace('/users');
+          ref.read(loggedUserProvider.notifier).init(
+                token: next.token,
+                user: next.user,
+              );
           ref.read(chatProvider.notifier).connect();
-          // TODO(BRANDOM): Clear unnecessary data of provider
+          context.replace('/users');
         }
       },
     );

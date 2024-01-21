@@ -31,6 +31,7 @@ class ProfileView extends ConsumerWidget {
           ref.invalidate(authProvider);
           ref.read(chatProvider.notifier).disconnect();
           ref.read(usersProvider.notifier).reset();
+          ref.read(loggedUserProvider.notifier).reset();
         }
       },
     );
