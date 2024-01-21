@@ -16,14 +16,12 @@ class Auth extends _$Auth {
     _login = sl<LoginUsecase>();
     _renewToken = sl<RenewTokenUsecase>();
     _logout = sl<LogoutUsecase>();
-    _storageManager = sl<StorageManager>();
     return const AuthInitial();
   }
 
   late LoginUsecase _login;
   late RenewTokenUsecase _renewToken;
   late LogoutUsecase _logout;
-  late StorageManager _storageManager;
 
   Future<void> login({required String email, required String password}) async {
     state = const AuthLoading();
@@ -31,42 +29,26 @@ class Auth extends _$Auth {
     final result = await _login((email, password));
 
     result.fold(
-      (failure) {
-        state = AuthError(failure.message);
-        _storageManager.clear();
-      },
-      (model) async {
-        await _storageManager.setToken(model.token);
-
-        state = LoggedIn(
-          user: model.user,
-          token: model.token,
-        );
-      },
+      (failure) => state = AuthError(failure.message),
+      (model) => state = LoggedIn(
+        user: model.user,
+        token: model.token,
+      ),
     );
   }
 
   Future<void> renewToken() async {
-    final token = _storageManager.currentToken;
-
-    if (token != null) {
+    if (sl<StorageManager>().currentToken != null) {
       state = const AuthLoading();
 
       final result = await _renewToken();
 
       result.fold(
-        (failure) {
-          state = AuthError(failure.message);
-          _storageManager.clear();
-        },
-        (model) async {
-          await _storageManager.setToken(model.token);
-
-          state = LoggedIn(
-            user: model.user,
-            token: model.token,
-          );
-        },
+        (failure) => state = AuthError(failure.message),
+        (model) => state = LoggedIn(
+          user: model.user,
+          token: model.token,
+        ),
       );
     } else {
       state = const LoggedOut();
@@ -82,7 +64,5 @@ class Auth extends _$Auth {
       (failure) => state = AuthError(failure.message),
       (model) => state = const LoggedOut(),
     );
-
-    await _storageManager.clear();
   }
 }

@@ -66,12 +66,20 @@ _i1.GetIt $initGetIt(
       () => _i16.GetAllUsersUsecase(gh<_i8.UserRepo>()));
   gh.factory<_i17.GetLastChatsUsecase>(
       () => _i17.GetLastChatsUsecase(gh<_i14.ChatsRepo>()));
-  gh.factory<_i18.LoginUsecase>(() => _i18.LoginUsecase(gh<_i11.AuthRepo>()));
-  gh.factory<_i19.LogoutUsecase>(() => _i19.LogoutUsecase(gh<_i11.AuthRepo>()));
+  gh.factory<_i18.LoginUsecase>(() => _i18.LoginUsecase(
+        gh<_i11.AuthRepo>(),
+        gh<_i4.StorageManager>(),
+      ));
+  gh.factory<_i19.LogoutUsecase>(() => _i19.LogoutUsecase(
+        gh<_i11.AuthRepo>(),
+        gh<_i4.StorageManager>(),
+      ));
   gh.factory<_i20.RegisterUserUsecase>(
       () => _i20.RegisterUserUsecase(gh<_i8.UserRepo>()));
-  gh.factory<_i21.RenewTokenUsecase>(
-      () => _i21.RenewTokenUsecase(gh<_i11.AuthRepo>()));
+  gh.factory<_i21.RenewTokenUsecase>(() => _i21.RenewTokenUsecase(
+        gh<_i11.AuthRepo>(),
+        gh<_i4.StorageManager>(),
+      ));
   return getIt;
 }
 
