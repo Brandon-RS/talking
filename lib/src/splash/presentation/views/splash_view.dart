@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
+import '../../../auth/presentation/widgets/logo.dart';
 import '../../../chat/presentation/providers/chat_provider.dart';
 import '../../../user/presentation/providers/logged_user_provider.dart';
 
@@ -42,7 +43,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
 
     return const Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: Logo(),
       ),
     );
   }
