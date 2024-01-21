@@ -10,6 +10,10 @@ class User extends Equatable {
     required this.uid,
   });
 
+  static fromModelList(List<UserModel> models) {
+    return models.map((model) => User.fromModel(model)).toList();
+  }
+
   factory User.fromModel(UserModel model) {
     return User(
       online: model.online,

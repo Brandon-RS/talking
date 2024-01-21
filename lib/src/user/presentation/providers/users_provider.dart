@@ -1,0 +1,30 @@
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../../../configs/di/injector.dart';
+import '../../domain/usecases/get_all_users_usecase.dart';
+import 'users_state.dart';
+
+part 'users_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class Users extends _$Users {
+  @override
+  UsersState build() {
+    _getAllUsersUsecase = sl<GetAllUsersUsecase>();
+
+    return const UsersInitial();
+  }
+
+  late GetAllUsersUsecase _getAllUsersUsecase;
+
+  Future<void> getALlUsers() async {
+    state = const UsersLoading();
+
+    final response = await _getAllUsersUsecase();
+
+    response.fold(
+      (failure) => state = UsersError(failure.message),
+      (users) => state = UsersLoaded(users: users),
+    );
+  }
+}

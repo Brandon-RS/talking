@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:talking/src/auth/domain/entities/login_entity.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/typedefs.dart';
+import '../../../auth/domain/entities/login_entity.dart';
 import '../repos/user_repo.dart';
 
 @injectable
