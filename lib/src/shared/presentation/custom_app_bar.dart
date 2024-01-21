@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:talking/configs/router/app_router.dart';
 
 import '../../../configs/colors/generic_colors.dart';
+import '../../../configs/router/app_router.dart';
 import '../../chat/presentation/providers/chat_provider.dart';
+import '../../user/domain/entities/user_entity.dart';
+import '../../user/presentation/providers/logged_user_provider.dart';
+import '../../user/presentation/providers/logged_user_state.dart';
 
 class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -12,9 +15,13 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatState = ref.watch(chatProvider);
+    final loggedUser = ref.watch(loggedUserProvider.select((v) => v is LoggedUserLoaded ? v.user : User.empty()));
 
     return AppBar(
-      title: const Text('Talking'),
+      leadingWidth: 18,
+      title: Text(
+        loggedUser.name,
+      ),
       centerTitle: false,
       actions: [
         Padding(

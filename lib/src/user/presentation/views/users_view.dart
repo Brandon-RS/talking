@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/presentation/custom_app_bar.dart';
-import '../providers/logged_user_provider.dart';
-import '../providers/logged_user_state.dart';
 import '../providers/users_provider.dart';
 import '../providers/users_state.dart';
 import '../widgets/user_list.dart';
@@ -13,7 +11,6 @@ class UsersView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loggedUser = ref.watch(loggedUserProvider);
     final users = ref.watch(usersProvider);
 
     if (users is UsersInitial) {
@@ -37,9 +34,8 @@ class UsersView extends ConsumerWidget {
       appBar: const CustomAppBar(),
       body: RefreshIndicator(
         onRefresh: () async {
-          if (loggedUser is LoggedUserLoaded) debugPrint('✅ ${loggedUser.user.name}');
+          ref.read(usersProvider.notifier).getALlUsers();
         },
-        // TODO(BRANDOM): Create a generic widget like StateBuilder<T> to avoid state conditionals
         child: users is! UsersLoading
             ? const UserList()
             : const Center(

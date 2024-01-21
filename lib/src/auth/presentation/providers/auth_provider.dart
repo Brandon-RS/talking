@@ -83,6 +83,6 @@ class Auth extends _$Auth {
       (model) => state = const LoggedOut(),
     );
 
-    _storageManager.clear();
+    await _storageManager.clear();
   }
 }
