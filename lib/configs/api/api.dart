@@ -8,4 +8,6 @@ abstract class Api {
   static const String renewToken = '/renew-token';
 
   static const String users = '/users';
+
+  static String chats(String targetUserId) => '$users/$targetUserId';
 }
