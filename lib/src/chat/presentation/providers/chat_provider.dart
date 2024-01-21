@@ -4,6 +4,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 import '../../../../configs/api/api.dart';
 import '../../../../configs/di/injector.dart';
 import '../../../../configs/storage/storage_manager.dart';
+import '../../../user/domain/entities/user_entity.dart';
 import 'chat_state.dart';
 
 part 'chat_provider.g.dart';
@@ -33,9 +34,10 @@ class Chat extends _$Chat {
     );
 
     _socket.onConnect((_) {
-      state = const ChatLoaded(
+      state = ChatLoaded(
         // TODO(BRANDOM): Load messages here
-        messages: [],
+        messages: const [],
+        targetUser: User.empty(),
       );
     });
 
@@ -48,6 +50,12 @@ class Chat extends _$Chat {
     _socket.onDisconnect((_) {
       state = const ChatDisconnected();
     });
+  }
+
+  void setTargetUser(User user) {
+    if (state is ChatLoaded) {
+      state = (state as ChatLoaded).copyWith(targetUser: user);
+    }
   }
 
   void disconnect() {

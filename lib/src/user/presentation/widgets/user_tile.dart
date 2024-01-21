@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../configs/colors/generic_colors.dart';
+import '../../../chat/presentation/providers/chat_provider.dart';
 import '../../domain/entities/user_entity.dart';
 
-class UserTile extends StatelessWidget {
+class UserTile extends ConsumerWidget {
   const UserTile({super.key, required this.user});
 
   final User user;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       shape: Border(
         bottom: BorderSide(
@@ -31,7 +33,10 @@ class UserTile extends StatelessWidget {
         backgroundColor: user.online ? TColors.green : TColors.red,
         radius: 5,
       ),
-      onTap: () => context.push('/chat'),
+      onTap: () {
+        ref.read(chatProvider.notifier).setTargetUser(user);
+        context.push('/chat');
+      },
     );
   }
 }

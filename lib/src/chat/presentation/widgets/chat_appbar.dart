@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
+import '../../../user/domain/entities/user_entity.dart';
+import '../providers/chat_provider.dart';
+import '../providers/chat_state.dart';
+
+class ChatAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const ChatAppBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final targetUser = ref.watch(chatProvider.select((value) => value is ChatLoaded ? value.targetUser : User.empty()));
+
     return AppBar(
       leadingWidth: 80,
       leading: Material(
@@ -38,7 +45,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: Text(
-        'Testing name',
+        targetUser.name,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
