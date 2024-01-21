@@ -15,19 +15,20 @@ import 'package:injectable/injectable.dart' as _i2;
 import '../../src/auth/data/datasources/auth_remote_data_src.dart' as _i10;
 import '../../src/auth/data/repos/auth_repo_impl.dart' as _i12;
 import '../../src/auth/domain/repos/auth_repo.dart' as _i11;
-import '../../src/auth/domain/usecases/login_usecase.dart' as _i17;
-import '../../src/auth/domain/usecases/logout_usecase.dart' as _i18;
-import '../../src/auth/domain/usecases/renew_token.usecase.dart' as _i20;
+import '../../src/auth/domain/usecases/login_usecase.dart' as _i18;
+import '../../src/auth/domain/usecases/logout_usecase.dart' as _i19;
+import '../../src/auth/domain/usecases/renew_token.usecase.dart' as _i21;
 import '../../src/chat/data/datasources/chats_remote_data_src.dart' as _i13;
 import '../../src/chat/data/repos/chats_repo_impl.dart' as _i15;
 import '../../src/chat/domain/repos/chats_repo.dart' as _i14;
+import '../../src/chat/domain/usecases/get_last_chats_usecase.dart' as _i17;
 import '../../src/user/data/datasources/user_remote_data_src.dart' as _i7;
 import '../../src/user/data/repos/user_repo_impl.dart' as _i9;
 import '../../src/user/domain/repos/user_repo.dart' as _i8;
 import '../../src/user/domain/usecases/get_all_users_usecase.dart' as _i16;
-import '../../src/user/domain/usecases/register_user_usecase.dart' as _i19;
+import '../../src/user/domain/usecases/register_user_usecase.dart' as _i20;
 import '../logger/app_logger.dart' as _i3;
-import '../networking/dio_provider.dart' as _i21;
+import '../networking/dio_provider.dart' as _i22;
 import '../networking/i_config.dart' as _i5;
 import '../storage/storage_manager.dart' as _i4;
 
@@ -63,13 +64,15 @@ _i1.GetIt $initGetIt(
       () => _i15.ChatsRepoImpl(gh<_i13.ChatsRemoteDataSrc>()));
   gh.factory<_i16.GetAllUsersUsecase>(
       () => _i16.GetAllUsersUsecase(gh<_i8.UserRepo>()));
-  gh.factory<_i17.LoginUsecase>(() => _i17.LoginUsecase(gh<_i11.AuthRepo>()));
-  gh.factory<_i18.LogoutUsecase>(() => _i18.LogoutUsecase(gh<_i11.AuthRepo>()));
-  gh.factory<_i19.RegisterUserUsecase>(
-      () => _i19.RegisterUserUsecase(gh<_i8.UserRepo>()));
-  gh.factory<_i20.RenewTokenUsecase>(
-      () => _i20.RenewTokenUsecase(gh<_i11.AuthRepo>()));
+  gh.factory<_i17.GetLastChatsUsecase>(
+      () => _i17.GetLastChatsUsecase(gh<_i14.ChatsRepo>()));
+  gh.factory<_i18.LoginUsecase>(() => _i18.LoginUsecase(gh<_i11.AuthRepo>()));
+  gh.factory<_i19.LogoutUsecase>(() => _i19.LogoutUsecase(gh<_i11.AuthRepo>()));
+  gh.factory<_i20.RegisterUserUsecase>(
+      () => _i20.RegisterUserUsecase(gh<_i8.UserRepo>()));
+  gh.factory<_i21.RenewTokenUsecase>(
+      () => _i21.RenewTokenUsecase(gh<_i11.AuthRepo>()));
   return getIt;
 }
 
-class _$DioProvider extends _i21.DioProvider {}
+class _$DioProvider extends _i22.DioProvider {}

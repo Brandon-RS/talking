@@ -21,6 +21,10 @@ class Message extends Equatable {
     );
   }
 
+  static fromModelList(List<MessageModel> models) {
+    return models.map((e) => Message.fromModel(e)).toList();
+  }
+
   MessageModel toModel() {
     return MessageModel(
       from: from,
