@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:talking/src/user/presentation/providers/users_provider.dart';
 
 import '../../../../configs/router/app_router.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -21,6 +22,7 @@ class ProfileView extends ConsumerWidget {
           AppRouter.replaceAndRemoveUntil('/login');
           ref.invalidate(authProvider);
           ref.read(chatProvider.notifier).disconnect();
+          ref.read(usersProvider.notifier).reset();
         }
       },
     );

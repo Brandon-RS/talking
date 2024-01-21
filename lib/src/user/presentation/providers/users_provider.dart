@@ -33,4 +33,8 @@ class Users extends _$Users {
       await getALlUsers();
     }
   }
+
+  void reset() {
+    state = const UsersInitial();
+  }
 }

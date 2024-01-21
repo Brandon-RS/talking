@@ -6,7 +6,7 @@ import '../providers/logged_user_provider.dart';
 import '../providers/logged_user_state.dart';
 import '../providers/users_provider.dart';
 import '../providers/users_state.dart';
-import '../widgets/user_tile.dart';
+import '../widgets/user_list.dart';
 
 class UsersView extends ConsumerWidget {
   const UsersView({super.key});
@@ -15,7 +15,6 @@ class UsersView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final loggedUser = ref.watch(loggedUserProvider);
     final users = ref.watch(usersProvider);
-    final usersList = ref.watch(usersProvider.select((value) => users is UsersLoaded ? users.users : []));
 
     if (users is UsersInitial) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -40,12 +39,12 @@ class UsersView extends ConsumerWidget {
         onRefresh: () async {
           if (loggedUser is LoggedUserLoaded) debugPrint('✅ ${loggedUser.user.name}');
         },
-        child: ListView.builder(
-          itemCount: usersList.length,
-          itemBuilder: (_, i) => UserTile(
-            user: usersList[i],
-          ),
-        ),
+        // TODO(BRANDOM): Create a generic widget like StateBuilder<T> to avoid state conditionals
+        child: users is! UsersLoading
+            ? const UserList()
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
   }
