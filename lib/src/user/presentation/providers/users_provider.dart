@@ -27,4 +27,10 @@ class Users extends _$Users {
       (users) => state = UsersLoaded(users: users),
     );
   }
+
+  FutureOr<void> getUsersIfNeed() async {
+    if (state is! UsersLoaded) {
+      await getALlUsers();
+    }
+  }
 }

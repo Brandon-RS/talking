@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../configs/colors/generic_colors.dart';
-import '../../data/models/user_model.dart';
+import '../../domain/entities/user_entity.dart';
 
 class UserTile extends StatelessWidget {
   const UserTile({super.key, required this.user});
 
-  final UserModel user;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
