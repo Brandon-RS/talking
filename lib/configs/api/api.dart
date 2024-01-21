@@ -9,5 +9,5 @@ abstract class Api {
 
   static const String users = '/users';
 
-  static String chats(String targetUserId) => '$users/$targetUserId';
+  static String chats(String targetUserId) => '$users/chats/$targetUserId';
 }

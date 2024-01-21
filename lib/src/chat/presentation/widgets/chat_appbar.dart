@@ -20,7 +20,7 @@ class ChatAppBar extends ConsumerWidget implements PreferredSizeWidget {
         child: InkWell(
           customBorder: const StadiumBorder(),
           onTap: () {
-            ref.read(chatProvider.notifier).stopChat();
+            // ref.read(chatProvider.notifier).stopChat();
             context.pop();
           },
           child: Padding(

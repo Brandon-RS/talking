@@ -35,6 +35,7 @@ class UserTile extends ConsumerWidget {
       ),
       onTap: () {
         ref.read(chatProvider.notifier).setTargetUser(user);
+        ref.read(chatProvider.notifier).getUserLastChatsIfNeed();
         context.push('/chat');
       },
     );

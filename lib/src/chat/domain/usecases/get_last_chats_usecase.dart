@@ -16,7 +16,7 @@ class GetLastChatsUsecase implements Usecase<List<Message>, String> {
   @override
   ResultFuture<List<Message>> call(String targetUserId) async {
     try {
-      if (targetUserId.isEmpty) {
+      if (targetUserId.trim().isEmpty) {
         return const Left(
           AppFailure(
             'Target user id must not be empty.',

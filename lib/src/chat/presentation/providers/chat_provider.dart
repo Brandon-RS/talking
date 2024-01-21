@@ -7,6 +7,7 @@ import '../../../../configs/storage/storage_manager.dart';
 import '../../../user/domain/entities/user_entity.dart';
 import '../../data/models/message_model.dart';
 import '../../domain/entities/message_entity.dart';
+import '../../domain/usecases/get_last_chats_usecase.dart';
 import 'chat_state.dart';
 
 part 'chat_provider.g.dart';
@@ -16,11 +17,15 @@ class Chat extends _$Chat {
   @override
   ChatState build() {
     _storageManager = sl<StorageManager>();
+    _getLastChatsUsecase = sl<GetLastChatsUsecase>();
+    _targetUser = User.empty();
     return const ChatInitial();
   }
 
   late Socket _socket;
   late StorageManager _storageManager;
+  late GetLastChatsUsecase _getLastChatsUsecase;
+  late User _targetUser;
 
   void connect() {
     _socket = io(
@@ -37,7 +42,6 @@ class Chat extends _$Chat {
 
     _socket.onConnect((_) {
       state = ChatLoaded(
-        // TODO(BRANDOM): Load messages here
         messages: const [],
         targetUser: User.empty(),
       );
@@ -65,9 +69,28 @@ class Chat extends _$Chat {
     });
   }
 
+  Future<void> getUserLastChats() async {
+    final result = await _getLastChatsUsecase(_targetUser.uid);
+
+    result.fold(
+      (failure) => state = ChatError(failure.message),
+      (chats) => state = ChatLoaded(
+        messages: chats,
+        targetUser: _targetUser,
+      ),
+    );
+  }
+
+  FutureOr<void> getUserLastChatsIfNeed() async {
+    if (state is ChatLoaded && (state as ChatLoaded).messages.isEmpty) {
+      await getUserLastChats();
+    }
+  }
+
   void setTargetUser(User user) {
     if (state is ChatLoaded) {
-      state = (state as ChatLoaded).copyWith(targetUser: user);
+      _targetUser = user;
+      state = (state as ChatLoaded).copyWith(targetUser: _targetUser);
     }
   }
 
@@ -87,6 +110,12 @@ class Chat extends _$Chat {
 
   void stopChat() {
     _socket.off('personal-message');
+    if (state is ChatLoaded) {
+      state = ChatLoaded(
+        messages: const [],
+        targetUser: User.empty(),
+      );
+    }
   }
 
   void disconnect() {
