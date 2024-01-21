@@ -5,6 +5,8 @@ import '../../../../configs/api/api.dart';
 import '../../../../configs/di/injector.dart';
 import '../../../../configs/storage/storage_manager.dart';
 import '../../../user/domain/entities/user_entity.dart';
+import '../../data/models/message_model.dart';
+import '../../domain/entities/message_entity.dart';
 import 'chat_state.dart';
 
 part 'chat_provider.g.dart';
@@ -41,6 +43,17 @@ class Chat extends _$Chat {
       );
     });
 
+    _socket.on('personal-message', (data) {
+      if (state is! ChatLoaded) {
+        return;
+      }
+
+      final response = MessageModel.fromJson(data);
+      final message = Message.fromModel(response);
+
+      _addMessage(message);
+    });
+
     _socket.onError(
       (data) {
         state = ChatError(data.toString());
@@ -55,6 +68,20 @@ class Chat extends _$Chat {
   void setTargetUser(User user) {
     if (state is ChatLoaded) {
       state = (state as ChatLoaded).copyWith(targetUser: user);
+    }
+  }
+
+  void sendMessage(Message chat) {
+    final message = chat.toModel();
+
+    _socket.emit('personal-message', message.toJson());
+    _addMessage(chat);
+  }
+
+  void _addMessage(Message message) {
+    if (state is ChatLoaded) {
+      final messages = (state as ChatLoaded).messages;
+      state = (state as ChatLoaded).copyWith(messages: [message, ...messages]);
     }
   }
 

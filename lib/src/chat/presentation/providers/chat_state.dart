@@ -2,6 +2,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:talking/src/user/domain/entities/user_entity.dart';
 
+import '../../domain/entities/message_entity.dart';
+
 enum ServerStatus {
   online,
   offline,
@@ -37,14 +39,14 @@ class ChatLoaded extends ChatState {
     required this.targetUser,
   }) : super(ServerStatus.online);
 
-  final List<String> messages;
+  final List<Message> messages;
   final User targetUser;
 
   @override
   List<Object?> get props => [messages, serverStatus];
 
   ChatLoaded copyWith({
-    List<String>? messages,
+    List<Message>? messages,
     User? targetUser,
   }) {
     return ChatLoaded(

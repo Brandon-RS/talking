@@ -11,7 +11,7 @@ class ChatAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final targetUser = ref.watch(chatProvider.select((value) => value is ChatLoaded ? value.targetUser : User.empty()));
+    final User targetUser = ref.watch(chatProvider.select((value) => value is ChatLoaded ? value.targetUser : User.empty()));
 
     return AppBar(
       leadingWidth: 80,

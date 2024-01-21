@@ -5,19 +5,16 @@ class BubbleChat extends StatelessWidget {
   const BubbleChat({
     super.key,
     required this.text,
-    required this.uuid,
+    required this.isMine,
   });
 
   final String text;
-  final String uuid;
+  final bool isMine;
 
   @override
   Widget build(BuildContext context) {
-    // TODO(BRANDOM): Just for testing, remove this
-    final isMe = uuid == 'me';
-
     return Align(
-      alignment: !isMe ? Alignment.centerLeft : Alignment.centerRight,
+      alignment: !isMine ? Alignment.centerLeft : Alignment.centerRight,
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 16,
@@ -25,12 +22,12 @@ class BubbleChat extends StatelessWidget {
         ),
         decoration: ShapeDecoration(
           shape: const StadiumBorder(),
-          color: !isMe ? Theme.of(context).primaryColor : TColors.white,
+          color: !isMine ? Theme.of(context).primaryColor : TColors.white,
         ),
         child: Text(
           text,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: !isMe ? TColors.white : null,
+                color: !isMine ? TColors.white : null,
               ),
         ),
       ),
