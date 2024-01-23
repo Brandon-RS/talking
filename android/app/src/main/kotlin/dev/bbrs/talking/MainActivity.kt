@@ -1,4 +1,4 @@
-package com.example.talking
+package dev.bbrs.talking
 
 import io.flutter.embedding.android.FlutterActivity
 
