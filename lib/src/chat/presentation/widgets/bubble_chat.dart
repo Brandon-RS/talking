@@ -20,6 +20,9 @@ class BubbleChat extends StatelessWidget {
           horizontal: 16,
           vertical: 8,
         ),
+        margin: const EdgeInsets.symmetric(
+          vertical: 2,
+        ),
         decoration: ShapeDecoration(
           shape: const StadiumBorder(),
           color: !isMine ? Theme.of(context).primaryColor : TColors.white,
