@@ -44,6 +44,7 @@ class RoundedTextField extends StatelessWidget {
           border: InputBorder.none,
           prefixIconColor: Theme.of(context).colorScheme.outline,
           prefixIcon: Icon(icon),
+          hintStyle: Theme.of(context).textTheme.bodyLarge,
         ),
         onChanged: onChanged,
       ),

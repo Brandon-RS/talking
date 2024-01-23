@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TermsAndConditionsView extends StatelessWidget {
   const TermsAndConditionsView({super.key});
@@ -24,6 +25,11 @@ class TermsAndConditionsView extends StatelessWidget {
                     p: textTheme.bodyMedium?.copyWith(fontSize: 15),
                     h2: textTheme.titleMedium,
                   ),
+                  onTapLink: (text, href, title) async {
+                    if (href != null) {
+                      await _launchUri(href, text);
+                    }
+                  },
                 ),
               )
             : const Center(
@@ -33,7 +39,33 @@ class TermsAndConditionsView extends StatelessWidget {
     );
   }
 
+  Future<void> _launchUri(String href, String text) async {
+    if (href.startsWith('mailto:')) {
+      final uri = Uri(
+        scheme: 'mailto',
+        path: text,
+        query: encodeQueryParameters({
+          'subject': 'About Talking Chatting App',
+          'body': 'Share your doubts with us!',
+        }),
+      );
+
+      await launchUrl(uri);
+    } else {
+      final uri = Uri.tryParse(href);
+      if (uri != null && await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      }
+    }
+  }
+
   Future<String> loadMarkdown() async {
     return await rootBundle.loadString('assets/terms_conditions/terms_and_conditions.md');
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
   }
 }
