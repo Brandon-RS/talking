@@ -30,6 +30,10 @@ abstract class _TextThemeHelper {
         fontSize: 24,
         fontWeight: FontWeight.w600,
       ),
+      titleMedium: _defaultHeadlineStyle.copyWith(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),
       bodyLarge: _defaultBodyStyle.copyWith(
         fontSize: 16,
       ),
