@@ -21,7 +21,7 @@ class RegisterUserUsecase implements Usecase<Login, (String, String, String)> {
       if (name.isEmpty || email.isEmpty || password.isEmpty) {
         return const Left(
           AppFailure(
-            'Please, fill all the fields.',
+            'Please, complete all required data.',
           ),
         );
       }

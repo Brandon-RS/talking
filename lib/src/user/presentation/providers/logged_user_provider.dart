@@ -35,11 +35,9 @@ class LoggedUser extends _$LoggedUser {
   }) async {
     state = const LoggedUserLoading();
 
-    final response = await _registerUserUsecase((
-      name,
-      email,
-      password,
-    ));
+    final response = await _registerUserUsecase(
+      (name, email, password),
+    );
 
     response.fold(
       (failure) => state = LoggedUserError(failure.message),

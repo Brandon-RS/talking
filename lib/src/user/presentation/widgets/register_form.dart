@@ -21,6 +21,8 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
 
+  bool _acceptTerms = false;
+
   @override
   void initState() {
     super.initState();
@@ -82,11 +84,18 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
               obscureText: true,
               controller: _passwordController,
             ),
+            const SizedBox(height: 22),
+            CheckboxListTile(
+              value: _acceptTerms,
+              controlAffinity: ListTileControlAffinity.leading,
+              title: const Text('I read and accept the terms and conditions'),
+              onChanged: (value) => setState(() => _acceptTerms = value ?? false),
+            ),
             const SizedBox(height: 40),
             RoundedButton(
               text: 'Register',
               expandable: true,
-              onPressed: loggedUser is! LoggedUserLoading
+              onPressed: _acceptTerms && loggedUser is! LoggedUserLoading
                   ? () => ref.read(loggedUserProvider.notifier).registerUser(
                         name: _nameController.text.trim(),
                         email: _emailController.text.trim(),
