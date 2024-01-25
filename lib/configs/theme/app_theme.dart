@@ -47,6 +47,15 @@ abstract class AppTheme {
           borderRadius: BorderRadius.circular(5),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+        hintStyle: _TextThemeHelper.lightTextTheme.labelLarge?.copyWith(
+          color: LightColors.onPrimary.withOpacity(.7),
+        ),
+      ),
     );
   }
 }

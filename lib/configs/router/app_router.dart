@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../src/auth/presentation/views/login_view.dart';
 import '../../src/chat/presentation/views/chat_view.dart';
 import '../../src/home/presentation/views/home_View.dart';
+import '../../src/profile/presentation/views/change_password_view.dart';
 import '../../src/profile/presentation/views/profile_view.dart';
 import '../../src/splash/presentation/views/splash_view.dart';
 import '../../src/terms_and_conditions/presentation/views/terms_and_conditions_view.dart';
@@ -21,10 +22,12 @@ class AppRouter {
             path: 'chat',
             builder: (context, state) => const ChatView(),
           ),
-          GoRoute(
-            path: 'profile',
-            builder: (context, state) => const ProfileView(),
-          ),
+          GoRoute(path: 'profile', builder: (context, state) => const ProfileView(), routes: [
+            GoRoute(
+              path: 'change-password',
+              builder: (context, state) => const ChangePasswordView(),
+            ),
+          ]),
         ],
       ),
       GoRoute(

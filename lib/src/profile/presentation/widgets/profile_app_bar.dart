@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
@@ -48,6 +49,7 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 if (auth is! AuthLoading) ref.read(authProvider.notifier).logout();
                 break;
               case MenuOption.changePassword:
+                context.push('/profile/change-password');
                 break;
               case MenuOption.deleteAccount:
                 break;
