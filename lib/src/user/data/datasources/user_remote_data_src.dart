@@ -12,6 +12,12 @@ abstract class UserRemoteDataSrc {
     required String password,
   });
 
+  Future<UserModel> changePassword({
+    required String id,
+    required String currentPassword,
+    required String password,
+  });
+
   Future<List<UserModel>> getUsers();
 }
 
@@ -40,6 +46,27 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
       return LoginModel.fromJson(response.data);
     } else {
       throw Exception('Error registering user');
+    }
+  }
+
+  @override
+  Future<UserModel> changePassword({
+    required String id,
+    required String currentPassword,
+    required String password,
+  }) async {
+    final response = await _dio.put(
+      Api.changePassword(id),
+      data: {
+        'current_password': currentPassword,
+        'password': password,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(response.data);
+    } else {
+      throw Exception('Error changing password');
     }
   }
 

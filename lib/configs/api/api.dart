@@ -10,4 +10,6 @@ abstract class Api {
   static const String users = '/users';
 
   static String chats(String targetUserId) => '$users/chats/$targetUserId';
+
+  static String changePassword(String id) => '$users/$id/change-password';
 }
