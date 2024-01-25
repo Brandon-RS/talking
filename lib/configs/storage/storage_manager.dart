@@ -48,9 +48,12 @@ class StorageManager {
   // Helper methods
 
   String? get currentToken => getString(xToken);
-
   Future<bool> setToken(String token) async => await setString(xToken, token);
+
+  String? get userId => getString(userIdKey);
+  Future<bool> setUserId(String id) async => await setString(userIdKey, id);
 
   // Keys
   static const String xToken = 'x-token';
+  static const String userIdKey = 'user-id';
 }
