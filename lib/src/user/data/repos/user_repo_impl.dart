@@ -44,6 +44,27 @@ class UserRepoImpl implements UserRepo {
   }
 
   @override
+  ResultFuture<UserModel> changePassword({
+    required String id,
+    required String currentPassword,
+    required String password,
+  }) async {
+    try {
+      final result = await _src.changePassword(
+        id: id,
+        currentPassword: currentPassword,
+        password: password,
+      );
+
+      return Right(result);
+    } catch (e) {
+      final failure = ErrorHandler.handle(e, defaultMessage: 'Error changing password');
+
+      return Left(failure);
+    }
+  }
+
+  @override
   ResultFuture<List<UserModel>> getUsers() async {
     try {
       final result = await _src.getUsers();

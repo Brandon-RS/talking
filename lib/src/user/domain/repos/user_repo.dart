@@ -9,5 +9,11 @@ abstract class UserRepo {
     required String password,
   });
 
+  ResultFuture<UserModel> changePassword({
+    required String id,
+    required String currentPassword,
+    required String password,
+  });
+
   ResultFuture<List<UserModel>> getUsers();
 }
