@@ -6,11 +6,11 @@ import '../../../../configs/router/app_router.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
 import '../../../chat/presentation/providers/chat_provider.dart';
-import '../../../shared/presentation/custom_app_bar.dart';
 import '../../../user/domain/entities/user_entity.dart';
 import '../../../user/presentation/providers/logged_user_provider.dart';
 import '../../../user/presentation/providers/logged_user_state.dart';
 import '../../../user/presentation/providers/users_provider.dart';
+import '../widgets/profile_app_bar.dart';
 import '../widgets/profile_section.dart';
 
 class ProfileView extends ConsumerWidget {
@@ -37,7 +37,7 @@ class ProfileView extends ConsumerWidget {
     );
 
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: const ProfileAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(
