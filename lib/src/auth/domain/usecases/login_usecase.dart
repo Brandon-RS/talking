@@ -36,7 +36,11 @@ class LoginUsecase implements Usecase<Login, (String, String)> {
           return Left(failure);
         },
         (model) async {
-          await _storageManager.setToken(model.token);
+          await Future.wait([
+            _storageManager.setToken(model.token),
+            _storageManager.setUserId(model.user.uid),
+          ]);
+
           return Right(Login.fromModel(model));
         },
       );

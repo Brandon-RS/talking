@@ -26,7 +26,11 @@ class RenewTokenUsecase implements UsecaseNoParams<Login> {
           return Left(failure);
         },
         (model) async {
-          await _storageManager.setToken(model.token);
+          await Future.wait([
+            _storageManager.setToken(model.token),
+            _storageManager.setUserId(model.user.uid),
+          ]);
+
           return Right(Login.fromModel(model));
         },
       );
