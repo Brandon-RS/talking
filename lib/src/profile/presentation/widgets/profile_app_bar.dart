@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../auth/presentation/providers/auth_state.dart';
 import '../../utils/menu_option.dart';
 
 class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
@@ -8,6 +10,8 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final auth = ref.watch(authProvider);
+
     return AppBar(
       leadingWidth: 18,
       title: const Text('Your Profile'),
@@ -26,7 +30,7 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
               child: Text('Delete Account'),
             ),
             const PopupMenuItem(
-              value: MenuOption.help,
+              value: MenuOption.logout,
               child: Text('Logout'),
             ),
             const PopupMenuItem(
@@ -41,6 +45,7 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
           onSelected: (value) {
             switch (value) {
               case MenuOption.logout:
+                if (auth is! AuthLoading) ref.read(authProvider.notifier).logout();
                 break;
               case MenuOption.changePassword:
                 break;

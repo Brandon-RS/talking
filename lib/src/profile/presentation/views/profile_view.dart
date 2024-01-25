@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../configs/colors/generic_colors.dart';
 import '../../../../configs/router/app_router.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
@@ -18,10 +17,7 @@ class ProfileView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final auth = ref.watch(authProvider);
     final User user = ref.watch(loggedUserProvider.select((v) => v is LoggedUserLoaded ? v.user : User.empty()));
-
-    final textTheme = Theme.of(context).textTheme;
 
     ref.listen<AuthState>(
       authProvider,
@@ -72,21 +68,6 @@ class ProfileView extends ConsumerWidget {
               value: user.email,
               icon: Icons.email_outlined,
             ),
-            const Spacer(),
-            Center(
-              child: FilledButton(
-                onPressed: auth is! AuthLoading ? () => ref.read(authProvider.notifier).logout() : null,
-                child: Text(
-                  'Logout',
-                  style: textTheme.labelLarge?.copyWith(
-                    color: TColors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
           ],
         ),
       ),
