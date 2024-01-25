@@ -24,6 +24,7 @@ class Users extends _$Users {
     required String currentPassword,
     required String password,
   }) async {
+    final localState = state;
     state = const UsersLoading();
 
     final response = await _changePassword((
@@ -33,7 +34,7 @@ class Users extends _$Users {
 
     response.fold(
       (failure) => state = UsersError(failure.message),
-      (user) => state = UsersLoaded(users: [user]),
+      (user) => state = localState,
     );
   }
 
