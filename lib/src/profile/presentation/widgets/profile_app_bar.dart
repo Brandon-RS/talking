@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
+import '../../../auth/presentation/widgets/logo.dart';
 import '../../utils/menu_option.dart';
 
 class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
@@ -56,11 +57,44 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
               case MenuOption.help:
                 break;
               case MenuOption.about:
+                _showAboutDialog(context);
                 break;
             }
           },
         ),
       ],
+    );
+  }
+
+  Future<dynamic> _showAboutDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Logo(
+              text: 'Talking',
+              version: 'v1.0.0',
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Talking is a simple chat app built with Flutter and Express.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: TextButton(
+                onPressed: () => context.pop(),
+                child: const Text('Close'),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
     );
   }
 
