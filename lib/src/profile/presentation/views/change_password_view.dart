@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:talking/core/common/dialog_utils.dart';
+import 'package:talking/core/common/snack_bar_utils.dart';
 
 import '../../../../configs/router/app_router.dart';
-import '../../../user/presentation/providers/users_provider.dart';
+import '../../../user/presentation/providers/change_password_provider.dart';
 import '../../../user/presentation/providers/users_state.dart';
 
 class ChangePasswordView extends ConsumerStatefulWidget {
@@ -46,21 +48,22 @@ class _ChangePasswordViewState extends ConsumerState<ChangePasswordView> {
     );
 
     ref.listen<UsersState>(
-      usersProvider,
+      changePasswordProvider,
       (prev, next) {
         if (next is UsersLoaded) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Password Changed!'),
-              content: const Text('Your password has been changed successfully.'),
-              actions: [
-                TextButton(
-                  onPressed: () => AppRouter.replaceAndRemoveUntil('/users'),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
+          DialogUtils.showAlert(
+            context,
+            title: 'Password Changed!',
+            message: 'Your password has been changed successfully.',
+            buttonText: 'OK',
+            onPressed: () => AppRouter.replaceAndRemoveUntil('/users'),
+          );
+        }
+
+        if (next is UsersError) {
+          SnackBarUtils.showErrorSnackBar(
+            context,
+            message: next.message,
           );
         }
       },
@@ -136,14 +139,7 @@ class _ChangePasswordViewState extends ConsumerState<ChangePasswordView> {
               ),
               const SizedBox(height: 30),
               FilledButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    ref.read(usersProvider.notifier).changePassword(
-                          currentPassword: _currentPasswordController.text,
-                          password: _newPasswordController.text,
-                        );
-                  }
-                },
+                onPressed: _handleChangePasswordAction(),
                 style: FilledButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -166,6 +162,19 @@ class _ChangePasswordViewState extends ConsumerState<ChangePasswordView> {
         ),
       ),
     );
+  }
+
+  VoidCallback? _handleChangePasswordAction() {
+    return ref.watch(changePasswordProvider) is! UsersLoading
+        ? () {
+            if (_formKey.currentState!.validate()) {
+              ref.read(changePasswordProvider.notifier).changePassword(
+                    currentPassword: _currentPasswordController.text,
+                    password: _newPasswordController.text,
+                  );
+            }
+          }
+        : null;
   }
 
   String? _passwordValidator(value) {

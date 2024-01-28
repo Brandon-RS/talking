@@ -60,6 +60,13 @@ class UserRepoImpl implements UserRepo {
     } catch (e) {
       final failure = ErrorHandler.handle(e, defaultMessage: 'Error changing password');
 
+      if (failure.statusCode == 400) {
+        final message = (e as DioException).response?.data['msg'] as String?;
+        return Left(
+          ApiFailure(message ?? 'Seems like you entered a wrong password'),
+        );
+      }
+
       return Left(failure);
     }
   }
