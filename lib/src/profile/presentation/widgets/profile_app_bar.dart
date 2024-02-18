@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:talking/configs/colors/generic_colors.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
@@ -53,6 +54,7 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 context.push('/profile/change-password');
                 break;
               case MenuOption.deleteAccount:
+                _showDeleteAccountDialog(context);
                 break;
               case MenuOption.help:
                 break;
@@ -66,8 +68,90 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
     );
   }
 
-  Future<dynamic> _showAboutDialog(BuildContext context) {
-    return showDialog(
+  void _showDeleteAccountDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: TColors.lightRed,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                padding: const EdgeInsets.all(16),
+                child: const Icon(
+                  Icons.warning_amber_rounded,
+                  color: TColors.white,
+                  size: 48,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Are you sure you want to delete your account permanently?',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: 14,
+                    ),
+              ),
+              const SizedBox(height: 16),
+              RichText(
+                text: TextSpan(
+                  text:
+                      'This action cannot be undone and all your data will be lost. Your messages*, contacts, and all other data will be permanently deleted.\n\n',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  children: [
+                    TextSpan(
+                      text:
+                          '* All messages will be deleted but may still be available up to 6 hours on the devices of the people you have been chatting with.',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: TColors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(
+                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(.7),
+                        ),
+                      ),
+                    ),
+                    onPressed: () => context.pop(),
+                    child: const Text('Delete'),
+                  ),
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      foregroundColor: TColors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () => context.pop(),
+                    child: const Text('Cancel'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showAboutDialog(BuildContext context) {
+    showDialog(
       context: context,
       builder: (context) => Dialog(
         insetPadding: const EdgeInsets.symmetric(horizontal: 16),
