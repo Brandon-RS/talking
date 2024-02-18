@@ -89,8 +89,7 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
   @override
   Future<UserModel> deleteAccount({required String id}) async {
     final response = await _dio.delete(
-      Api.users,
-      queryParameters: {'id': id},
+      Api.deleteAccount(id),
     );
 
     if (response.statusCode == 200) {

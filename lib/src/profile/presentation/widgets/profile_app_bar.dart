@@ -54,7 +54,12 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 context.push('/profile/change-password');
                 break;
               case MenuOption.deleteAccount:
-                _showDeleteAccountDialog(context);
+                _showDeleteAccountDialog(
+                  context,
+                  () {
+                    if (auth is! AuthLoading) ref.read(authProvider.notifier).deleteAccount();
+                  },
+                );
                 break;
               case MenuOption.help:
                 break;
@@ -68,7 +73,7 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
     );
   }
 
-  void _showDeleteAccountDialog(BuildContext context) {
+  void _showDeleteAccountDialog(BuildContext context, VoidCallback onDeleteAccount) {
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -127,7 +132,7 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
                         ),
                       ),
                     ),
-                    onPressed: () => context.pop(),
+                    onPressed: onDeleteAccount,
                     child: const Text('Delete'),
                   ),
                   FilledButton(

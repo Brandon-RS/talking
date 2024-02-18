@@ -12,4 +12,6 @@ abstract class Api {
   static String chats(String targetUserId) => '$users/chats/$targetUserId';
 
   static String changePassword(String id) => '$users/$id/change-password';
+
+  static String deleteAccount(String id) => '$users/$id';
 }

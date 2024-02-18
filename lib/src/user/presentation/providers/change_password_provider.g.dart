@@ -6,7 +6,7 @@ part of 'change_password_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$changePasswordHash() => r'e7a6434723e70bebbd92123a678e14bb217f4aff';
+String _$changePasswordHash() => r'ad866ea912953ad3bc72e6c2e6098091cc19637a';
 
 /// See also [ChangePassword].
 @ProviderFor(ChangePassword)

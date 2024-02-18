@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../configs/di/injector.dart';
 import '../../../../configs/storage/storage_manager.dart';
+import '../../../user/domain/usecases/delete_account_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/renew_token.usecase.dart';
@@ -16,12 +17,14 @@ class Auth extends _$Auth {
     _login = sl<LoginUsecase>();
     _renewToken = sl<RenewTokenUsecase>();
     _logout = sl<LogoutUsecase>();
+    _deleteAccount = sl<DeleteAccountUsecase>();
     return const AuthInitial();
   }
 
   late LoginUsecase _login;
   late RenewTokenUsecase _renewToken;
   late LogoutUsecase _logout;
+  late DeleteAccountUsecase _deleteAccount;
 
   Future<void> login({required String email, required String password}) async {
     state = const AuthLoading();
@@ -59,6 +62,17 @@ class Auth extends _$Auth {
     state = const AuthLoading();
 
     final result = await _logout();
+
+    result.fold(
+      (failure) => state = AuthError(failure.message),
+      (model) => state = const LoggedOut(),
+    );
+  }
+
+  Future<void> deleteAccount() async {
+    state = const AuthLoading();
+
+    final result = await _deleteAccount();
 
     result.fold(
       (failure) => state = AuthError(failure.message),
