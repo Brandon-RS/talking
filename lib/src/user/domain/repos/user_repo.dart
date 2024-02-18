@@ -16,4 +16,8 @@ abstract class UserRepo {
   });
 
   ResultFuture<List<UserModel>> getUsers();
+
+  ResultFuture<UserModel> deleteAccount({
+    required String id,
+  });
 }

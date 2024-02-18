@@ -6,7 +6,7 @@ import '../networking/response_codes.dart';
 import 'failure.dart';
 
 class ErrorHandler implements Exception {
-  /// `defaultMessage` is used when the error is not a [DioException]
+  /// [defaultMessage] is used when the error is not a [DioException]
   static Failure handle(dynamic error, {String? defaultMessage}) {
     late Failure failure;
 

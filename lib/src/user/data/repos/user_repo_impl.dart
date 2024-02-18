@@ -78,9 +78,22 @@ class UserRepoImpl implements UserRepo {
 
       return Right(result);
     } catch (e) {
-      final failure = ErrorHandler.handle(e, defaultMessage: 'Error getting users');
+      return Left(
+        ErrorHandler.handle(e, defaultMessage: 'Error getting users'),
+      );
+    }
+  }
 
-      return Left(failure);
+  @override
+  ResultFuture<UserModel> deleteAccount({required String id}) async {
+    try {
+      final result = await _src.deleteAccount(id: id);
+
+      return Right(result);
+    } catch (e) {
+      return Left(
+        ErrorHandler.handle(e, defaultMessage: 'Error deleting account'),
+      );
     }
   }
 }

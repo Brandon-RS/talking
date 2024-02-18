@@ -19,6 +19,10 @@ abstract class UserRemoteDataSrc {
   });
 
   Future<List<UserModel>> getUsers();
+
+  Future<UserModel> deleteAccount({
+    required String id,
+  });
 }
 
 @Injectable(as: UserRemoteDataSrc)
@@ -79,6 +83,20 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
       return users.map((user) => UserModel.fromJson(user)).toList();
     } else {
       throw Exception('Error getting users');
+    }
+  }
+
+  @override
+  Future<UserModel> deleteAccount({required String id}) async {
+    final response = await _dio.delete(
+      Api.users,
+      queryParameters: {'id': id},
+    );
+
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(response.data);
+    } else {
+      throw Exception('Error deleting user account');
     }
   }
 }
