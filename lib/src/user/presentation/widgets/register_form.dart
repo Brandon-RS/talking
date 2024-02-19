@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/common/dialog_utils.dart';
-import '../../../auth/presentation/widgets/rounded_button.dart';
-import '../../../auth/presentation/widgets/rounded_text_field.dart';
 import '../../../chat/presentation/providers/chat_provider.dart';
 import '../providers/logged_user_provider.dart';
 import '../providers/logged_user_state.dart';
@@ -21,7 +19,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
 
-  bool _acceptTerms = false;
+  final bool _acceptTerms = false;
 
   @override
   void initState() {
@@ -60,52 +58,52 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
       }
     });
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40.0),
-      child: Form(
-        child: Column(
-          children: [
-            RoundedTextField(
-              icon: Icons.perm_identity_outlined,
-              hintText: 'Name',
-              controller: _nameController,
-            ),
-            const SizedBox(height: 22),
-            RoundedTextField(
-              icon: Icons.email_outlined,
-              hintText: 'Email',
-              keyboardType: TextInputType.emailAddress,
-              controller: _emailController,
-            ),
-            const SizedBox(height: 22),
-            RoundedTextField(
-              icon: Icons.lock_outline,
-              hintText: 'Password',
-              obscureText: true,
-              controller: _passwordController,
-            ),
-            const SizedBox(height: 22),
-            CheckboxListTile(
-              value: _acceptTerms,
-              controlAffinity: ListTileControlAffinity.leading,
-              title: const Text('I read and accept the terms and conditions'),
-              onChanged: (value) => setState(() => _acceptTerms = value ?? false),
-            ),
-            const SizedBox(height: 40),
-            RoundedButton(
-              text: 'Register',
-              expandable: true,
-              onPressed: _acceptTerms && loggedUser is! LoggedUserLoading
-                  ? () => ref.read(loggedUserProvider.notifier).registerUser(
-                        name: _nameController.text.trim(),
-                        email: _emailController.text.trim(),
-                        password: _passwordController.text.trim(),
-                      )
-                  : null,
-            ),
-          ],
-        ),
-      ),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 40.0),
+      // child: Form(
+      //   child: Column(
+      //     children: [
+      //       RoundedTextField(
+      //         icon: Icons.perm_identity_outlined,
+      //         hintText: 'Name',
+      //         controller: _nameController,
+      //       ),
+      //       const SizedBox(height: 22),
+      //       RoundedTextField(
+      //         icon: Icons.email_outlined,
+      //         hintText: 'Email',
+      //         keyboardType: TextInputType.emailAddress,
+      //         controller: _emailController,
+      //       ),
+      //       const SizedBox(height: 22),
+      //       RoundedTextField(
+      //         icon: Icons.lock_outline,
+      //         hintText: 'Password',
+      //         obscureText: true,
+      //         controller: _passwordController,
+      //       ),
+      //       const SizedBox(height: 22),
+      //       CheckboxListTile(
+      //         value: _acceptTerms,
+      //         controlAffinity: ListTileControlAffinity.leading,
+      //         title: const Text('I read and accept the terms and conditions'),
+      //         onChanged: (value) => setState(() => _acceptTerms = value ?? false),
+      //       ),
+      //       const SizedBox(height: 40),
+      //       RoundedButton(
+      //         text: 'Register',
+      //         expandable: true,
+      //         onPressed: _acceptTerms && loggedUser is! LoggedUserLoading
+      //             ? () => ref.read(loggedUserProvider.notifier).registerUser(
+      //                   name: _nameController.text.trim(),
+      //                   email: _emailController.text.trim(),
+      //                   password: _passwordController.text.trim(),
+      //                 )
+      //             : null,
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

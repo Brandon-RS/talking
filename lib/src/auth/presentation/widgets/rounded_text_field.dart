@@ -1,53 +1,124 @@
 import 'package:flutter/material.dart';
-import 'package:talking/configs/colors/generic_colors.dart';
+import 'package:flutter/services.dart' show TextInputFormatter;
 
-class RoundedTextField extends StatelessWidget {
+class RoundedTextField extends StatefulWidget {
   const RoundedTextField({
     super.key,
-    required this.icon,
-    this.hintText,
     this.obscureText,
     this.keyboardType,
-    required this.controller,
+    this.controller,
+    this.focusNode,
+    this.validator,
+    this.inputFormatters,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.hintText,
+    this.labelText,
+    this.backgroundColor,
+    this.inactiveBackgroundColor,
+    this.iconsColor,
+    this.inactiveIconsColor,
     this.onChanged,
+    this.onEditingComplete,
+    this.onFocusChanged,
+    this.onSuffixIconPressed,
   });
 
-  final IconData icon;
-  final String? hintText;
   final bool? obscureText;
   final TextInputType? keyboardType;
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final FormFieldValidator<String>? validator;
+  final List<TextInputFormatter>? inputFormatters;
+  final IconData? prefixIcon;
+  final IconData? suffixIcon;
+  final String? hintText;
+  final String? labelText;
+  final Color? backgroundColor;
+  final Color? inactiveBackgroundColor;
+  final Color? iconsColor;
+  final Color? inactiveIconsColor;
   final ValueChanged<String>? onChanged;
+  final VoidCallback? onEditingComplete;
+  final ValueChanged<bool>? onFocusChanged;
+  final VoidCallback? onSuffixIconPressed;
+
+  @override
+  State<RoundedTextField> createState() => _RoundedTextFieldState();
+}
+
+class _RoundedTextFieldState extends State<RoundedTextField> {
+  late final TextEditingController _controller;
+  late final FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? TextEditingController();
+    _focusNode = widget.focusNode ?? FocusNode()
+      ..addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+
+    super.dispose();
+  }
+
+  TextTheme get textTheme => Theme.of(context).textTheme;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: ShapeDecoration(
-        color: TColors.white,
-        shadows: [
-          BoxShadow(
-            color: TColors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(2, 5),
-          ),
-        ],
-        shape: const StadiumBorder(),
-      ),
-      child: TextFormField(
-        autocorrect: false,
-        controller: controller,
-        obscureText: obscureText ?? false,
-        keyboardType: keyboardType,
-        decoration: InputDecoration(
-          hintText: hintText,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          border: InputBorder.none,
-          prefixIconColor: Theme.of(context).colorScheme.outline,
-          prefixIcon: Icon(icon),
-          hintStyle: Theme.of(context).textTheme.bodyLarge,
+    final fillColor = _focusNode.hasFocus ? widget.backgroundColor : widget.inactiveBackgroundColor;
+
+    return TextFormField(
+      autocorrect: false,
+      controller: _controller,
+      focusNode: _focusNode,
+      obscureText: widget.obscureText ?? false,
+      keyboardType: widget.keyboardType,
+      decoration: InputDecoration(
+        label: Text(widget.labelText ?? ''),
+        hintText: widget.hintText,
+        hintStyle: textTheme.bodyLarge,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: widget.prefixIcon != null ? 20 : 10,
+          vertical: 15,
         ),
-        onChanged: onChanged,
+        prefixIcon: widget.prefixIcon != null
+            ? Icon(
+                widget.prefixIcon,
+                color: _focusNode.hasFocus ? widget.iconsColor : widget.inactiveIconsColor,
+              )
+            : null,
+        suffixIcon: widget.suffixIcon != null
+            ? GestureDetector(
+                onTap: widget.onSuffixIconPressed,
+                child: Icon(
+                  widget.suffixIcon,
+                  color: _focusNode.hasFocus ? widget.iconsColor : widget.inactiveIconsColor,
+                ),
+              )
+            : null,
+        filled: fillColor != null,
+        fillColor: fillColor,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
       ),
+      validator: widget.validator,
+      inputFormatters: widget.inputFormatters,
+      onChanged: widget.onChanged,
+      onEditingComplete: () {
+        if (widget.onEditingComplete != null) {
+          widget.onEditingComplete!();
+        } else if (_focusNode.hasFocus) {
+          _focusNode.nextFocus();
+        }
+      },
     );
   }
 }

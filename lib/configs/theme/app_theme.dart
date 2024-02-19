@@ -47,14 +47,30 @@ abstract class AppTheme {
           borderRadius: BorderRadius.circular(5),
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-        hintStyle: _TextThemeHelper.lightTextTheme.labelLarge?.copyWith(
-          color: LightColors.onPrimary.withOpacity(.7),
-        ),
+      inputDecorationTheme: _inputDecorator(),
+    );
+  }
+
+  static InputDecorationTheme _inputDecorator() {
+    const borderRadius = BorderRadius.all(Radius.circular(10));
+
+    const borderSide = BorderSide(
+      color: LightColors.borderColor,
+      width: 2,
+    );
+
+    return InputDecorationTheme(
+      border: const OutlineInputBorder(borderRadius: borderRadius),
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: borderRadius,
+        borderSide: borderSide,
+      ),
+      iconColor: LightColors.outline,
+      prefixIconColor: LightColors.outline,
+      suffixIconColor: LightColors.outline,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+      hintStyle: _TextThemeHelper.lightTextTheme.labelLarge?.copyWith(
+        color: LightColors.onPrimary.withOpacity(.7),
       ),
     );
   }

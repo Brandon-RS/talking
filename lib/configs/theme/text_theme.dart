@@ -1,7 +1,7 @@
 part of 'app_theme.dart';
 
 abstract class _TextThemeHelper {
-  static final _defaultHeadlineStyle = GoogleFonts.montserratAlternates(
+  static final _defaultHeadlineStyle = GoogleFonts.openSans(
     color: LightColors.onPrimary,
     fontWeight: FontWeight.normal,
   );

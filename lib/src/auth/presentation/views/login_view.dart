@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../terms_and_conditions/presentation/widgets/terms_and_conditions_button.dart';
-import '../widgets/form.dart';
 import '../widgets/labels.dart';
+import '../widgets/login_form.dart';
 import '../widgets/logo.dart';
 
 class LoginView extends StatelessWidget {

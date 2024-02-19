@@ -18,12 +18,16 @@ class LoginForm extends ConsumerStatefulWidget {
 }
 
 class _LoginFormState extends ConsumerState<LoginForm> {
+  late final GlobalKey<FormState> _formKey;
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
+
+  final ValueNotifier<bool> _showPassword = ValueNotifier(false);
 
   @override
   void initState() {
     super.initState();
+    _formKey = GlobalKey<FormState>();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
   }
@@ -38,6 +42,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
+
+    final colorScheme = Theme.of(context).colorScheme;
 
     ref.listen<AuthState>(
       authProvider,
@@ -66,20 +72,30 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
       child: Form(
+        key: _formKey,
         child: Column(
           children: [
             RoundedTextField(
-              icon: Icons.email_outlined,
+              suffixIcon: Icons.alternate_email,
               hintText: 'Email',
+              labelText: 'Email',
+              inactiveBackgroundColor: colorScheme.outline.withOpacity(.2),
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
             ),
             const SizedBox(height: 22),
-            RoundedTextField(
-              icon: Icons.lock_outline,
-              hintText: 'Password',
-              obscureText: true,
-              controller: _passwordController,
+            ValueListenableBuilder(
+              valueListenable: _showPassword,
+              builder: (context, value, child) => RoundedTextField(
+                onSuffixIconPressed: () => _showPassword.value = !_showPassword.value,
+                suffixIcon: value ? Icons.visibility : Icons.visibility_off,
+                hintText: 'Password',
+                labelText: 'Password',
+                inactiveBackgroundColor: colorScheme.outline.withOpacity(.2),
+                iconsColor: colorScheme.primary,
+                obscureText: value,
+                controller: _passwordController,
+              ),
             ),
             const SizedBox(height: 40),
             RoundedButton(
