@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show TextInputFormatter;
 
+import '../../../../configs/colors/generic_colors.dart';
+
 class RoundedTextField extends StatefulWidget {
   const RoundedTextField({
     super.key,
@@ -26,6 +28,8 @@ class RoundedTextField extends StatefulWidget {
 
   final bool? obscureText;
   final TextInputType? keyboardType;
+
+  /// Will be disposed by the widget, if null a new controller will be created
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final FormFieldValidator<String>? validator;
@@ -82,7 +86,9 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
       decoration: InputDecoration(
         label: Text(widget.labelText ?? ''),
         hintText: widget.hintText,
-        hintStyle: textTheme.bodyLarge,
+        hintStyle: textTheme.bodyLarge?.copyWith(
+          color: TColors.lightGrey,
+        ),
         contentPadding: EdgeInsets.symmetric(
           horizontal: widget.prefixIcon != null ? 20 : 10,
           vertical: 15,

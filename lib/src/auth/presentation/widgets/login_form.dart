@@ -34,8 +34,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
@@ -51,7 +49,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
         if (next is AuthError) {
           DialogUtils.showAlert(
             context,
-            title: 'Error T_T',
+            title: 'Something when wrong!',
             message: next.message,
             buttonText: 'Ok',
             onPressed: () => Navigator.of(context).pop(),
@@ -93,7 +91,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                 labelText: 'Password',
                 inactiveBackgroundColor: colorScheme.outline.withOpacity(.2),
                 iconsColor: colorScheme.primary,
-                obscureText: value,
+                obscureText: !value,
                 controller: _passwordController,
               ),
             ),

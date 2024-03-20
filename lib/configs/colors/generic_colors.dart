@@ -8,4 +8,5 @@ abstract class TColors {
   static const green = Color(0xFF05CB05);
   static const red = Color(0xFFFF0000);
   static const lightRed = Color(0xFFF04A3F);
+  static const lightGrey = Color(0xFF6F6F6F);
 }
