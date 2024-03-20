@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../configs/storage/storage_manager.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../../core/utils/typedefs.dart';
@@ -9,9 +10,10 @@ import '../repos/user_repo.dart';
 
 @injectable
 class RegisterUserUsecase implements Usecase<Login, (String, String, String)> {
-  const RegisterUserUsecase(this._repo);
+  const RegisterUserUsecase(this._repo, this._storageManager);
 
   final UserRepo _repo;
+  final StorageManager _storageManager;
 
   @override
   ResultFuture<Login> call((String, String, String) user) async {
@@ -30,7 +32,14 @@ class RegisterUserUsecase implements Usecase<Login, (String, String, String)> {
 
       return result.fold(
         (failure) => Left(failure),
-        (model) => Right(Login.fromModel(model)),
+        (model) async {
+          await Future.wait([
+            _storageManager.setToken(model.token),
+            _storageManager.setUserId(model.user.uid),
+          ]);
+
+          return Right(Login.fromModel(model));
+        },
       );
     } catch (e) {
       return const Left(

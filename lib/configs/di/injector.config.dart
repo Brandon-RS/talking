@@ -84,8 +84,10 @@ _i1.GetIt $initGetIt(
         gh<_i11.AuthRepo>(),
         gh<_i4.StorageManager>(),
       ));
-  gh.factory<_i22.RegisterUserUsecase>(
-      () => _i22.RegisterUserUsecase(gh<_i8.UserRepo>()));
+  gh.factory<_i22.RegisterUserUsecase>(() => _i22.RegisterUserUsecase(
+        gh<_i8.UserRepo>(),
+        gh<_i4.StorageManager>(),
+      ));
   gh.factory<_i23.RenewTokenUsecase>(() => _i23.RenewTokenUsecase(
         gh<_i11.AuthRepo>(),
         gh<_i4.StorageManager>(),
