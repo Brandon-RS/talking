@@ -17,7 +17,7 @@ class ProfileView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final User user = ref.watch(loggedUserProvider.select((v) => v is LoggedUserLoaded ? v.user : User.empty()));
+    final User user = ref.watch(loggedUserProvider.select((v) => v is LoggedUserLoaded ? v.user : User.empty));
 
     ref.listen<AuthState>(
       authProvider,

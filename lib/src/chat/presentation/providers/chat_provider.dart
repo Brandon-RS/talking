@@ -18,7 +18,7 @@ class Chat extends _$Chat {
   ChatState build() {
     _storageManager = sl<StorageManager>();
     _getLastChatsUsecase = sl<GetLastChatsUsecase>();
-    _targetUser = User.empty();
+    _targetUser = User.empty;
     return const ChatInitial();
   }
 
@@ -41,9 +41,9 @@ class Chat extends _$Chat {
     );
 
     _socket.onConnect((_) {
-      state = ChatLoaded(
-        messages: const [],
-        targetUser: User.empty(),
+      state = const ChatLoaded(
+        messages: [],
+        targetUser: User.empty,
       );
     });
 
@@ -116,9 +116,9 @@ class Chat extends _$Chat {
   void stopChat() {
     _socket.off('personal-message');
     if (state is ChatLoaded) {
-      state = ChatLoaded(
-        messages: const [],
-        targetUser: User.empty(),
+      state = const ChatLoaded(
+        messages: [],
+        targetUser: User.empty,
       );
     }
   }

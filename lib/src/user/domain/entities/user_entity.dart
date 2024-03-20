@@ -10,16 +10,16 @@ class User extends Equatable {
     required this.uid,
   });
 
+  static const empty = User(
+    online: false,
+    name: '',
+    email: '',
+    uid: '',
+  );
+
   static fromModelList(List<UserModel> models) {
     return models.map((model) => User.fromModel(model)).toList();
   }
-
-  static empty() => const User(
-        online: false,
-        name: '',
-        email: '',
-        uid: '',
-      );
 
   factory User.fromModel(UserModel model) {
     return User(

@@ -15,7 +15,7 @@ class ChatView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loggedUser = ref.watch(loggedUserProvider.select((value) => value is LoggedUserLoaded ? value.user : null));
-    final targetUser = ref.watch(chatProvider.select((value) => value is ChatLoaded ? value.targetUser : User.empty()));
+    final targetUser = ref.watch(chatProvider.select((value) => value is ChatLoaded ? value.targetUser : User.empty));
 
     final chats = ref.watch(chatProvider.select((value) => value is ChatLoaded ? value.messages : const []));
 

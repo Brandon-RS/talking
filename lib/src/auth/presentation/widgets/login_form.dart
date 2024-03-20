@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/common/dialog_utils.dart';
-import '../../../chat/presentation/providers/chat_provider.dart';
-import '../../../user/presentation/providers/logged_user_provider.dart';
-import '../providers/auth_provider.dart';
-import '../providers/auth_state.dart';
+import '../../../../configs/di/injector.dart';
+import '../../domain/usecases/login_usecase.dart';
+import '../blocs/auth/auth_bloc.dart';
+import '../blocs/auth/auth_status.dart';
+import '../blocs/login/login_bloc.dart';
+import '../blocs/login/login_status.dart';
 import 'rounded_button.dart';
 import 'rounded_text_field.dart';
 
-class LoginForm extends ConsumerStatefulWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
   @override
-  ConsumerState<LoginForm> createState() => _LoginFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends ConsumerState<LoginForm> {
+class _LoginFormState extends State<LoginForm> {
   late final GlobalKey<FormState> _formKey;
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
@@ -39,79 +39,83 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = ref.watch(authProvider);
-
     final colorScheme = Theme.of(context).colorScheme;
-
-    ref.listen<AuthState>(
-      authProvider,
-      (prev, next) {
-        if (next is AuthError) {
-          DialogUtils.showAlert(
-            context,
-            title: 'Something when wrong!',
-            message: next.message,
-            buttonText: 'Ok',
-            onPressed: () => Navigator.of(context).pop(),
-          );
-        }
-
-        if (next is LoggedIn) {
-          ref.read(loggedUserProvider.notifier).init(
-                token: next.token,
-                user: next.user,
-              );
-          ref.read(chatProvider.notifier).connect();
-          context.replace('/users');
-        }
-      },
-    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            RoundedTextField(
-              suffixIcon: Icons.alternate_email,
-              hintText: 'Email',
-              labelText: 'Email',
-              inactiveBackgroundColor: colorScheme.outline.withOpacity(.2),
-              keyboardType: TextInputType.emailAddress,
-              controller: _emailController,
+      child: BlocProvider(
+        create: (context) => LoginBloc(loginUsecase: sl<LoginUsecase>()),
+        child: Form(
+          key: _formKey,
+          child: BlocListener<LoginBloc, LoginState>(
+            listener: (context, state) {
+              switch (state.status) {
+                case LoginStatus.success:
+                  context.read<AuthBloc>().add(AuthStatusChanged(AuthStatus.authenticated, state.user));
+                  break;
+                case LoginStatus.error:
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      const SnackBar(content: Text('Authentication Failure')),
+                    );
+                  break;
+                case LoginStatus.loading:
+                  break;
+                case LoginStatus.initial:
+                  break;
+              }
+            },
+            child: Column(
+              children: [
+                BlocBuilder<LoginBloc, LoginState>(
+                  buildWhen: (prev, next) => prev.username != next.username,
+                  builder: (context, state) {
+                    return RoundedTextField(
+                      suffixIcon: Icons.alternate_email,
+                      hintText: 'Email',
+                      labelText: 'Email',
+                      inactiveBackgroundColor: colorScheme.outline.withOpacity(.2),
+                      keyboardType: TextInputType.emailAddress,
+                      controller: _emailController,
+                      onChanged: (value) => context.read<LoginBloc>().add(LoginUsernameChanged(value)),
+                    );
+                  },
+                ),
+                const SizedBox(height: 22),
+                BlocBuilder<LoginBloc, LoginState>(
+                  builder: (context, state) {
+                    return ValueListenableBuilder(
+                      valueListenable: _showPassword,
+                      builder: (context, value, child) => RoundedTextField(
+                        onSuffixIconPressed: () => _showPassword.value = !_showPassword.value,
+                        suffixIcon: value ? Icons.visibility : Icons.visibility_off,
+                        hintText: 'Password',
+                        labelText: 'Password',
+                        inactiveBackgroundColor: colorScheme.outline.withOpacity(.2),
+                        iconsColor: colorScheme.primary,
+                        obscureText: !value,
+                        controller: _passwordController,
+                        onChanged: (value) => context.read<LoginBloc>().add(LoginPasswordChanged(value)),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 40),
+                BlocBuilder<LoginBloc, LoginState>(
+                  builder: (context, state) {
+                    return RoundedButton(
+                      text: 'Login',
+                      expandable: true,
+                      onPressed: state.isValid && state.status != LoginStatus.loading
+                          ? () => context.read<LoginBloc>().add(const LoginSubmitted())
+                          : null,
+                    );
+                  },
+                ),
+              ],
             ),
-            const SizedBox(height: 22),
-            ValueListenableBuilder(
-              valueListenable: _showPassword,
-              builder: (context, value, child) => RoundedTextField(
-                onSuffixIconPressed: () => _showPassword.value = !_showPassword.value,
-                suffixIcon: value ? Icons.visibility : Icons.visibility_off,
-                hintText: 'Password',
-                labelText: 'Password',
-                inactiveBackgroundColor: colorScheme.outline.withOpacity(.2),
-                iconsColor: colorScheme.primary,
-                obscureText: !value,
-                controller: _passwordController,
-              ),
-            ),
-            const SizedBox(height: 40),
-            RoundedButton(
-              text: 'Login',
-              expandable: true,
-              onPressed: auth is! AuthLoading
-                  ? () async {
-                      final email = _emailController.text.trim();
-                      final password = _passwordController.text.trim();
-
-                      await ref.read(authProvider.notifier).login(
-                            email: email,
-                            password: password,
-                          );
-                    }
-                  : null,
-            ),
-          ],
+          ),
         ),
       ),
     );
