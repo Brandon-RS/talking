@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../configs/api/api.dart';
+import '../../../../configs/storage/storage_manager.dart';
 import '../../../auth/data/models/login_model.dart';
 import '../models/user_model.dart';
 
@@ -47,7 +48,9 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
     );
 
     if (response.statusCode == 200) {
-      return LoginModel.fromJson(response.data);
+      final model = LoginModel.fromJson(response.data);
+      _setToken(model.token);
+      return model;
     } else {
       throw Exception('Error registering user');
     }
@@ -97,5 +100,9 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
     } else {
       throw Exception('Error deleting user account');
     }
+  }
+
+  void _setToken(String token) {
+    _dio.options.headers[StorageManager.xToken] = token;
   }
 }

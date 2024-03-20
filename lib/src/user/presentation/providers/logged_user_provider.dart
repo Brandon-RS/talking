@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../configs/di/injector.dart';
-import '../../../../configs/storage/storage_manager.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/register_user_usecase.dart';
 import 'logged_user_state.dart';
@@ -12,13 +11,11 @@ part 'logged_user_provider.g.dart';
 class LoggedUser extends _$LoggedUser {
   @override
   LoggedUserState build() {
-    _storageManager = sl<StorageManager>();
     _registerUserUsecase = sl<RegisterUserUsecase>();
 
     return const LoggedUserInitial();
   }
 
-  late StorageManager _storageManager;
   late RegisterUserUsecase _registerUserUsecase;
 
   void init({required String token, required User user}) {
@@ -41,14 +38,10 @@ class LoggedUser extends _$LoggedUser {
 
     response.fold(
       (failure) => state = LoggedUserError(failure.message),
-      (model) async {
-        await _storageManager.setToken(model.token);
-
-        state = LoggedUserLoaded(
-          user: model.user,
-          token: model.token,
-        );
-      },
+      (model) => state = LoggedUserLoaded(
+        user: model.user,
+        token: model.token,
+      ),
     );
   }
 
