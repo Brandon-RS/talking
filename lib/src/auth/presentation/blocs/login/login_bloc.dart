@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../user/domain/entities/user_entity.dart';
 import '../../../domain/usecases/login_usecase.dart';
 import 'login_status.dart';
 

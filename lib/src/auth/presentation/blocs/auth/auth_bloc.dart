@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../user/domain/entities/user_entity.dart';
 import 'auth_status.dart';
 
 part 'auth_event.dart';
@@ -20,7 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       case AuthStatus.unauthenticated:
         return emit(const AuthState.unauthenticated());
       case AuthStatus.authenticated:
-        return emit(AuthState.authenticated(state.user));
+        return emit(const AuthState.authenticated());
       default:
         return emit(const AuthState.unknown());
     }
