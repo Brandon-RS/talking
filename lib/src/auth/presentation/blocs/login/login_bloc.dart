@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
 
 import '../../../domain/usecases/login_usecase.dart';
+import '../../models/models.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -11,23 +13,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     required LoginUsecase loginUsecase,
   })  : _loginUsecase = loginUsecase,
         super(const LoginState()) {
-    on<LoginUsernameChanged>(_onUsernameChanged);
+    on<LoginUsernameChanged>(_onEmailChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginSubmitted>(_onSubmitted);
   }
 
   final LoginUsecase _loginUsecase;
 
-  void _onUsernameChanged(
+  void _onEmailChanged(
     LoginUsernameChanged event,
     Emitter<LoginState> emit,
   ) {
-    final username = event.username;
+    final email = Email.dirty(event.email);
     emit(
       state.copyWith(
-        username: username,
-        isValid: username.trim().isNotEmpty,
-        status: LoginStatus.initial,
+        email: email,
+        isValid: Formz.validate([state.password, email]),
+        status: FormzSubmissionStatus.initial,
       ),
     );
   }
@@ -36,12 +38,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginPasswordChanged event,
     Emitter<LoginState> emit,
   ) {
-    final password = event.password;
+    final password = Password.dirty(event.password);
     emit(
       state.copyWith(
         password: password,
-        isValid: password.trim().isNotEmpty,
-        status: LoginStatus.initial,
+        isValid: Formz.validate([password, state.email]),
+        status: FormzSubmissionStatus.initial,
       ),
     );
   }
@@ -51,15 +53,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     if (state.isValid) {
-      emit(state.copyWith(status: LoginStatus.loading));
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+
       try {
-        final result = await _loginUsecase((state.username, state.password));
+        final result = await _loginUsecase((state.email.value, state.password.value));
         result.fold(
-          (_) => emit(state.copyWith(status: LoginStatus.error)),
-          (_) => emit(state.copyWith(status: LoginStatus.success)),
+          (failure) => emit(state.copyWith(
+            status: FormzSubmissionStatus.failure,
+            error: failure.message,
+          )),
+          (_) => emit(state.copyWith(status: FormzSubmissionStatus.success)),
         );
       } catch (_) {
-        emit(state.copyWith(status: LoginStatus.error));
+        emit(state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          error: 'An unexpected error occurred, please try again.',
+        ));
       }
     }
   }
