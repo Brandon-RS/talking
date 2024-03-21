@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/usecases/login_usecase.dart';
-import 'login_status.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';

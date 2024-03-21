@@ -4,9 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../configs/di/injector.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../blocs/auth/auth_bloc.dart';
-import '../blocs/auth/auth_status.dart';
 import '../blocs/login/login_bloc.dart';
-import '../blocs/login/login_status.dart';
 import 'rounded_button.dart';
 import 'rounded_text_field.dart';
 

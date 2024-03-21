@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
 
 import 'configs/di/injector.dart';
 import 'configs/router/app_router.dart';
 import 'configs/storage/storage_manager.dart';
 import 'configs/theme/app_theme.dart';
-import 'src/auth/presentation/blocs/auth/auth_status.dart';
+import 'src/auth/presentation/blocs/auth/auth_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
