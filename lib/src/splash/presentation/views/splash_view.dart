@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:talking/src/chat/presentation/blocs/chat/chat_bloc.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
 import '../../../auth/presentation/widgets/logo.dart';
-import '../../../chat/presentation/providers/chat_provider.dart';
 import '../../../user/presentation/providers/logged_user_provider.dart';
 
 class SplashView extends ConsumerStatefulWidget {
@@ -35,7 +36,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
               user: next.user,
             );
 
-        ref.read(chatProvider.notifier).connect();
+        context.read<ChatBloc>().connect();
       } else if (next is LoggedOut || next is AuthError) {
         context.replace('/login');
       }

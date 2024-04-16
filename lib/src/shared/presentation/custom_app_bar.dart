@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:talking/src/chat/presentation/blocs/chat/chat_bloc.dart';
 
 import '../../../configs/colors/generic_colors.dart';
 import '../../../configs/router/app_router.dart';
-import '../../chat/presentation/providers/chat_provider.dart';
 import '../../user/domain/entities/user_entity.dart';
 import '../../user/presentation/providers/logged_user_provider.dart';
 import '../../user/presentation/providers/logged_user_state.dart';
@@ -14,7 +15,6 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chatState = ref.watch(chatProvider);
     final loggedUser = ref.watch(loggedUserProvider.select((v) => v is LoggedUserLoaded ? v.user : User.empty));
 
     return AppBar(
@@ -51,7 +51,9 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   top: 1,
                   child: CircleAvatar(
                     radius: 5.5,
-                    backgroundColor: chatState.isOnline ? TColors.green : TColors.red,
+                    // TODO(BRANDOM): Change this, it's just for testing
+                    backgroundColor:
+                        context.read<ChatBloc>().state.status == ChatStatus.online ? TColors.green : TColors.red,
                   ),
                 ),
               ],

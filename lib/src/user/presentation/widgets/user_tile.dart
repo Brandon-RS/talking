@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:talking/configs/colors/generic_colors.dart';
+import 'package:talking/src/chat/presentation/blocs/chat/chat_bloc.dart';
+import 'package:talking/src/user/domain/entities/user_entity.dart';
 
-import '../../../../configs/colors/generic_colors.dart';
-import '../../../chat/presentation/providers/chat_provider.dart';
-import '../../domain/entities/user_entity.dart';
-
-class UserTile extends ConsumerWidget {
+class UserTile extends StatelessWidget {
   const UserTile({super.key, required this.user});
 
   final User user;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return ListTile(
       shape: Border(
         bottom: BorderSide(
@@ -34,8 +33,8 @@ class UserTile extends ConsumerWidget {
         radius: 5,
       ),
       onTap: () {
-        ref.read(chatProvider.notifier).setTargetUser(user);
-        ref.read(chatProvider.notifier).getUserLastChatsIfNeed();
+        context.read<ChatBloc>().add(SetRecipient(user));
+        context.read<ChatBloc>().add(const GetSelectedContactChatsIfNeed());
         context.push('/chat');
       },
     );

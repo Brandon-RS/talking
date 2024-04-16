@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../shared/presentation/custom_app_bar.dart';
-import '../blocs/users/users_bloc.dart';
-import '../widgets/user_list.dart';
+import 'package:talking/src/shared/presentation/custom_app_bar.dart';
+import 'package:talking/src/user/presentation/blocs/users/users_bloc.dart';
+import 'package:talking/src/user/presentation/widgets/user_list.dart';
 
 class UsersView extends StatelessWidget {
   const UsersView({super.key});

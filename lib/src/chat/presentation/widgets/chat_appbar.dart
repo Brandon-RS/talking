@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../user/domain/entities/user_entity.dart';
-import '../providers/chat_provider.dart';
-import '../providers/chat_state.dart';
+import 'package:talking/src/chat/presentation/blocs/chat/chat_bloc.dart';
 
 class ChatAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const ChatAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final User targetUser = ref.watch(chatProvider.select((value) => value is ChatLoaded ? value.targetUser : User.empty));
-
     return AppBar(
       leadingWidth: 80,
       leading: Material(
@@ -20,7 +16,8 @@ class ChatAppBar extends ConsumerWidget implements PreferredSizeWidget {
         child: InkWell(
           customBorder: const StadiumBorder(),
           onTap: () {
-            // ref.read(chatProvider.notifier).stopChat();
+            // TODO(BRANDOM): Fix this, for some reason te event is not being tracked after the StopChat event is fired
+            // context.read<ChatBloc>().add(const StopChat());
             context.pop();
           },
           child: Padding(
@@ -47,11 +44,17 @@ class ChatAppBar extends ConsumerWidget implements PreferredSizeWidget {
           ),
         ),
       ),
-      title: Text(
-        targetUser.name,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
+      title: BlocBuilder<ChatBloc, ChatState>(
+        builder: (context, state) {
+          final targetUser = state.recipient;
+
+          return Text(
+            targetUser.name,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+          );
+        },
       ),
       centerTitle: false,
       actions: [

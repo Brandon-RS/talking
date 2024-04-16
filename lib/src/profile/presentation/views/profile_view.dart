@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:talking/src/chat/presentation/blocs/chat/chat_bloc.dart';
 
 import '../../../../configs/router/app_router.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/auth_state.dart';
-import '../../../chat/presentation/providers/chat_provider.dart';
 import '../../../user/domain/entities/user_entity.dart';
 import '../../../user/presentation/providers/logged_user_provider.dart';
 import '../../../user/presentation/providers/logged_user_state.dart';
@@ -25,7 +26,7 @@ class ProfileView extends ConsumerWidget {
         if (next is LoggedOut) {
           AppRouter.replaceAndRemoveUntil('/login');
           ref.invalidate(authProvider);
-          ref.read(chatProvider.notifier).disconnect();
+          context.read<ChatBloc>().add(const Disconnect());
           ref.read(usersProvider.notifier).reset();
           ref.read(loggedUserProvider.notifier).reset();
         }
