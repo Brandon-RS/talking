@@ -4,26 +4,26 @@ enum RegisterStatus { initial, submitting, success, failure }
 
 final class RegisterState extends Equatable {
   const RegisterState({
-    this.status = RegisterStatus.initial,
+    this.status = FormzSubmissionStatus.initial,
     this.name = '',
-    this.email = '',
-    this.password = '',
+    this.email = const EmailModel.pure(),
+    this.password = const PasswordModel.pure(),
     this.isValid = false,
     this.error = '',
   });
 
-  final RegisterStatus status;
+  final FormzSubmissionStatus status;
   final String name;
-  final String email;
-  final String password;
+  final EmailModel email;
+  final PasswordModel password;
   final bool isValid;
   final String error;
 
   RegisterState copyWith({
-    RegisterStatus? status,
+    FormzSubmissionStatus? status,
     String? name,
-    String? email,
-    String? password,
+    EmailModel? email,
+    PasswordModel? password,
     bool? isValid,
     String? error,
   }) {

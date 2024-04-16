@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../configs/di/injector.dart';
@@ -31,10 +32,10 @@ class _RegisterFormState extends State<RegisterForm> {
         child: BlocListener<RegisterBloc, RegisterState>(
           listener: (context, state) {
             switch (state.status) {
-              case RegisterStatus.success:
+              case FormzSubmissionStatus.success:
                 context.pushReplacement('/users');
                 break;
-              case RegisterStatus.failure:
+              case FormzSubmissionStatus.failure:
                 DialogUtils.showAlert(
                   context,
                   title: 'Something when wrong!',
@@ -50,6 +51,7 @@ class _RegisterFormState extends State<RegisterForm> {
           child: Column(
             children: [
               BlocBuilder<RegisterBloc, RegisterState>(
+                buildWhen: (prev, next) => prev.name != next.name,
                 builder: (context, state) => RoundedTextField(
                   prefixIcon: Icons.perm_identity_outlined,
                   hintText: 'Name',
@@ -60,10 +62,11 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               const SizedBox(height: 22),
               BlocBuilder<RegisterBloc, RegisterState>(
+                buildWhen: (prev, next) => prev.email != next.email,
                 builder: (context, state) => RoundedTextField(
                   prefixIcon: Icons.email_outlined,
                   hintText: 'Email',
-                  labelText: 'Email',
+                  labelText: state.email.displayError != null ? 'Invalid email' : 'Email',
                   inactiveBackgroundColor: colorScheme.outline.withOpacity(.2),
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (email) => context.read<RegisterBloc>().add(RegisterEmailChanged(email)),
@@ -102,7 +105,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   builder: (context, value, child) => RoundedButton(
                     text: 'Register',
                     expandable: true,
-                    onPressed: value && state.isValid && state.status != RegisterStatus.submitting
+                    onPressed: value && state.isValid && state.status != FormzSubmissionStatus.inProgress
                         ? () {
                             context.read<RegisterBloc>().add(const RegisterSubmitted());
                           }

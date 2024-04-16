@@ -24,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginUsernameChanged event,
     Emitter<LoginState> emit,
   ) {
-    final email = Email.dirty(event.email);
+    final email = EmailModel.dirty(event.email);
     emit(
       state.copyWith(
         email: email,
@@ -38,7 +38,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginPasswordChanged event,
     Emitter<LoginState> emit,
   ) {
-    final password = Password.dirty(event.password);
+    final password = PasswordModel.dirty(event.password);
     emit(
       state.copyWith(
         password: password,
@@ -56,12 +56,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
       try {
-        final result = await _loginUsecase((state.email.value, state.password.value));
+        final result = await _loginUsecase((
+          state.email.value,
+          state.password.value,
+        ));
+
         result.fold(
-          (failure) => emit(state.copyWith(
-            status: FormzSubmissionStatus.failure,
-            error: failure.message,
-          )),
+          (failure) => emit(
+            state.copyWith(
+              status: FormzSubmissionStatus.failure,
+              error: failure.message,
+            ),
+          ),
           (_) => emit(state.copyWith(status: FormzSubmissionStatus.success)),
         );
       } catch (_) {

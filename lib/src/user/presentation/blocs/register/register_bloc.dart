@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
+import 'package:talking/src/auth/presentation/models/models.dart';
 
 import '../../../domain/usecases/register_user_usecase.dart';
 
@@ -27,7 +29,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     emit(state.copyWith(
       name: name,
       isValid: name.trim().isNotEmpty,
-      status: RegisterStatus.initial,
+      status: FormzSubmissionStatus.initial,
     ));
   }
 
@@ -35,11 +37,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     RegisterEmailChanged event,
     Emitter<RegisterState> emit,
   ) {
-    final email = event.email;
+    final email = EmailModel.dirty(event.email);
     emit(state.copyWith(
       email: email,
-      isValid: email.trim().isNotEmpty,
-      status: RegisterStatus.initial,
+      isValid: Formz.validate([state.password, email]),
+      status: FormzSubmissionStatus.initial,
     ));
   }
 
@@ -47,12 +49,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     RegisterPasswordChanged event,
     Emitter<RegisterState> emit,
   ) {
-    final password = event.password;
+    final password = PasswordModel.dirty(event.password);
     emit(
       state.copyWith(
         password: password,
-        isValid: password.trim().isNotEmpty,
-        status: RegisterStatus.initial,
+        isValid: Formz.validate([password, state.email]),
+        status: FormzSubmissionStatus.initial,
       ),
     );
   }
@@ -62,24 +64,24 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     Emitter<RegisterState> emit,
   ) async {
     if (state.isValid) {
-      emit(state.copyWith(status: RegisterStatus.submitting));
+      emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       try {
         final result = await _registerUserUsecase((
           state.name,
-          state.email,
-          state.password,
+          state.email.value,
+          state.password.value,
         ));
 
         result.fold(
           (failure) => emit(state.copyWith(
-            status: RegisterStatus.failure,
+            status: FormzSubmissionStatus.failure,
             error: failure.message,
           )),
-          (_) => emit(state.copyWith(status: RegisterStatus.success)),
+          (_) => emit(state.copyWith(status: FormzSubmissionStatus.success)),
         );
       } catch (_) {
         emit(state.copyWith(
-          status: RegisterStatus.failure,
+          status: FormzSubmissionStatus.failure,
           error: 'An unexpected error occurred, please try again!',
         ));
       }
