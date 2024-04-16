@@ -1,46 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/presentation/custom_app_bar.dart';
-import '../providers/users_provider.dart';
-import '../providers/users_state.dart';
+import '../blocs/users/users_bloc.dart';
 import '../widgets/user_list.dart';
 
-class UsersView extends ConsumerWidget {
+class UsersView extends StatelessWidget {
   const UsersView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final users = ref.watch(usersProvider);
-
-    if (users is UsersInitial) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(usersProvider.notifier).getUsersIfNeed();
-      });
-    }
-
-    ref.listen<UsersState>(usersProvider, (prev, next) {
-      if (next is UsersError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(next.message),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    });
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref.read(usersProvider.notifier).getALlUsers();
+      body: BlocListener<UsersBloc, UsersState>(
+        listener: (context, state) {
+          switch (state.status) {
+            case UsersStatus.failure:
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.error),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              break;
+            default:
+              break;
+          }
         },
-        child: users is! UsersLoading
-            ? const UserList()
-            : const Center(
-                child: CircularProgressIndicator(),
-              ),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            context.read<UsersBloc>().add(const GetUsers());
+          },
+          child: context.watch<UsersBloc>().state.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : const UserList(),
+        ),
       ),
     );
   }

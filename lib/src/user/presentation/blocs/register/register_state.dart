@@ -1,7 +1,5 @@
 part of 'register_bloc.dart';
 
-enum RegisterStatus { initial, submitting, success, failure }
-
 final class RegisterState extends Equatable {
   const RegisterState({
     this.status = FormzSubmissionStatus.initial,
@@ -40,5 +38,3 @@ final class RegisterState extends Equatable {
   @override
   List<Object> get props => [status, name, email, password, isValid, error];
 }
-
-final class RegisterInitial extends RegisterState {}

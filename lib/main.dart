@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:talking/src/user/domain/usecases/get_all_users_usecase.dart';
+import 'package:talking/src/user/presentation/blocs/users/users_bloc.dart';
 
 import 'configs/di/injector.dart';
 import 'configs/router/app_router.dart';
@@ -33,6 +35,7 @@ class TalkingApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => AuthBloc()),
+        BlocProvider(create: (_) => UsersBloc(getAllUsersUsecase: sl<GetAllUsersUsecase>())),
       ],
       child: const MainApp(),
     );
