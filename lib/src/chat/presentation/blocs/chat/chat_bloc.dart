@@ -138,6 +138,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   /// Connects to the chat socket
   void connect() {
+    // TODO(BRANDOM): Check if better to use an event
     _socket = io(
       Api.chat,
       OptionBuilder()

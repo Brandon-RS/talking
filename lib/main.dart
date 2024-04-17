@@ -64,6 +64,7 @@ class MainApp extends StatelessWidget {
           switch (state.status) {
             case AuthStatus.authenticated:
               AppRouter.router.replace('/users');
+              context.read<ChatBloc>().connect();
               break;
             case AuthStatus.authenticating:
               break;

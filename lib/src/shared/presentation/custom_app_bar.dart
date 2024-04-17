@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:talking/configs/colors/generic_colors.dart';
+import 'package:talking/configs/router/app_router.dart';
+import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:talking/src/chat/presentation/blocs/chat/chat_bloc.dart';
 
-import '../../../configs/colors/generic_colors.dart';
-import '../../../configs/router/app_router.dart';
-import '../../user/domain/entities/user_entity.dart';
-import '../../user/presentation/providers/logged_user_provider.dart';
-import '../../user/presentation/providers/logged_user_state.dart';
-
-class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final loggedUser = ref.watch(loggedUserProvider.select((v) => v is LoggedUserLoaded ? v.user : User.empty));
-
+  Widget build(BuildContext context) {
     return AppBar(
       leadingWidth: 18,
-      title: Text(
-        loggedUser.name,
+      title: BlocBuilder<AuthBloc, AuthState>(
+        builder: (_, state) => Text(state.user.name),
       ),
       centerTitle: false,
       actions: [
@@ -49,11 +43,11 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 Positioned(
                   right: 1,
                   top: 1,
-                  child: CircleAvatar(
-                    radius: 5.5,
-                    // TODO(BRANDOM): Change this, it's just for testing
-                    backgroundColor:
-                        context.read<ChatBloc>().state.status == ChatStatus.online ? TColors.green : TColors.red,
+                  child: BlocBuilder<ChatBloc, ChatState>(
+                    builder: (_, state) => CircleAvatar(
+                      radius: 5.5,
+                      backgroundColor: state.status == ChatStatus.online ? TColors.green : TColors.red,
+                    ),
                   ),
                 ),
               ],

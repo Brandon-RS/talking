@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:talking/src/chat/domain/entities/message_entity.dart';
 import 'package:talking/src/chat/presentation/blocs/chat/chat_bloc.dart';
+import 'package:talking/src/chat/presentation/widgets/chat.widgets.dart';
+import 'package:talking/src/user/domain/entities/user_entity.dart';
 
-import '../../../user/presentation/providers/logged_user_provider.dart';
-import '../../../user/presentation/providers/logged_user_state.dart';
-import '../../domain/entities/message_entity.dart';
-import '../widgets/chat.widgets.dart';
-
-class ChatView extends ConsumerWidget {
+class ChatView extends StatelessWidget {
   const ChatView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final loggedUser = ref.watch(loggedUserProvider.select((value) => value is LoggedUserLoaded ? value.user : null));
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: const ChatAppBar(),
       body: BlocBuilder<ChatBloc, ChatState>(
@@ -22,42 +18,48 @@ class ChatView extends ConsumerWidget {
           final chats = state.messages;
           final targetUser = state.recipient;
 
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+          return BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, authState) {
+              final user = authState.user;
+
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      itemCount: chats.length,
+                      reverse: true,
+                      itemBuilder: (context, index) {
+                        final isMe = chats[index].from == user.uid;
+
+                        return BubbleChat(
+                          text: chats[index].text,
+                          isMine: isMe,
+                        );
+                      },
+                    ),
                   ),
-                  itemCount: chats.length,
-                  reverse: true,
-                  itemBuilder: (context, index) {
-                    final isMe = chats[index].from == loggedUser?.uid;
+                  MessageInputField(
+                    onSubmitted: (value) {
+                      if (user == User.empty) {
+                        return;
+                      }
 
-                    return BubbleChat(
-                      text: chats[index].text,
-                      isMine: isMe,
-                    );
-                  },
-                ),
-              ),
-              MessageInputField(
-                onSubmitted: (value) {
-                  if (loggedUser == null) {
-                    return;
-                  }
+                      final message = Message(
+                        from: user.uid,
+                        to: targetUser.uid,
+                        text: value,
+                      );
 
-                  final message = Message(
-                    from: loggedUser.uid,
-                    to: targetUser.uid,
-                    text: value,
-                  );
-
-                  context.read<ChatBloc>().add(SendMessage(message));
-                },
-              ),
-            ],
+                      context.read<ChatBloc>().add(SendMessage(message));
+                    },
+                  ),
+                ],
+              );
+            },
           );
         },
       ),
