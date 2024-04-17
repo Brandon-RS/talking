@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talking/src/user/presentation/blocs/users/users_bloc.dart';
-
-import 'user_tile.dart';
+import 'package:talking/src/user/presentation/widgets/user_tile.dart';
 
 class UserList extends StatelessWidget {
   const UserList({super.key});

@@ -48,16 +48,22 @@ class ProfileView extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              const ProfileSection(
-                title: 'Name',
-                value: 'user.name',
-                icon: Icons.person_outline,
+              BlocBuilder<AuthBloc, AuthState>(
+                buildWhen: (previous, current) => previous.user.name != current.user.name,
+                builder: (context, state) => ProfileSection(
+                  title: 'Name',
+                  value: state.user.name,
+                  icon: Icons.person_outline,
+                ),
               ),
               const SizedBox(height: 15),
-              const ProfileSection(
-                title: 'Email',
-                value: 'user.email',
-                icon: Icons.email_outlined,
+              BlocBuilder<AuthBloc, AuthState>(
+                buildWhen: (previous, current) => previous.user.email != current.user.email,
+                builder: (context, state) => ProfileSection(
+                  title: 'Email',
+                  value: state.user.email,
+                  icon: Icons.email_outlined,
+                ),
               ),
             ],
           ),

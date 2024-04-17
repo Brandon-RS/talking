@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:talking/configs/colors/generic_colors.dart';
+import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:talking/src/auth/presentation/widgets/logo.dart';
 import 'package:talking/src/profile/utils/menu_option.dart';
 
@@ -16,54 +18,56 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: const Text('Your Profile'),
       centerTitle: false,
       actions: [
-        PopupMenuButton<MenuOption>(
-          icon: const Icon(Icons.more_vert),
-          elevation: 1,
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: MenuOption.changePassword,
-              child: Text('Change Password'),
-            ),
-            const PopupMenuItem(
-              value: MenuOption.deleteAccount,
-              child: Text('Delete Account'),
-            ),
-            const PopupMenuItem(
-              value: MenuOption.logout,
-              child: Text('Logout'),
-            ),
-            const PopupMenuItem(
-              value: MenuOption.help,
-              child: Text('Help'),
-            ),
-            const PopupMenuItem(
-              value: MenuOption.about,
-              child: Text('About'),
-            ),
-          ],
-          onSelected: (value) {
-            switch (value) {
-              case MenuOption.logout:
-                // if (auth is! AuthLoading) ref.read(authProvider.notifier).logout();
-                break;
-              case MenuOption.changePassword:
-                context.push('/profile/change-password');
-                break;
-              case MenuOption.deleteAccount:
-                _showDeleteAccountDialog(
-                  context,
-                  () {
-                    // if (auth is! AuthLoading) ref.read(authProvider.notifier).deleteAccount();
-                  },
-                );
-                break;
-              case MenuOption.help:
-                break;
-              case MenuOption.about:
-                _showAboutDialog(context);
-                break;
-            }
-          },
+        BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) => PopupMenuButton<MenuOption>(
+            icon: const Icon(Icons.more_vert),
+            elevation: 1,
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: MenuOption.changePassword,
+                child: Text('Change Password'),
+              ),
+              const PopupMenuItem(
+                value: MenuOption.deleteAccount,
+                child: Text('Delete Account'),
+              ),
+              const PopupMenuItem(
+                value: MenuOption.logout,
+                child: Text('Logout'),
+              ),
+              const PopupMenuItem(
+                value: MenuOption.help,
+                child: Text('Help'),
+              ),
+              const PopupMenuItem(
+                value: MenuOption.about,
+                child: Text('About'),
+              ),
+            ],
+            onSelected: (value) {
+              switch (value) {
+                case MenuOption.logout:
+                  if (!state.isLoading) context.read<AuthBloc>().add(const Logout());
+                  break;
+                case MenuOption.changePassword:
+                  context.push('/profile/change-password');
+                  break;
+                case MenuOption.deleteAccount:
+                  _showDeleteAccountDialog(
+                    context,
+                    () {
+                      if (!state.isLoading) context.read<AuthBloc>().add(const DeleteAccount());
+                    },
+                  );
+                  break;
+                case MenuOption.help:
+                  break;
+                case MenuOption.about:
+                  _showAboutDialog(context);
+                  break;
+              }
+            },
+          ),
         ),
       ],
     );

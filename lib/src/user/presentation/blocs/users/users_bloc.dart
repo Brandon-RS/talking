@@ -14,9 +14,6 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     on<UsersInitial>(_onUsersInitial);
     on<GetUsers>(_onGetUsers);
     on<GetUsersIfNeed>(_onGetUsersIfNeed);
-
-    /// Fetch users when users view is opened
-    add(const GetUsersIfNeed());
   }
 
   final GetAllUsersUsecase _getAllUsersUsecase;

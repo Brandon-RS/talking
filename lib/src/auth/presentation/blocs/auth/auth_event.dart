@@ -20,3 +20,11 @@ final class AuthStatusChanged extends AuthEvent {
 final class RenewToken extends AuthEvent {
   const RenewToken();
 }
+
+final class Logout extends AuthEvent {
+  const Logout();
+}
+
+final class DeleteAccount extends AuthEvent {
+  const DeleteAccount();
+}

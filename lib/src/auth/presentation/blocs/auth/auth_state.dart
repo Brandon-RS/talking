@@ -1,10 +1,10 @@
 part of 'auth_bloc.dart';
 
-enum AuthStatus { unknown, authenticating, authenticated, unauthenticated, error }
+enum AuthStatus { loading, authenticated, unauthenticated, error }
 
 class AuthState extends Equatable {
   const AuthState({
-    this.status = AuthStatus.unknown,
+    this.status = AuthStatus.unauthenticated,
     this.user = User.empty,
     this.error = '',
   });
@@ -24,6 +24,8 @@ class AuthState extends Equatable {
       error: error ?? this.error,
     );
   }
+
+  bool get isLoading => status == AuthStatus.loading;
 
   @override
   List<Object> get props => [status];
