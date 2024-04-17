@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:talking/src/user/domain/entities/user_entity.dart';
 
 import '../../../domain/usecases/login_usecase.dart';
 import '../../models/models.dart';
@@ -68,7 +69,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               error: failure.message,
             ),
           ),
-          (_) => emit(state.copyWith(status: FormzSubmissionStatus.success)),
+          (model) => emit(state.copyWith(
+            status: FormzSubmissionStatus.success,
+            user: model.user,
+          )),
         );
       } catch (_) {
         emit(state.copyWith(

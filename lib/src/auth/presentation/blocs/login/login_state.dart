@@ -6,6 +6,7 @@ final class LoginState extends Equatable {
     this.email = const EmailModel.pure(),
     this.password = const PasswordModel.pure(),
     this.isValid = false,
+    this.user = User.empty,
     this.error = '',
   });
 
@@ -13,6 +14,7 @@ final class LoginState extends Equatable {
   final EmailModel email;
   final PasswordModel password;
   final bool isValid;
+  final User user;
   final String error;
 
   LoginState copyWith({
@@ -20,6 +22,7 @@ final class LoginState extends Equatable {
     EmailModel? email,
     PasswordModel? password,
     bool? isValid,
+    User? user,
     String? error,
   }) {
     return LoginState(
@@ -27,6 +30,7 @@ final class LoginState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       isValid: isValid ?? this.isValid,
+      user: user ?? this.user,
       error: error ?? this.error,
     );
   }

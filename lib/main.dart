@@ -68,7 +68,7 @@ class MainApp extends StatelessWidget {
             case AuthStatus.authenticating:
               break;
             default:
-              AppRouter.router.replace('/login');
+              AppRouter.replaceAndRemoveUntil('/login');
               break;
           }
         },

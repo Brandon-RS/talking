@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:talking/configs/colors/generic_colors.dart';
+import 'package:talking/src/auth/presentation/widgets/logo.dart';
+import 'package:talking/src/profile/utils/menu_option.dart';
 
-import '../../../auth/presentation/providers/auth_provider.dart';
-import '../../../auth/presentation/providers/auth_state.dart';
-import '../../../auth/presentation/widgets/logo.dart';
-import '../../utils/menu_option.dart';
-
-class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
+class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ProfileAppBar({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final auth = ref.watch(authProvider);
+  Widget build(BuildContext context) {
+    // final auth = ref.watch(authProvider);
 
     return AppBar(
       leadingWidth: 18,
@@ -48,7 +44,7 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
           onSelected: (value) {
             switch (value) {
               case MenuOption.logout:
-                if (auth is! AuthLoading) ref.read(authProvider.notifier).logout();
+                // if (auth is! AuthLoading) ref.read(authProvider.notifier).logout();
                 break;
               case MenuOption.changePassword:
                 context.push('/profile/change-password');
@@ -57,7 +53,7 @@ class ProfileAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 _showDeleteAccountDialog(
                   context,
                   () {
-                    if (auth is! AuthLoading) ref.read(authProvider.notifier).deleteAccount();
+                    // if (auth is! AuthLoading) ref.read(authProvider.notifier).deleteAccount();
                   },
                 );
                 break;

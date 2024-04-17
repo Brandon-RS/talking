@@ -1,75 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:talking/src/chat/presentation/blocs/chat/chat_bloc.dart';
-
-import '../../../../configs/router/app_router.dart';
-import '../../../auth/presentation/providers/auth_provider.dart';
-import '../../../auth/presentation/providers/auth_state.dart';
-import '../../../user/domain/entities/user_entity.dart';
-import '../../../user/presentation/providers/logged_user_provider.dart';
-import '../../../user/presentation/providers/logged_user_state.dart';
-import '../../../user/presentation/providers/users_provider.dart';
-import '../widgets/profile_app_bar.dart';
-import '../widgets/profile_section.dart';
+import 'package:talking/src/profile/presentation/widgets/profile_app_bar.dart';
+import 'package:talking/src/profile/presentation/widgets/profile_section.dart';
+import 'package:talking/src/user/presentation/blocs/users/users_bloc.dart';
 
 class ProfileView extends ConsumerWidget {
   const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final User user = ref.watch(loggedUserProvider.select((v) => v is LoggedUserLoaded ? v.user : User.empty));
-
-    ref.listen<AuthState>(
-      authProvider,
-      (prev, next) {
-        if (next is LoggedOut) {
-          AppRouter.replaceAndRemoveUntil('/login');
-          ref.invalidate(authProvider);
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        // TODO(BRANDOM): Check if better to do this logic on the main.dart
+        if (state.status == AuthStatus.unauthenticated) {
+          // TODO(BRANDOM): Check if need to reset the AuthBloc here
           context.read<ChatBloc>().add(const Disconnect());
-          ref.read(usersProvider.notifier).reset();
-          ref.read(loggedUserProvider.notifier).reset();
+          // TODO(BRANDOM): Check this "initial" logic
+          context.read<UsersBloc>().add(const UsersInitial());
+          // ref.read(loggedUserProvider.notifier).reset();
         }
       },
-    );
-
-    return Scaffold(
-      appBar: const ProfileAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                height: 160,
-                decoration: ShapeDecoration(
-                  shape: CircleBorder(
-                    side: BorderSide(
-                      color: Theme.of(context).colorScheme.outline.withOpacity(.7),
-                      width: .6,
+      child: Scaffold(
+        appBar: const ProfileAppBar(),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  height: 160,
+                  decoration: ShapeDecoration(
+                    shape: CircleBorder(
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.outline.withOpacity(.7),
+                        width: .6,
+                      ),
                     ),
                   ),
-                ),
-                child: Image.network(
-                  // TODO(BRANDOM): Temporary image
-                  'https://avatars.githubusercontent.com/u/79495707?v=4',
+                  child: Image.network(
+                    // TODO(BRANDOM): Temporary image
+                    'https://avatars.githubusercontent.com/u/79495707?v=4',
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 30),
-            ProfileSection(
-              title: 'Name',
-              value: user.name,
-              icon: Icons.person_outline,
-            ),
-            const SizedBox(height: 15),
-            ProfileSection(
-              title: 'Email',
-              value: user.email,
-              icon: Icons.email_outlined,
-            ),
-          ],
+              const SizedBox(height: 30),
+              const ProfileSection(
+                title: 'Name',
+                value: 'user.name',
+                icon: Icons.person_outline,
+              ),
+              const SizedBox(height: 15),
+              const ProfileSection(
+                title: 'Email',
+                value: 'user.email',
+                icon: Icons.email_outlined,
+              ),
+            ],
+          ),
         ),
       ),
     );

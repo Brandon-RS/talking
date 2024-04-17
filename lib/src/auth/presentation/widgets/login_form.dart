@@ -32,7 +32,9 @@ class _LoginFormState extends State<LoginForm> {
             listener: (context, state) {
               switch (state.status) {
                 case FormzSubmissionStatus.success:
-                  context.read<AuthBloc>().add(const AuthStatusChanged(AuthStatus.authenticated));
+                  context.read<AuthBloc>().add(
+                        AuthStatusChanged(AuthStatus.authenticated, state.user),
+                      );
                   break;
                 case FormzSubmissionStatus.failure:
                   ScaffoldMessenger.of(context)

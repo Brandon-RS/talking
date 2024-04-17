@@ -8,9 +8,13 @@ sealed class AuthEvent extends Equatable {
 }
 
 final class AuthStatusChanged extends AuthEvent {
-  const AuthStatusChanged(this.status);
+  const AuthStatusChanged(this.status, this.user);
 
   final AuthStatus status;
+  final User? user;
+
+  @override
+  List<Object> get props => [status];
 }
 
 final class RenewToken extends AuthEvent {

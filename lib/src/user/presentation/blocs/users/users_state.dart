@@ -9,6 +9,8 @@ final class UsersState extends Equatable {
     this.error = 'Something went wrong, please refresh the page!',
   });
 
+  factory UsersState.initial() => const UsersState();
+
   final UsersStatus status;
   final List<User> users;
   final String error;

@@ -11,6 +11,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     required GetAllUsersUsecase getAllUsersUsecase,
   })  : _getAllUsersUsecase = getAllUsersUsecase,
         super(const UsersState()) {
+    on<UsersInitial>(_onUsersInitial);
     on<GetUsers>(_onGetUsers);
     on<GetUsersIfNeed>(_onGetUsersIfNeed);
 
@@ -19,6 +20,13 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
   }
 
   final GetAllUsersUsecase _getAllUsersUsecase;
+
+  void _onUsersInitial(
+    UsersInitial event,
+    Emitter<UsersState> emit,
+  ) {
+    emit(UsersState.initial());
+  }
 
   void _onGetUsers(
     GetUsers event,
