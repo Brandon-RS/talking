@@ -10,7 +10,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({
     required RenewTokenUsecase renewTokenUsecase,
   })  : _renewTokenUsecase = renewTokenUsecase,
-        super(const AuthState.unknown()) {
+        super(const AuthState()) {
     on<AuthStatusChanged>(_onAuthStatusChanged);
     on<RenewToken>(_onRenewToken);
   }
@@ -23,12 +23,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) {
     switch (event.status) {
       case AuthStatus.unauthenticated:
-        return emit(const AuthState.unauthenticated());
+        return emit(state.copyWith(status: AuthStatus.unauthenticated));
       case AuthStatus.authenticated:
-        // TODO(BRANDOM): Check this
-        return emit(AuthState.authenticated(event.user!));
+        // TODO(BRANDOM): Check this (user logic)
+        return emit(state.copyWith(
+          status: AuthStatus.authenticated,
+          user: event.user,
+        ));
       default:
-        return emit(const AuthState.unknown());
+        return emit(state.copyWith(status: AuthStatus.unknown));
     }
   }
 
@@ -36,13 +39,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     RenewToken event,
     Emitter<AuthState> emit,
   ) async {
-    emit(const AuthState.authenticating());
+    emit(state.copyWith(status: AuthStatus.authenticating));
 
     final result = await _renewTokenUsecase();
 
     result.fold(
-      (failure) => emit(AuthState.error(failure.message)),
-      (model) => emit(AuthState.authenticated(model.user)),
+      (failure) => emit(state.copyWith(
+        status: AuthStatus.unauthenticated,
+        error: failure.message,
+      )),
+      (model) => emit(state.copyWith(
+        status: AuthStatus.authenticated,
+        user: model.user,
+      )),
     );
   }
 }
