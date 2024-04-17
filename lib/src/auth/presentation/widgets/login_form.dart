@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-
-import '../../../../configs/di/injector.dart';
-import '../../domain/usecases/login_usecase.dart';
-import '../blocs/auth/auth_bloc.dart';
-import '../blocs/login/login_bloc.dart';
-import '../models/models.dart';
-import 'rounded_button.dart';
-import 'rounded_text_field.dart';
+import 'package:talking/configs/di/injector.dart';
+import 'package:talking/src/auth/domain/usecases/login_usecase.dart';
+import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:talking/src/auth/presentation/blocs/login/login_bloc.dart';
+import 'package:talking/src/auth/presentation/models/models.dart';
+import 'package:talking/src/auth/presentation/widgets/rounded_button.dart';
+import 'package:talking/src/auth/presentation/widgets/rounded_text_field.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show TextInputFormatter;
-
-import '../../../../configs/colors/generic_colors.dart';
+import 'package:talking/configs/colors/generic_colors.dart';
 
 class RoundedTextField extends StatefulWidget {
   const RoundedTextField({

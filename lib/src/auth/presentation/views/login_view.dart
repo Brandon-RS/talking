@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../../../terms_and_conditions/presentation/widgets/terms_and_conditions_button.dart';
-import '../widgets/labels.dart';
-import '../widgets/login_form.dart';
-import '../widgets/logo.dart';
+import 'package:talking/src/auth/presentation/widgets/labels.dart';
+import 'package:talking/src/auth/presentation/widgets/login_form.dart';
+import 'package:talking/src/auth/presentation/widgets/logo.dart';
+import 'package:talking/src/terms_and_conditions/presentation/widgets/terms_and_conditions_button.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});

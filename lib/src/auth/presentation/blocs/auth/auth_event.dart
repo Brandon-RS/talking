@@ -12,3 +12,7 @@ final class AuthStatusChanged extends AuthEvent {
 
   final AuthStatus status;
 }
+
+final class RenewToken extends AuthEvent {
+  const RenewToken();
+}
