@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:talking/configs/di/injector.dart';
 import 'package:talking/configs/router/app_router.dart';
@@ -10,14 +9,14 @@ import 'package:talking/src/auth/presentation/models/models.dart';
 import 'package:talking/src/profile/presentation/blocs/change_password/change_password_bloc.dart';
 import 'package:talking/src/user/domain/usecases/change_password_usecase.dart';
 
-class ChangePasswordView extends ConsumerStatefulWidget {
+class ChangePasswordView extends StatefulWidget {
   const ChangePasswordView({super.key});
 
   @override
-  ConsumerState<ChangePasswordView> createState() => _ChangePasswordViewState();
+  State<ChangePasswordView> createState() => _ChangePasswordViewState();
 }
 
-class _ChangePasswordViewState extends ConsumerState<ChangePasswordView> {
+class _ChangePasswordViewState extends State<ChangePasswordView> {
   late GlobalKey<FormState> _formKey;
 
   @override

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:talking/src/chat/presentation/blocs/chat/chat_bloc.dart';
 import 'package:talking/src/profile/presentation/widgets/profile_app_bar.dart';
 import 'package:talking/src/profile/presentation/widgets/profile_section.dart';
 import 'package:talking/src/user/presentation/blocs/users/users_bloc.dart';
 
-class ProfileView extends ConsumerWidget {
+class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         // TODO(BRANDOM): Check if better to do this logic on the main.dart

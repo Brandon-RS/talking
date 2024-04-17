@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:talking/configs/di/injector.dart';
 import 'package:talking/configs/router/app_router.dart';
 import 'package:talking/configs/storage/storage_manager.dart';
@@ -19,11 +18,7 @@ void main() async {
 
   await initApp();
 
-  runApp(
-    const ProviderScope(
-      child: TalkingApp(),
-    ),
-  );
+  runApp(const TalkingApp());
 }
 
 Future<void> initApp() async {
