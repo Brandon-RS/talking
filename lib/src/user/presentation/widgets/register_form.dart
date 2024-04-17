@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
+import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
 
 import '../../../../configs/di/injector.dart';
 import '../../../../core/common/dialog_utils.dart';
@@ -34,6 +35,9 @@ class _RegisterFormState extends State<RegisterForm> {
             switch (state.status) {
               case FormzSubmissionStatus.success:
                 context.pushReplacement('/users');
+                context.read<AuthBloc>().add(
+                      AuthStatusChanged(AuthStatus.authenticated, state.user),
+                    );
                 break;
               case FormzSubmissionStatus.failure:
                 DialogUtils.showAlert(

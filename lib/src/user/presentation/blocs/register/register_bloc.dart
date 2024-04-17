@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:talking/src/auth/presentation/models/models.dart';
+import 'package:talking/src/user/domain/entities/user_entity.dart';
 
 import '../../../domain/usecases/register_user_usecase.dart';
 
@@ -77,7 +78,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             status: FormzSubmissionStatus.failure,
             error: failure.message,
           )),
-          (_) => emit(state.copyWith(status: FormzSubmissionStatus.success)),
+          (model) => emit(state.copyWith(
+            status: FormzSubmissionStatus.success,
+            user: model.user,
+          )),
         );
       } catch (_) {
         emit(state.copyWith(
