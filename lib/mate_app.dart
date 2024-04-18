@@ -28,6 +28,7 @@ class MainApp extends StatelessWidget {
             case AuthStatus.unauthenticated:
               context.read<ChatBloc>().add(const Disconnect());
               context.read<UsersBloc>().add(const UsersInitial());
+              AppRouter.replaceAndRemoveUntil('/login');
               break;
             default:
               AppRouter.replaceAndRemoveUntil('/login');

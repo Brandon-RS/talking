@@ -32,7 +32,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   final GetLastChatsUsecase _getLastChatsUsecase;
   final StorageManager _storageManager;
-  late Socket _socket;
+  Socket? _socket;
 
   void _onConnectSocket(
     ConnectClient event,
@@ -80,7 +80,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) {
     final message = event.message.toModel();
-    _socket.emit('personal-message', message.toJson());
+    _socket!.emit('personal-message', message.toJson());
     _addMessage(emit, event.message);
   }
 
@@ -112,7 +112,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     StopChat event,
     Emitter<ChatState> emit,
   ) {
-    _socket.off('personal-message');
+    _socket!.off('personal-message');
     if (state.isOnline) {
       emit(state.copyWith(messages: [], recipient: User.empty));
     }
@@ -122,7 +122,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Disconnect event,
     Emitter<ChatState> emit,
   ) {
-    _socket.disconnect();
+    if (_socket != null) _socket!.disconnect();
     emit(const ChatState(status: ChatStatus.disconnected));
   }
 
