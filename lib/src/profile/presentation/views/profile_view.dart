@@ -1,11 +1,21 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:talking/src/profile/presentation/widgets/profile_app_bar.dart';
 import 'package:talking/src/profile/presentation/widgets/profile_section.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
+
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  File? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -17,21 +27,52 @@ class ProfileView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Container(
-                height: 160,
-                decoration: ShapeDecoration(
-                  shape: CircleBorder(
-                    side: BorderSide(
-                      color: Theme.of(context).colorScheme.outline.withOpacity(.7),
-                      width: .6,
+              child: Stack(
+                children: [
+                  Container(
+                    height: 160,
+                    decoration: ShapeDecoration(
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: Theme.of(context).colorScheme.outline.withOpacity(.7),
+                          width: .6,
+                        ),
+                      ),
+                    ),
+                    child: Image.network(
+                      // TODO(BRANDOM): Temporary image
+                      'https://avatars.githubusercontent.com/u/79495707?v=4',
                     ),
                   ),
-                ),
-                child: Image.network(
-                  // TODO(BRANDOM): Temporary image
-                  'https://avatars.githubusercontent.com/u/79495707?v=4',
-                ),
+                  Positioned(
+                    bottom: 4,
+                    right: 4,
+                    child: IconButton.filled(
+                      icon: const Icon(
+                        Icons.camera_alt_outlined,
+                        size: 24,
+                        color: Colors.white,
+                      ),
+                      onPressed: () async {
+                        final result = await FilePicker.platform.pickFiles(
+                          type: FileType.image,
+                          // allowedExtensions: ['jpg', 'jpeg', 'png'],
+                        );
+                        if (result != null) {
+                          setState(() {
+                            _image = File(result.files.single.path!);
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
+            ),
+            SizedBox(
+              height: 160,
+              width: 160,
+              child: _image != null ? Image.file(_image!) : const SizedBox.shrink(),
             ),
             const SizedBox(height: 30),
             BlocBuilder<AuthBloc, AuthState>(
