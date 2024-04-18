@@ -34,7 +34,6 @@ class _RegisterFormState extends State<RegisterForm> {
           listener: (context, state) {
             switch (state.status) {
               case FormzSubmissionStatus.success:
-                context.pushReplacement('/users');
                 context.read<AuthBloc>().add(
                       AuthStatusChanged(AuthStatus.authenticated, state.user),
                     );
