@@ -18,7 +18,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   })  : _getLastChatsUsecase = getLastChatsUsecase,
         _storageManager = storageManager,
         super(const ChatState()) {
-    on<Connect>(_onConnectSocket);
+    on<Connect>(_onConnect);
+    on<ConnectClient>(_onConnectSocket);
     on<GetSelectedContactChats>(_onGetSelectedContactChats);
     on<GetSelectedContactChatsIfNeed>(_onGetSelectedContactChatsIdNeed);
     on<SendMessage>(_onSendMessage);
@@ -34,7 +35,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late Socket _socket;
 
   void _onConnectSocket(
-    Connect event,
+    ConnectClient event,
     Emitter<ChatState> emit,
   ) {
     emit(const ChatState(
@@ -136,8 +137,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   /// Connects to the chat socket
-  void connect() {
-    // TODO(BRANDOM): Check if better to use an event
+  void _onConnect(
+    Connect event,
+    Emitter<ChatState> emit,
+  ) {
+    emit(const ChatState(status: ChatStatus.loading));
     _socket = io(
       Api.chat,
       OptionBuilder()
@@ -149,7 +153,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           .enableForceNew()
           .build(),
     )
-      ..onConnect((_) => add(const Connect()))
+      ..onConnect((_) => add(const ConnectClient()))
       ..on('personal-message', (data) => add(MessageReceived(data)))
       ..onError((data) => add(ErrorReceived(data.toString())))
       ..onDisconnect((_) => add(const Disconnect()));

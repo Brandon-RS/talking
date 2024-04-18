@@ -11,6 +11,10 @@ final class Connect extends ChatEvent {
   const Connect();
 }
 
+final class ConnectClient extends ChatEvent {
+  const ConnectClient();
+}
+
 final class Disconnect extends ChatEvent {
   const Disconnect();
 }
