@@ -59,7 +59,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (messages) {
         emit(state.copyWith(
           messages: messages,
-          status: ChatStatus.online,
+          status: ChatStatus.loaded,
         ));
       },
     );
@@ -69,8 +69,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     GetSelectedContactChatsIfNeed event,
     Emitter<ChatState> emit,
   ) {
-    // TODO(BRANDOM): Handle the status better (need to differentiate between loaded and online)
-    if (state.status == ChatStatus.online && state.messages.isEmpty) {
+    if (state.isOnline && state.messages.isEmpty) {
       add(const GetSelectedContactChats());
     }
   }
@@ -88,7 +87,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     MessageReceived event,
     Emitter<ChatState> emit,
   ) {
-    if (state.status != ChatStatus.online) {
+    if (!state.isOnline) {
       return;
     }
 
@@ -113,7 +112,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter<ChatState> emit,
   ) {
     _socket.off('personal-message');
-    if (state.status == ChatStatus.online) {
+    if (state.isOnline) {
       emit(state.copyWith(messages: [], recipient: User.empty));
     }
   }
@@ -157,7 +156,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   void _addMessage(Emitter<ChatState> emit, Message message) {
-    if (state.status == ChatStatus.online) {
+    if (state.isOnline) {
       final messages = state.messages;
       emit(state.copyWith(messages: [message, ...messages]));
     }

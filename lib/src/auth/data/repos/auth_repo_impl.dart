@@ -42,8 +42,6 @@ class AuthRepoImpl implements AuthRepo {
     } catch (e) {
       final failure = ErrorHandler.handle(e, defaultMessage: 'Error renewing token');
 
-      // TODO(BRANDOM): Check is need to validate status code
-
       return Left(failure);
     }
   }

@@ -46,7 +46,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: BlocBuilder<ChatBloc, ChatState>(
                     builder: (_, state) => CircleAvatar(
                       radius: 5.5,
-                      backgroundColor: state.status == ChatStatus.online ? TColors.green : TColors.red,
+                      backgroundColor: state.isOnline ? TColors.green : TColors.red,
                     ),
                   ),
                 ),

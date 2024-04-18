@@ -1,6 +1,6 @@
 part of 'chat_bloc.dart';
 
-enum ChatStatus { initial, loading, online, disconnected, error }
+enum ChatStatus { initial, loading, online, loaded, disconnected, error }
 
 final class ChatState extends Equatable {
   const ChatState({
@@ -28,6 +28,8 @@ final class ChatState extends Equatable {
       error: error ?? this.error,
     );
   }
+
+  bool get isOnline => status == ChatStatus.online || status == ChatStatus.loaded || status == ChatStatus.loading;
 
   @override
   List<Object> get props => [status, messages, recipient];

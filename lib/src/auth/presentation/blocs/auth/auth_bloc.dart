@@ -35,7 +35,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       case AuthStatus.unauthenticated:
         return emit(state.copyWith(status: AuthStatus.unauthenticated));
       case AuthStatus.authenticated:
-        // TODO(BRANDOM): Check this (user logic)
         return emit(state.copyWith(
           status: AuthStatus.authenticated,
           user: event.user,
