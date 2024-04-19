@@ -7,12 +7,20 @@ sealed class UploadProfilePicEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class UploadProfilePic extends UploadProfilePicEvent {
-  const UploadProfilePic(this.path, this.userUid);
+class SelectProfilePic extends UploadProfilePicEvent {
+  const SelectProfilePic(this.path);
 
   final String path;
+
+  @override
+  List<Object> get props => [path];
+}
+
+class UploadProfilePic extends UploadProfilePicEvent {
+  const UploadProfilePic(this.userUid);
+
   final String userUid;
 
   @override
-  List<Object> get props => [path, userUid];
+  List<Object> get props => [userUid];
 }

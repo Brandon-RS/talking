@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talking/src/user/domain/entities/profile_pic_entity.dart';
 import 'package:talking/src/user/domain/usecases/upload_profile_pic_usecase.dart';
 
@@ -11,15 +14,28 @@ class UploadProfilePicBloc extends Bloc<UploadProfilePicEvent, UploadProfilePicS
     required UploadProfilePicUsecase uploadProfilePicUsecase,
   })  : _uploadProfilePicUsecase = uploadProfilePicUsecase,
         super(const UploadProfilePicState()) {
+    on<SelectProfilePic>(_onSelectProfilePic);
     on<UploadProfilePic>(_onUploadProfilePic);
   }
 
   final UploadProfilePicUsecase _uploadProfilePicUsecase;
 
-  void _onUploadProfilePic(UploadProfilePic event, Emitter<UploadProfilePicState> emit) async {
+  void _onSelectProfilePic(
+    SelectProfilePic event,
+    Emitter<UploadProfilePicState> emit,
+  ) {
+    emit(state.copyWith(image: File(event.path)));
+  }
+
+  void _onUploadProfilePic(
+    UploadProfilePic event,
+    Emitter<UploadProfilePicState> emit,
+  ) async {
+    if (state.image == null) return;
+
     emit(state.copyWith(status: UploadProfilePicStatus.loading));
 
-    final result = await _uploadProfilePicUsecase((event.path, event.userUid));
+    final result = await _uploadProfilePicUsecase((state.image!.path, event.userUid));
 
     result.fold(
       (failure) {
@@ -35,5 +51,7 @@ class UploadProfilePicBloc extends Bloc<UploadProfilePicEvent, UploadProfilePicS
         ));
       },
     );
+
+    emit(state.deleteImage());
   }
 }
