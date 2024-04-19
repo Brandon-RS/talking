@@ -29,8 +29,9 @@ import '../../src/user/domain/usecases/change_password_usecase.dart' as _i21;
 import '../../src/user/domain/usecases/delete_account_usecase.dart' as _i20;
 import '../../src/user/domain/usecases/get_all_users_usecase.dart' as _i23;
 import '../../src/user/domain/usecases/register_user_usecase.dart' as _i22;
+import '../../src/user/domain/usecases/upload_profile_pic_usecase.dart' as _i24;
 import '../logger/app_logger.dart' as _i3;
-import '../networking/dio_provider.dart' as _i24;
+import '../networking/dio_provider.dart' as _i25;
 import '../networking/i_config.dart' as _i5;
 import '../storage/storage_manager.dart' as _i4;
 
@@ -93,7 +94,9 @@ _i1.GetIt $initGetIt(
       ));
   gh.factory<_i23.GetAllUsersUsecase>(
       () => _i23.GetAllUsersUsecase(gh<_i18.UserRepo>()));
+  gh.factory<_i24.UploadProfilePicUsecase>(
+      () => _i24.UploadProfilePicUsecase(gh<_i18.UserRepo>()));
   return getIt;
 }
 
-class _$DioProvider extends _i24.DioProvider {}
+class _$DioProvider extends _i25.DioProvider {}

@@ -1,14 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-
-import '../../../../core/errors/dio_error_handler.dart';
-import '../../../../core/errors/failure.dart';
-import '../../../../core/utils/typedefs.dart';
-import '../../../auth/data/models/login_model.dart';
-import '../../domain/repos/user_repo.dart';
-import '../datasources/user_remote_data_src.dart';
-import '../models/user_model.dart';
+import 'package:talking/core/errors/dio_error_handler.dart';
+import 'package:talking/core/errors/failure.dart';
+import 'package:talking/core/utils/typedefs.dart';
+import 'package:talking/src/auth/data/models/login_model.dart';
+import 'package:talking/src/user/data/datasources/user_remote_data_src.dart';
+import 'package:talking/src/user/data/models/profile_pic_model.dart';
+import 'package:talking/src/user/data/models/user_model.dart';
+import 'package:talking/src/user/domain/repos/user_repo.dart';
 
 @Injectable(as: UserRepo)
 class UserRepoImpl implements UserRepo {
@@ -80,6 +80,25 @@ class UserRepoImpl implements UserRepo {
     } catch (e) {
       return Left(
         ErrorHandler.handle(e, defaultMessage: 'Error getting users'),
+      );
+    }
+  }
+
+  @override
+  ResultFuture<ProfilePicModel> uploadProfilePic({
+    required String path,
+    required String userUid,
+  }) async {
+    try {
+      final result = await _src.uploadProfilePic(
+        path: path,
+        userUid: userUid,
+      );
+
+      return Right(result);
+    } catch (e) {
+      return Left(
+        ErrorHandler.handle(e, defaultMessage: 'Error uploading profile pic'),
       );
     }
   }

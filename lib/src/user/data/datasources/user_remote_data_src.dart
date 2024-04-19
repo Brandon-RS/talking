@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-
-import '../../../../configs/api/api.dart';
-import '../../../../configs/storage/storage_manager.dart';
-import '../../../auth/data/models/login_model.dart';
-import '../models/user_model.dart';
+import 'package:talking/configs/api/api.dart';
+import 'package:talking/configs/storage/storage_manager.dart';
+import 'package:talking/src/auth/data/models/login_model.dart';
+import 'package:talking/src/user/data/models/profile_pic_model.dart';
+import 'package:talking/src/user/data/models/user_model.dart';
 
 abstract class UserRemoteDataSrc {
   Future<LoginModel> register({
@@ -20,6 +20,11 @@ abstract class UserRemoteDataSrc {
   });
 
   Future<List<UserModel>> getUsers();
+
+  Future<ProfilePicModel> uploadProfilePic({
+    required String path,
+    required String userUid,
+  });
 
   Future<UserModel> deleteAccount({
     required String id,
@@ -86,6 +91,29 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
       return users.map((user) => UserModel.fromJson(user)).toList();
     } else {
       throw Exception('Error getting users');
+    }
+  }
+
+  @override
+  Future<ProfilePicModel> uploadProfilePic({
+    required String path,
+    required String userUid,
+  }) async {
+    final response = await _dio.post(
+      Api.uploadImage,
+      data: FormData.fromMap(
+        {'file': await MultipartFile.fromFile(path)},
+      ),
+      queryParameters: {
+        'upload_preset': 'profile-pics',
+        'public_id': userUid,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return ProfilePicModel.fromJson(response.data);
+    } else {
+      throw Exception('Error uploading profile pic');
     }
   }
 

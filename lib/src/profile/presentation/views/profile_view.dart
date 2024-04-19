@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,14 +55,24 @@ class _ProfileViewState extends State<ProfileView> {
                         color: Colors.white,
                       ),
                       onPressed: () async {
-                        final result = await FilePicker.platform.pickFiles(
-                          type: FileType.image,
-                          // allowedExtensions: ['jpg', 'jpeg', 'png'],
-                        );
+                        final result = await FilePicker.platform.pickFiles(type: FileType.image);
                         if (result != null) {
                           setState(() {
                             _image = File(result.files.single.path!);
                           });
+
+                          final formData = FormData.fromMap(
+                            {'file': await MultipartFile.fromFile(_image!.path)},
+                          );
+
+                          final response = await Dio().post(
+                            'https://api.cloudinary.com/v1_1/brandon-rs/image/upload',
+                            queryParameters: {
+                              'upload_preset': 'profile-pics',
+                              'public_id': 'custom-name',
+                            },
+                            data: formData,
+                          );
                         }
                       },
                     ),
