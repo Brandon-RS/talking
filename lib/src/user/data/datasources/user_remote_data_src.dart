@@ -99,19 +99,15 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
     required String path,
     required String userUid,
   }) async {
-    final response = await _dio.post(
-      Api.uploadImage,
+    final response = await _dio.put(
+      Api.changeProfilePic(userUid),
       data: FormData.fromMap(
-        {'file': await MultipartFile.fromFile(path)},
+        {'image': await MultipartFile.fromFile(path)},
       ),
-      queryParameters: {
-        'upload_preset': 'profile-pics',
-        'public_id': userUid,
-      },
     );
 
     if (response.statusCode == 200) {
-      return ProfilePicModel.fromJson(response.data);
+      return ProfilePicModel.fromJson(response.data['result']);
     } else {
       throw Exception('Error uploading profile pic');
     }
