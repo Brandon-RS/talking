@@ -8,6 +8,7 @@ class User extends Equatable {
     required this.name,
     required this.email,
     required this.uid,
+    this.profileImage,
   });
 
   static const empty = User(
@@ -15,6 +16,7 @@ class User extends Equatable {
     name: '',
     email: '',
     uid: '',
+    profileImage: null,
   );
 
   static fromModelList(List<UserModel> models) {
@@ -27,6 +29,7 @@ class User extends Equatable {
       name: model.name,
       email: model.email,
       uid: model.uid,
+      profileImage: model.profileImage,
     );
   }
 
@@ -36,6 +39,7 @@ class User extends Equatable {
       name: name,
       email: email,
       uid: uid,
+      profileImage: profileImage,
     );
   }
 
@@ -43,6 +47,7 @@ class User extends Equatable {
   final String name;
   final String email;
   final String uid;
+  final String? profileImage;
 
   @override
   List<Object?> get props => [uid, name, email, online];
@@ -52,12 +57,14 @@ class User extends Equatable {
     String? name,
     String? email,
     String? uid,
+    String? profileImage,
   }) {
     return User(
       online: online ?? this.online,
       name: name ?? this.name,
       email: email ?? this.email,
       uid: uid ?? this.uid,
+      profileImage: profileImage ?? this.profileImage,
     );
   }
 

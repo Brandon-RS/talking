@@ -15,14 +15,26 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => $checkedCreate(
           name: $checkedConvert('name', (v) => v as String),
           email: $checkedConvert('email', (v) => v as String),
           uid: $checkedConvert('uid', (v) => v as String),
+          profileImage: $checkedConvert('profileImage', (v) => v as String?),
         );
         return val;
       },
     );
 
-Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
-      'online': instance.online,
-      'name': instance.name,
-      'email': instance.email,
-      'uid': instance.uid,
-    };
+Map<String, dynamic> _$UserModelToJson(UserModel instance) {
+  final val = <String, dynamic>{
+    'online': instance.online,
+    'name': instance.name,
+    'email': instance.email,
+    'uid': instance.uid,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('profileImage', instance.profileImage);
+  return val;
+}

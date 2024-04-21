@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:talking/src/profile/presentation/blocs/upload_profile_pic/upload_profile_pic_bloc.dart';
 
 class ProfilePicture extends StatelessWidget {
@@ -32,9 +33,13 @@ class ProfilePicture extends StatelessWidget {
                       return Image.file(state.image!, fit: BoxFit.cover);
                     }
 
-                    return Image.network(
-                      state.hasImage ? state.profilePic.secureUrl : 'https://avatars.githubusercontent.com/u/79495707?v=4',
-                      fit: BoxFit.cover,
+                    return BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return Image.network(
+                          state.hasImage ? state.user.profileImage! : 'https://avatars.githubusercontent.com/u/79495707?v=4',
+                          fit: BoxFit.cover,
+                        );
+                      },
                     );
                   },
                 ),

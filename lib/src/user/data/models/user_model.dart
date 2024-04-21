@@ -15,12 +15,15 @@ class UserModel {
     required this.name,
     required this.email,
     required this.uid,
+    this.profileImage,
   });
 
   final bool online;
   final String name;
   final String email;
   final String uid;
+  @JsonKey(name: 'profileImage')
+  final String? profileImage;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
