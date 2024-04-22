@@ -6,14 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talking/src/user/domain/entities/profile_pic_entity.dart';
 import 'package:talking/src/user/domain/usecases/upload_profile_pic_usecase.dart';
 
-part 'upload_profile_pic_event.dart';
-part 'upload_profile_pic_state.dart';
+part 'change_profile_pic_event.dart';
+part 'change_profile_pic_state.dart';
 
-class UploadProfilePicBloc extends Bloc<UploadProfilePicEvent, UploadProfilePicState> {
-  UploadProfilePicBloc({
+class ChangeProfilePicBloc extends Bloc<ChangeProfilePicEvent, ChangeProfilePicState> {
+  ChangeProfilePicBloc({
     required UploadProfilePicUsecase uploadProfilePicUsecase,
   })  : _uploadProfilePicUsecase = uploadProfilePicUsecase,
-        super(const UploadProfilePicState()) {
+        super(const ChangeProfilePicState()) {
     on<SelectProfilePic>(_onSelectProfilePic);
     on<UploadProfilePic>(_onUploadProfilePic);
   }
@@ -22,31 +22,31 @@ class UploadProfilePicBloc extends Bloc<UploadProfilePicEvent, UploadProfilePicS
 
   void _onSelectProfilePic(
     SelectProfilePic event,
-    Emitter<UploadProfilePicState> emit,
+    Emitter<ChangeProfilePicState> emit,
   ) {
     emit(state.copyWith(image: File(event.path)));
   }
 
   void _onUploadProfilePic(
     UploadProfilePic event,
-    Emitter<UploadProfilePicState> emit,
+    Emitter<ChangeProfilePicState> emit,
   ) async {
     if (state.image == null) return;
 
-    emit(state.copyWith(status: UploadProfilePicStatus.loading));
+    emit(state.copyWith(status: ChangeProfilePicStatus.loading));
 
     final result = await _uploadProfilePicUsecase((state.image!.path, event.userUid));
 
     result.fold(
       (failure) {
         emit(state.copyWith(
-          status: UploadProfilePicStatus.error,
+          status: ChangeProfilePicStatus.error,
           error: failure.message,
         ));
       },
       (profilePic) {
         emit(state.copyWith(
-          status: UploadProfilePicStatus.success,
+          status: ChangeProfilePicStatus.success,
           profilePic: profilePic,
         ));
       },

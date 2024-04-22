@@ -1,27 +1,27 @@
-part of 'upload_profile_pic_bloc.dart';
+part of 'change_profile_pic_bloc.dart';
 
-enum UploadProfilePicStatus { initial, loading, success, error }
+enum ChangeProfilePicStatus { initial, loading, success, error }
 
-final class UploadProfilePicState extends Equatable {
-  const UploadProfilePicState({
-    this.status = UploadProfilePicStatus.initial,
+final class ChangeProfilePicState extends Equatable {
+  const ChangeProfilePicState({
+    this.status = ChangeProfilePicStatus.initial,
     this.profilePic = ProfilePicEntity.empty,
     this.image,
     this.error = '',
   });
 
-  final UploadProfilePicStatus status;
+  final ChangeProfilePicStatus status;
   final ProfilePicEntity profilePic;
   final File? image;
   final String error;
 
-  UploadProfilePicState copyWith({
-    UploadProfilePicStatus? status,
+  ChangeProfilePicState copyWith({
+    ChangeProfilePicStatus? status,
     ProfilePicEntity? profilePic,
     File? image,
     String? error,
   }) {
-    return UploadProfilePicState(
+    return ChangeProfilePicState(
       status: status ?? this.status,
       profilePic: profilePic ?? this.profilePic,
       image: image ?? this.image,
@@ -30,8 +30,8 @@ final class UploadProfilePicState extends Equatable {
   }
 
   // TODO(BRANDOM): Make this better
-  UploadProfilePicState deleteImage() {
-    return UploadProfilePicState(
+  ChangeProfilePicState deleteImage() {
+    return ChangeProfilePicState(
       status: status,
       profilePic: profilePic,
       image: null,
@@ -39,7 +39,7 @@ final class UploadProfilePicState extends Equatable {
     );
   }
 
-  bool get isLoading => status == UploadProfilePicStatus.loading;
+  bool get isLoading => status == ChangeProfilePicStatus.loading;
 
   bool get hasImage => profilePic.secureUrl.isNotEmpty;
 

@@ -1,13 +1,13 @@
-part of 'upload_profile_pic_bloc.dart';
+part of 'change_profile_pic_bloc.dart';
 
-sealed class UploadProfilePicEvent extends Equatable {
-  const UploadProfilePicEvent();
+sealed class ChangeProfilePicEvent extends Equatable {
+  const ChangeProfilePicEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class SelectProfilePic extends UploadProfilePicEvent {
+class SelectProfilePic extends ChangeProfilePicEvent {
   const SelectProfilePic(this.path);
 
   final String path;
@@ -16,7 +16,7 @@ class SelectProfilePic extends UploadProfilePicEvent {
   List<Object> get props => [path];
 }
 
-class UploadProfilePic extends UploadProfilePicEvent {
+class UploadProfilePic extends ChangeProfilePicEvent {
   const UploadProfilePic(this.userUid);
 
   final String userUid;

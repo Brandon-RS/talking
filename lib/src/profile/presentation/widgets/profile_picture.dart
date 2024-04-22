@@ -1,8 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:talking/src/auth/presentation/blocs/auth/auth_bloc.dart';
-import 'package:talking/src/profile/presentation/blocs/upload_profile_pic/upload_profile_pic_bloc.dart';
 
 class ProfilePicture extends StatelessWidget {
   const ProfilePicture({super.key});
@@ -27,21 +27,13 @@ class ProfilePicture extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: BlocBuilder<UploadProfilePicBloc, UploadProfilePicState>(
-                  builder: (context, state) {
-                    if (state.image != null) {
-                      return Image.file(state.image!, fit: BoxFit.cover);
-                    }
-
-                    return BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        return Image.network(
-                          state.hasImage ? state.user.profileImage! : 'https://avatars.githubusercontent.com/u/79495707?v=4',
+                child: BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) => state.hasImage
+                      ? Image.network(
+                          state.user.profileImage!,
                           fit: BoxFit.cover,
-                        );
-                      },
-                    );
-                  },
+                        )
+                      : const Icon(Icons.person, size: 80),
                 ),
               ),
               Positioned(
@@ -53,13 +45,10 @@ class ProfilePicture extends StatelessWidget {
                     size: 24,
                     color: Colors.white,
                   ),
-                  onPressed: () async {
-                    await FilePicker.platform.pickFiles(type: FileType.image).then((value) {
+                  onPressed: () {
+                    FilePicker.platform.pickFiles(type: FileType.image).then((value) {
                       if (value == null) return;
-
-                      context.read<UploadProfilePicBloc>().add(
-                            SelectProfilePic(value.files.single.path!),
-                          );
+                      context.push('/profile/change-picture', extra: value.files.single.path);
                     });
                   },
                 ),

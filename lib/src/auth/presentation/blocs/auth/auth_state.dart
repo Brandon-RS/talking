@@ -27,7 +27,7 @@ class AuthState extends Equatable {
 
   bool get isLoading => status == AuthStatus.loading;
 
-  bool get hasImage => user.profileImage != null && user.profileImage!.isNotEmpty;
+  bool get hasImage => user.profileImage != null && user.profileImage!.startsWith('https://');
 
   @override
   List<Object> get props => [status];

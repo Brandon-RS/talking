@@ -1,14 +1,14 @@
 import 'package:go_router/go_router.dart';
-
-import '../../src/auth/presentation/views/login_view.dart';
-import '../../src/chat/presentation/views/chat_view.dart';
-import '../../src/home/presentation/views/home_View.dart';
-import '../../src/profile/presentation/views/change_password_view.dart';
-import '../../src/profile/presentation/views/profile_view.dart';
-import '../../src/splash/presentation/views/splash_view.dart';
-import '../../src/terms_and_conditions/presentation/views/terms_and_conditions_view.dart';
-import '../../src/user/presentation/views/register_view.dart';
-import '../../src/user/presentation/views/users_view.dart';
+import 'package:talking/src/auth/presentation/views/login_view.dart';
+import 'package:talking/src/chat/presentation/views/chat_view.dart';
+import 'package:talking/src/home/presentation/views/home_view.dart';
+import 'package:talking/src/profile/presentation/views/change_password_view.dart';
+import 'package:talking/src/profile/presentation/views/change_picture_view.dart';
+import 'package:talking/src/profile/presentation/views/profile_view.dart';
+import 'package:talking/src/splash/presentation/views/splash_view.dart';
+import 'package:talking/src/terms_and_conditions/presentation/views/terms_and_conditions_view.dart';
+import 'package:talking/src/user/presentation/views/register_view.dart';
+import 'package:talking/src/user/presentation/views/users_view.dart';
 
 class AppRouter {
   static final router = GoRouter(
@@ -22,12 +22,22 @@ class AppRouter {
             path: 'chat',
             builder: (context, state) => const ChatView(),
           ),
-          GoRoute(path: 'profile', builder: (context, state) => const ProfileView(), routes: [
-            GoRoute(
-              path: 'change-password',
-              builder: (context, state) => const ChangePasswordView(),
-            ),
-          ]),
+          GoRoute(
+            path: 'profile',
+            builder: (context, state) => const ProfileView(),
+            routes: [
+              GoRoute(
+                path: 'change-password',
+                builder: (context, state) => const ChangePasswordView(),
+              ),
+              GoRoute(
+                path: 'change-picture',
+                builder: (context, state) => ChangePictureView(
+                  selectedImagePath: state.extra as String?,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
       GoRoute(
