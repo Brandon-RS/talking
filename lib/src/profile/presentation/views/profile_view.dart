@@ -19,39 +19,26 @@ class _ProfileViewState extends State<ProfileView> {
       appBar: const ProfileAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const ProfilePicture(),
-                const SizedBox(height: 30),
-                BlocBuilder<AuthBloc, AuthState>(
-                  buildWhen: (previous, current) => previous.user.name != current.user.name,
-                  builder: (context, state) => ProfileSection(
-                    title: 'Name',
-                    value: state.user.name,
-                    icon: Icons.person_outline,
-                  ),
-                ),
-                const SizedBox(height: 15),
-                BlocBuilder<AuthBloc, AuthState>(
-                  buildWhen: (previous, current) => previous.user.email != current.user.email,
-                  builder: (context, state) => ProfileSection(
-                    title: 'Email',
-                    value: state.user.email,
-                    icon: Icons.email_outlined,
-                  ),
-                ),
-              ],
+            const ProfilePicture(),
+            const SizedBox(height: 30),
+            BlocBuilder<AuthBloc, AuthState>(
+              buildWhen: (previous, current) => previous.user.name != current.user.name,
+              builder: (context, state) => ProfileSection(
+                title: 'Name',
+                value: state.user.name,
+                icon: Icons.person_outline,
+              ),
             ),
-            const Positioned(
-              left: 0,
-              right: 0,
-              bottom: 30,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox.shrink(),
+            const SizedBox(height: 15),
+            BlocBuilder<AuthBloc, AuthState>(
+              buildWhen: (previous, current) => previous.user.email != current.user.email,
+              builder: (context, state) => ProfileSection(
+                title: 'Email',
+                value: state.user.email,
+                icon: Icons.email_outlined,
               ),
             ),
           ],

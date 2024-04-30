@@ -50,7 +50,7 @@ class User extends Equatable {
   final String? profileImage;
 
   @override
-  List<Object?> get props => [uid, name, email, online];
+  List<Object?> get props => [uid, name, email, online, profileImage];
 
   User copyWith({
     bool? online,

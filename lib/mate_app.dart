@@ -16,10 +16,11 @@ class MainApp extends StatelessWidget {
       routerConfig: AppRouter.router,
       theme: AppTheme.light,
       builder: (context, child) => BlocListener<AuthBloc, AuthState>(
+        listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
           switch (state.status) {
             case AuthStatus.authenticated:
-              AppRouter.router.replace('/users');
+              AppRouter.router.go('/users');
               context.read<ChatBloc>().add(const Connect());
               context.read<UsersBloc>().add(const GetUsersIfNeed());
               break;

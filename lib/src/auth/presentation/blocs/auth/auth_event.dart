@@ -28,3 +28,12 @@ final class Logout extends AuthEvent {
 final class DeleteAccount extends AuthEvent {
   const DeleteAccount();
 }
+
+final class UpdateProfilePic extends AuthEvent {
+  const UpdateProfilePic(this.url);
+
+  final String url;
+
+  @override
+  List<Object> get props => [url];
+}

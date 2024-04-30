@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _deleteAccountUsecase = deleteAccountUsecase,
         super(const AuthState()) {
     on<AuthStatusChanged>(_onAuthStatusChanged);
+    on<UpdateProfilePic>(_onUpdateProfilePic);
     on<RenewToken>(_onRenewToken);
     on<Logout>(_onLogout);
     on<DeleteAccount>(_onDeleteAccount);
@@ -42,6 +43,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       default:
         return emit(state.copyWith(status: AuthStatus.unauthenticated));
     }
+  }
+
+  void _onUpdateProfilePic(
+    UpdateProfilePic event,
+    Emitter<AuthState> emit,
+  ) {
+    emit(state.copyWith(
+      user: state.user.copyWith(profileImage: event.url),
+    ));
   }
 
   void _onRenewToken(

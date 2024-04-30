@@ -30,5 +30,5 @@ class AuthState extends Equatable {
   bool get hasImage => user.profileImage != null && user.profileImage!.startsWith('https://');
 
   @override
-  List<Object> get props => [status];
+  List<Object> get props => [status, user, error];
 }

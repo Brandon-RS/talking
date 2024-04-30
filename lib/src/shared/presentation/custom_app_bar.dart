@@ -27,6 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Stack(
               children: [
                 Container(
+                  clipBehavior: Clip.antiAlias,
                   height: 42,
                   decoration: ShapeDecoration(
                     shape: CircleBorder(
@@ -35,9 +36,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     ),
                   ),
-                  child: Image.network(
-                    // TODO(BRANDOM): Temporary image
-                    'https://avatars.githubusercontent.com/u/79495707?v=4',
+                  child: BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) => state.hasImage
+                        ? Image.network(state.user.profileImage!, fit: BoxFit.cover)
+                        : const Icon(Icons.person, size: 80),
                   ),
                 ),
                 Positioned(

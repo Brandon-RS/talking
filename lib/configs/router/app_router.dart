@@ -3,7 +3,6 @@ import 'package:talking/src/auth/presentation/views/login_view.dart';
 import 'package:talking/src/chat/presentation/views/chat_view.dart';
 import 'package:talking/src/home/presentation/views/home_view.dart';
 import 'package:talking/src/profile/presentation/views/change_password_view.dart';
-import 'package:talking/src/profile/presentation/views/change_picture_view.dart';
 import 'package:talking/src/profile/presentation/views/profile_view.dart';
 import 'package:talking/src/splash/presentation/views/splash_view.dart';
 import 'package:talking/src/terms_and_conditions/presentation/views/terms_and_conditions_view.dart';
@@ -29,12 +28,6 @@ class AppRouter {
               GoRoute(
                 path: 'change-password',
                 builder: (context, state) => const ChangePasswordView(),
-              ),
-              GoRoute(
-                path: 'change-picture',
-                builder: (context, state) => ChangePictureView(
-                  selectedImagePath: state.extra as String?,
-                ),
               ),
             ],
           ),
