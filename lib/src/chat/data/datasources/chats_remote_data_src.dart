@@ -21,7 +21,7 @@ class ChatsRemoteDataSrcImpl implements ChatsRemoteDataSrc {
     final response = await _dio.get(Api.chats(targetUserId));
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = response.data;
+      final List<dynamic> data = response.data['data'];
       return data.map((e) => MessageModel.fromJson(e)).toList();
     } else {
       throw Exception('Error on get chats');

@@ -53,7 +53,7 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
     );
 
     if (response.statusCode == 200) {
-      final model = LoginModel.fromJson(response.data);
+      final model = LoginModel.fromJson(response.data['data']);
       _setToken(model.token);
       return model;
     } else {
@@ -76,7 +76,7 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
     );
 
     if (response.statusCode == 200) {
-      return UserModel.fromJson(response.data);
+      return UserModel.fromJson(response.data['data']);
     } else {
       throw Exception('Error changing password');
     }
@@ -87,7 +87,7 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
     final response = await _dio.get(Api.users);
 
     if (response.statusCode == 200) {
-      final users = response.data as List;
+      final users = response.data['data']['users'] as List;
       return users.map((user) => UserModel.fromJson(user)).toList();
     } else {
       throw Exception('Error getting users');
@@ -107,7 +107,7 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
     );
 
     if (response.statusCode == 200) {
-      return ProfilePicModel.fromJson(response.data['result']);
+      return ProfilePicModel.fromJson(response.data['data']['result']);
     } else {
       throw Exception('Error uploading profile pic');
     }
@@ -120,7 +120,7 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
     );
 
     if (response.statusCode == 200) {
-      return UserModel.fromJson(response.data);
+      return UserModel.fromJson(response.data['data']);
     } else {
       throw Exception('Error deleting user account');
     }

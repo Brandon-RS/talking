@@ -37,7 +37,7 @@ class AuthRemoteDataSrcImpl implements AuthRemoteDataSrc {
     final response = await _dio.post(Api.auth, data: authData);
 
     if (response.statusCode == 200) {
-      final model = LoginModel.fromJson(response.data);
+      final model = LoginModel.fromJson(response.data['data']);
       _setToken(model.token);
       return model;
     } else {
@@ -50,7 +50,7 @@ class AuthRemoteDataSrcImpl implements AuthRemoteDataSrc {
     final response = await _dio.get(Api.renewToken);
 
     if (response.statusCode == 200) {
-      final model = LoginModel.fromJson(response.data);
+      final model = LoginModel.fromJson(response.data['data']);
       _setToken(model.token);
       return model;
     } else {
