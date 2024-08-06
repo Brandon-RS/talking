@@ -137,13 +137,13 @@ class _ChangePictureButton extends StatelessWidget {
     return await ImageCropper().cropImage(
       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
       sourcePath: path,
-      aspectRatioPresets: [],
+      // TODO(BRANDOM): Check if can disable BottomControls in iOS,
+      // otherwise remove this set here an empty list for iOS and a null for Android
+      // aspectRatioPresets: [],
       uiSettings: [
         AndroidUiSettings(
-          toolbarColor: Colors.deepOrange,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false,
+          toolbarTitle: 'Crop Image',
+          hideBottomControls: true,
         ),
         IOSUiSettings(
           aspectRatioLockDimensionSwapEnabled: true,
