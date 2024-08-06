@@ -33,7 +33,7 @@ class _MessageInputFieldState extends State<MessageInputField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.background,
+      color: Theme.of(context).colorScheme.surface,
       child: SafeArea(
         child: Row(
           children: [

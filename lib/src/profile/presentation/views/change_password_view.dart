@@ -168,11 +168,11 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.lock_outline, color: colorScheme.background),
+                          Icon(Icons.lock_outline, color: colorScheme.surface),
                           const SizedBox(width: 10),
                           Text(
                             'Change Password',
-                            style: TextStyle(fontSize: 17, color: colorScheme.background),
+                            style: TextStyle(fontSize: 17, color: colorScheme.surface),
                           ),
                         ],
                       ),

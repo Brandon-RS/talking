@@ -38,7 +38,7 @@ abstract class AppTheme {
         ),
       ),
       checkboxTheme: CheckboxThemeData(
-        checkColor: MaterialStateProperty.all(TColors.white),
+        checkColor: WidgetStateProperty.all(TColors.white),
         visualDensity: const VisualDensity(
           horizontal: VisualDensity.minimumDensity,
           vertical: VisualDensity.minimumDensity,
